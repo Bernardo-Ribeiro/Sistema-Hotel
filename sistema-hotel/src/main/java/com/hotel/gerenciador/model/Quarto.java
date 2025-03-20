@@ -1,20 +1,20 @@
 package com.hotel.gerenciador.model;
 
-public class Quarto{
+public class Quarto {
     private int id;
-    private String numeroQuarto;
-    private String tipo;
-    private double preco;
-    private String status;
-    private int idHospede;
+    private int numeroQuarto;
+    private TipoQuarto tipo;
+    private double precoDiaria;
+    private int capacidade;
+    private StatusQuarto status;
 
-    public Quarto(int id, String numeroQuarto, String tipo, double preco, String status, int idHospede){
+    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade, StatusQuarto status) {
         this.id = id;
         this.numeroQuarto = numeroQuarto;
         this.tipo = tipo;
-        this.preco = preco;
+        this.precoDiaria = precoDiaria;
+        this.capacidade = capacidade;
         this.status = status;
-        this.idHospede = idHospede;
     }
 
     public int getId() {
@@ -24,38 +24,58 @@ public class Quarto{
         this.id = id;
     }
 
-    public String getNumeroQuarto() {
+    public int getNumeroQuarto() {
         return numeroQuarto;
     }
-    public void setNumeroQuarto(String numeroQuarto) {
+    public void setNumeroQuarto(int numeroQuarto) {
         this.numeroQuarto = numeroQuarto;
     }
 
-    public String getTipo() {
+    public TipoQuarto getTipo() {
         return tipo;
     }
-    public void setTipo(String tipo) {
+    public void setTipo(TipoQuarto tipo) {
         this.tipo = tipo;
     }
 
-    public double getPreco() {
-        return preco;
+    public double getPrecoDiaria() {
+        return precoDiaria;
     }
-    public void setPreco(double preco) {
-        this.preco = preco;
+    public void setPrecoDiaria(double precoDiaria) {
+        this.precoDiaria = precoDiaria;
     }
 
-    public String getStatus() {
+    public int getCapacidade() {
+        return capacidade;
+    }
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public StatusQuarto getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(StatusQuarto status) {
         this.status = status;
     }
-    
-    public int getIdHospede() {
-        return idHospede;
+
+    public double calcularPrecoTotal(int dias) {
+        return precoDiaria * dias;
     }
-    public void setIdHospede(int idHospede) {
-        this.idHospede = idHospede;
+
+    public boolean isDisponivel() {
+        return this.status == StatusQuarto.DISPONIVEL;
+    }
+
+    @Override
+    public String toString() {
+        return "Quarto{" +
+                "id=" + id +
+                ", numeroQuarto=" + numeroQuarto +
+                ", tipo=" + tipo +
+                ", precoDiaria=" + precoDiaria +
+                ", capacidade=" + capacidade +
+                ", status=" + status +
+                '}';
     }
 }
