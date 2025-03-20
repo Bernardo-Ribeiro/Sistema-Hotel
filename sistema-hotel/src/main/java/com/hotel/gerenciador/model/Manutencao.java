@@ -2,6 +2,8 @@ package com.hotel.gerenciador.model;
 
 import java.time.LocalDateTime;
 
+import com.hotel.gerenciador.util.StatusManutencao;
+
 public class Manutencao {
     private int id;
     private Integer idQuarto;
@@ -10,8 +12,12 @@ public class Manutencao {
     private LocalDateTime dataSolicitacao;
     private LocalDateTime dataConclusao;
     private StatusManutencao status;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Manutencao(int id, Integer idQuarto, Integer idFuncionario, String descricao, LocalDateTime dataSolicitacao, LocalDateTime dataConclusao, StatusManutencao status) {
+    public Manutencao(int id, Integer idQuarto, Integer idFuncionario, String descricao,
+                        LocalDateTime dataSolicitacao, LocalDateTime dataConclusao,
+                        StatusManutencao status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.idQuarto = idQuarto;
         this.idFuncionario = idFuncionario;
@@ -19,6 +25,8 @@ public class Manutencao {
         this.dataSolicitacao = dataSolicitacao;
         this.dataConclusao = dataConclusao;
         this.status = status;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -70,6 +78,21 @@ public class Manutencao {
         this.status = status;
     }
 
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
     @Override
     public String toString() {
         return "Manutencao{" +
@@ -80,6 +103,8 @@ public class Manutencao {
                 ", dataSolicitacao=" + dataSolicitacao +
                 ", dataConclusao=" + dataConclusao +
                 ", status=" + status +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }

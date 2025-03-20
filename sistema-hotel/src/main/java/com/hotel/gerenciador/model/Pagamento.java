@@ -1,6 +1,10 @@
 package com.hotel.gerenciador.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.hotel.gerenciador.util.MetodoPagamento;
+import com.hotel.gerenciador.util.StatusPagamento;
 
 public class Pagamento {
     private int id;
@@ -9,14 +13,19 @@ public class Pagamento {
     private MetodoPagamento metodo;
     private StatusPagamento status;
     private String referencia;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Pagamento(int id, double valor, LocalDate dataPagamento, MetodoPagamento metodo, StatusPagamento status, String referencia) {
+    public Pagamento(int id, double valor, LocalDate dataPagamento, MetodoPagamento metodo,
+                    StatusPagamento status, String referencia, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.valor = valor;
         this.dataPagamento = dataPagamento;
         this.metodo = metodo;
         this.status = status;
         this.referencia = referencia;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -61,6 +70,21 @@ public class Pagamento {
         this.referencia = referencia;
     }
 
+        public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
     @Override
     public String toString() {
         return "Pagamento{" +
@@ -70,6 +94,8 @@ public class Pagamento {
                 ", metodo=" + metodo +
                 ", status=" + status +
                 ", referencia='" + referencia + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }
