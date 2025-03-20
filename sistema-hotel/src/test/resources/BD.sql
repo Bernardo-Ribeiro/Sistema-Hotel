@@ -1,0 +1,96 @@
+CREATE DATABASE IF NOT EXISTS SistemaHotel;
+USE SistemaHotel;
+
+CREATE TABLE Funcionarios (
+    FuncionarioID INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(100) NOT NULL,
+    CPF VARCHAR(14) UNIQUE NOT NULL,
+    Telefone VARCHAR(15),
+    Cargo VARCHAR(50),
+    Salario DECIMAL(10, 2),
+    DataAdmissao DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE Hospedes (
+    HospedeID INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(100) NOT NULL,
+    CPF VARCHAR(14) UNIQUE NOT NULL,
+    Telefone VARCHAR(15),
+    Email VARCHAR(100),
+    DataNascimento DATE
+);
+
+CREATE TABLE Quartos (
+    QuartoID INT PRIMARY KEY AUTO_INCREMENT,
+    NumeroQuarto INT UNIQUE NOT NULL,
+    Tipo ENUM('SOLTEIRO', 'CASAL', 'FAMILIA', 'LUXO') NOT NULL,
+    PrecoDiaria DECIMAL(10, 2) NOT NULL,
+    Status ENUM('DISPONIVEL', 'OCUPADO', 'MANUTENCAO') DEFAULT 'DISPONIVEL'
+);
+
+CREATE TABLE Reservas (
+    ReservaID INT PRIMARY KEY AUTO_INCREMENT,
+    HospedeID INT NOT NULL,
+    QuartoID INT NOT NULL,
+    DataCheckIn DATE NOT NULL,
+    DataCheckOut DATE NOT NULL,
+    Status ENUM('CONFIRMADA', 'CANCELADA', 'CONCLUIDA', 'PENDENTE') DEFAULT 'PENDENTE',
+    FOREIGN KEY (HospedeID) REFERENCES Hospedes(HospedeID),
+    FOREIGN KEY (QuartoID) REFERENCES Quartos(QuartoID)
+);
+
+CREATE TABLE Pagamentos (
+    PagamentoID INT PRIMARY KEY AUTO_INCREMENT,
+    ReservaID INT NOT NULL,
+    ValorPago DECIMAL(10, 2) NOT NULL,
+    DataPagamento DATE DEFAULT CURRENT_DATE,
+    MetodoPagamento ENUM('DINHEIRO', 'CARTAO_CREDITO', 'CARTAO_DEBITO', 'PIX', 'TRANSFERENCIA') DEFAULT 'DINHEIRO',
+    FOREIGN KEY (ReservaID) REFERENCES Reservas(ReservaID)
+);
+
+CREATE TABLE Produtos (
+    ProdutoID INT PRIMARY KEY AUTO_INCREMENT,
+    NomeProduto VARCHAR(100) NOT NULL,
+    Preco DECIMAL(10, 2) NOT NULL,
+    Estoque INT NOT NULL,
+    Categoria ENUM('FRIGOBAR', 'RESTAURANTE', 'BEBIDA', 'OUTROS') NOT NULL
+);
+
+CREATE TABLE Consumo (
+    ConsumoID INT PRIMARY KEY AUTO_INCREMENT,
+    ReservaID INT NOT NULL,
+    ProdutoID INT NOT NULL,
+    Quantidade INT NOT NULL,
+    Valor DECIMAL(10, 2) NOT NULL,
+    DataConsumo DATE DEFAULT CURRENT_DATE,
+    FOREIGN KEY (ReservaID) REFERENCES Reservas(ReservaID),
+    FOREIGN KEY (ProdutoID) REFERENCES Produtos(ProdutoID)
+);
+
+CREATE TABLE Servicos (
+    ServicoID INT PRIMARY KEY AUTO_INCREMENT,
+    NomeServico VARCHAR(100) NOT NULL,
+    Preco DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE ConsumoServicos (
+    ConsumoID INT PRIMARY KEY AUTO_INCREMENT,
+    ReservaID INT NOT NULL,
+    ServicoID INT NOT NULL,
+    Quantidade INT NOT NULL,
+    DataConsumo DATE DEFAULT CURRENT_DATE,
+    FOREIGN KEY (ReservaID) REFERENCES Reservas(ReservaID),
+    FOREIGN KEY (ServicoID) REFERENCES Servicos(ServicoID)
+);
+
+CREATE TABLE Manutencao (
+    ManutencaoID INT PRIMARY KEY AUTO_INCREMENT,
+    QuartoID INT NOT NULL,
+    DataInicio DATE NOT NULL,
+    DataFim DATE,
+    Descricao TEXT,
+    Status ENUM('PENDENTE', 'EM_ANDAMENTO', 'CONCLUIDA') DEFAULT 'PENDENTE',
+    FuncionarioID INT,
+    FOREIGN KEY (QuartoID) REFERENCES Quartos(QuartoID),
+    FOREIGN KEY (FuncionarioID) REFERENCES Funcionarios(FuncionarioID)
+);

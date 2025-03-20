@@ -1,6 +1,7 @@
 package com.hotel.gerenciador.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 public class Hospede {
@@ -12,8 +13,11 @@ public class Hospede {
     private LocalDate dataNascimento;
     private String endereco;
     private String veiculo;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Hospede(int id, String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String endereco, String veiculo) {
+    public Hospede(int id, String nome, String cpf, String telefone, String email, LocalDate dataNascimento,
+                    String endereco, String veiculo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -22,6 +26,8 @@ public class Hospede {
         this.dataNascimento = dataNascimento;
         this.endereco = endereco;
         this.veiculo = (veiculo == null || veiculo.isEmpty()) ? "Nenhum" : veiculo;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -83,6 +89,22 @@ public class Hospede {
         return Period.between(this.dataNascimento, LocalDate.now()).getYears();
     }
 
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
     @Override
     public String toString() {
         return "Hospede{" +
@@ -95,6 +117,8 @@ public class Hospede {
                 ", idade=" + calcularIdade() + " anos" +
                 ", endereco='" + endereco + '\'' +
                 ", veiculo='" + veiculo + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }

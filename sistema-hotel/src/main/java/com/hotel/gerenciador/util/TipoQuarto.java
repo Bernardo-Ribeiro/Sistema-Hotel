@@ -1,4 +1,4 @@
-package com.hotel.gerenciador.model;
+package com.hotel.gerenciador.util;
 
 public enum TipoQuarto {
     SOLTEIRO, CASAL, FAMILIA, LUXO;

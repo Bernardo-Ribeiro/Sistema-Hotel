@@ -1,6 +1,7 @@
 package com.hotel.gerenciador.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Funcionario {
     private int id;
@@ -12,9 +13,12 @@ public class Funcionario {
     private String email;
     private String endereco;
     private LocalDate dataAdmissao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
     public Funcionario(int id, String nome, String cargo, double salario, String telefone, 
-                       String cpf, String email, String endereco, LocalDate dataAdmissao) {
+                       String cpf, String email, String endereco, LocalDate dataAdmissao,
+                       LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.cargo = cargo;
@@ -24,6 +28,8 @@ public class Funcionario {
         this.email = email;
         this.endereco = endereco;
         this.dataAdmissao = dataAdmissao;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -93,6 +99,21 @@ public class Funcionario {
         return this.salario * 0.90;
     }
 
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
     @Override
     public String toString() {
         return "Funcionario{" +
@@ -105,6 +126,8 @@ public class Funcionario {
                 ", email='" + email + '\'' +
                 ", endereco='" + endereco + '\'' +
                 ", dataAdmissao=" + dataAdmissao +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }

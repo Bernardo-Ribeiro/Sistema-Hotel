@@ -1,18 +1,27 @@
 package com.hotel.gerenciador.model;
 
+import java.time.LocalDateTime;
+
+import com.hotel.gerenciador.util.CategoriaProduto;
+
 public class Produto {
     private int id;
     private String nome;
     private String descricao;
     private double preco;
     private CategoriaProduto categoria;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Produto(int id, String nome, String descricao, double preco, CategoriaProduto categoria) {
+    public Produto(int id, String nome, String descricao, double preco, CategoriaProduto categoria,
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.categoria = categoria;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -48,5 +57,29 @@ public class Produto {
     }
     public void setCategoria(CategoriaProduto categoria) {
         this.categoria = categoria;
+    }
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", preco=" + preco +
+                ", categoria=" + categoria +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
+                '}';
     }
 }

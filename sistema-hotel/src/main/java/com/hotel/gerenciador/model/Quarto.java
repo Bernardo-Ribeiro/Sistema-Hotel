@@ -1,5 +1,10 @@
 package com.hotel.gerenciador.model;
 
+import java.time.LocalDateTime;
+
+import com.hotel.gerenciador.util.StatusQuarto;
+import com.hotel.gerenciador.util.TipoQuarto;
+
 public class Quarto {
     private int id;
     private int numeroQuarto;
@@ -7,14 +12,19 @@ public class Quarto {
     private double precoDiaria;
     private int capacidade;
     private StatusQuarto status;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade, StatusQuarto status) {
+    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade,
+                    StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.numeroQuarto = numeroQuarto;
         this.tipo = tipo;
         this.precoDiaria = precoDiaria;
         this.capacidade = capacidade;
         this.status = status;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;        
     }
 
     public int getId() {
@@ -67,6 +77,19 @@ public class Quarto {
         return this.status == StatusQuarto.DISPONIVEL;
     }
 
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
     @Override
     public String toString() {
         return "Quarto{" +
@@ -76,6 +99,8 @@ public class Quarto {
                 ", precoDiaria=" + precoDiaria +
                 ", capacidade=" + capacidade +
                 ", status=" + status +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }

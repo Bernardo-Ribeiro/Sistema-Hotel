@@ -1,6 +1,10 @@
 package com.hotel.gerenciador.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.hotel.gerenciador.util.MetodoPagamento;
+import com.hotel.gerenciador.util.StatusReserva;
 
 public class Reserva {
     private int id;
@@ -12,8 +16,12 @@ public class Reserva {
     private double valorTotal;
     private MetodoPagamento metodoPagamento;
     private String observacoes;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
 
-    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, StatusReserva status, MetodoPagamento metodoPagamento, String observacoes) {
+    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut,
+                    StatusReserva status, MetodoPagamento metodoPagamento, String observacoes,
+                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.hospede = hospede;
         this.quarto = quarto;
@@ -22,6 +30,8 @@ public class Reserva {
         this.status = status;
         this.metodoPagamento = metodoPagamento;
         this.observacoes = observacoes;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
         this.valorTotal = calcularValorTotal();
     }
 
@@ -92,6 +102,18 @@ public class Reserva {
         return this.status == StatusReserva.CONFIRMADA;
     }
 
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
     @Override
     public String toString() {
         return "Reserva{" +
@@ -104,6 +126,8 @@ public class Reserva {
                 ", valorTotal=" + valorTotal +
                 ", metodoPagamento=" + metodoPagamento +
                 ", observacoes='" + observacoes + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
                 '}';
     }
 }
