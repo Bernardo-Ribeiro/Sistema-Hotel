@@ -80,15 +80,11 @@ public class Quarto {
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
+
 
     @Override
     public String toString() {
