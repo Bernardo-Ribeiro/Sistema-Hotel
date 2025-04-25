@@ -3,91 +3,72 @@ package com.hotel.gerenciador.dao;
 import com.hotel.gerenciador.model.Consumo;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsumoDAO {
+public class ConsumoDAO extends BaseDAO<Consumo> {
 
-    public void adicionarConsumo(Consumo consumo) {
-        String sql = "INSERT INTO Consumo (idHospede, idProduto, valor, quantidade, dataConsumo, DataCriacao, DataAtualizacao) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+    @Override
+    protected String getTableName() {
+        return "Consumo";
+    }
 
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+    @Override
+    protected Consumo fromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("ConsumoID");
+        int idHospede = rs.getInt("HospedeID");
+        int idProduto = rs.getInt("ProdutoID");
+        double valor = rs.getDouble("Valor");
+        int quantidade = rs.getInt("Quantidade");
+        LocalDate dataConsumo = rs.getDate("DataConsumo").toLocalDate();
+        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
+        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
+
+        return new Consumo(id, idHospede, idProduto, valor, quantidade, dataConsumo, dataCriacao, dataAtualizacao);
+    }
+
+    public boolean insert(Consumo consumo) throws SQLException {
+        String sql = "INSERT INTO Consumo (HospedeID, ProdutoID, Valor, Quantidade, DataConsumo) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setInt(1, consumo.getIdHospede());
             stmt.setInt(2, consumo.getIdProduto());
             stmt.setDouble(3, consumo.getValor());
             stmt.setInt(4, consumo.getQuantidade());
             stmt.setDate(5, Date.valueOf(consumo.getDataConsumo()));
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+            int rowsAffected = stmt.executeUpdate();
 
-    public List<Consumo> listarConsumos() {
-        List<Consumo> consumos = new ArrayList<>();
-        String sql = "SELECT * FROM Consumo";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Consumo consumo = new Consumo(
-                        rs.getInt("id"),
-                        rs.getInt("idHospede"),
-                        rs.getInt("idProduto"),
-                        rs.getDouble("valor"),
-                        rs.getInt("quantidade"),
-                        rs.getDate("dataConsumo").toLocalDate(),
-                        rs.getTimestamp("DataCriacao").toLocalDateTime(),
-                        rs.getTimestamp("DataAtualizacao").toLocalDateTime()
-                );
-                consumos.add(consumo);
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        consumo.setId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return consumos;
+        return false;
     }
 
-    public boolean atualizarConsumo(Consumo consumo) {
-        String sql = "UPDATE Consumo SET idHospede = ?, idProduto = ?, valor = ?, quantidade = ?, dataConsumo = ? WHERE id = ?";
-    
-        try (Connection conn = DatabaseConnection.getConnection();
+    public boolean update(Consumo consumo) throws SQLException {
+        String sql = "UPDATE Consumo SET HospedeID = ?, ProdutoID = ?, Valor = ?, Quantidade = ?, DataConsumo = ? WHERE ConsumoID = ?";
+
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+
             stmt.setInt(1, consumo.getIdHospede());
             stmt.setInt(2, consumo.getIdProduto());
             stmt.setDouble(3, consumo.getValor());
             stmt.setInt(4, consumo.getQuantidade());
             stmt.setDate(5, Date.valueOf(consumo.getDataConsumo()));
             stmt.setInt(6, consumo.getId());
-    
-            int linhasAfetadas = stmt.executeUpdate();
-            return linhasAfetadas > 0;
-    
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+
+            return stmt.executeUpdate() > 0;
         }
     }
-    
-    public boolean deletarConsumo(int id) {
-        String sql = "DELETE FROM Consumo WHERE id = ?";
-    
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
-            stmt.setInt(1, id);
-            int linhasAfetadas = stmt.executeUpdate();
-            return linhasAfetadas > 0;
-    
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }    
 }
