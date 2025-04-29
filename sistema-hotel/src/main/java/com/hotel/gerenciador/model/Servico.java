@@ -2,6 +2,10 @@ package com.hotel.gerenciador.model;
 
 import java.time.LocalDateTime;
 
+import com.hotel.gerenciador.util.Validator;
+
+import com.hotel.gerenciador.util.Formatter;
+
 public class Servico {
     private int id;
     private String nome;
@@ -12,14 +16,14 @@ public class Servico {
     private LocalDateTime dataAtualizacao;
 
     public Servico(int id, String nome, String descricao, double preco, boolean disponivel,
-                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.disponivel = disponivel;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+        setId(id);
+        setNome(nome);
+        setDescricao(descricao);
+        setPreco(preco);
+        setDisponivel(disponivel);
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
     }
 
     public int getId() {
@@ -33,6 +37,9 @@ public class Servico {
         return nome;
     }
     public void setNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("Nome do serviço não pode ser nulo ou vazio.");
+        }
         this.nome = nome;
     }
 
@@ -40,6 +47,9 @@ public class Servico {
         return descricao;
     }
     public void setDescricao(String descricao) {
+        if (descricao == null || descricao.isBlank()) {
+            throw new IllegalArgumentException("Descrição do serviço não pode ser nula ou vazia.");
+        }
         this.descricao = descricao;
     }
 
@@ -47,6 +57,9 @@ public class Servico {
         return preco;
     }
     public void setPreco(double preco) {
+        if (preco < 0) {
+            throw new IllegalArgumentException("Preço do serviço não pode ser negativo.");
+        }
         this.preco = preco;
     }
 
@@ -60,21 +73,29 @@ public class Servico {
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        Validator.validateNotFutureDateTime(dataCriacao);
+        this.dataCriacao = dataCriacao;
+    }
 
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        Validator.validateNotFutureDateTime(dataAtualizacao);
+        this.dataAtualizacao = dataAtualizacao;
+    }
 
     @Override
     public String toString() {
-        return "Servico{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
-                ", disponivel=" + disponivel +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
+        return "Servico {\n" +
+            "  id=" + id + ",\n" +
+            "  nome='" + nome + "',\n" +
+            "  descricao='" + descricao + "',\n" +
+            "  preco=" + Formatter.formatCurrency(preco) + ",\n" +
+            "  disponivel=" + disponivel + ",\n" +
+            "  dataCriacao=" + Formatter.formatDateTime(dataCriacao) + ",\n" +
+            "  dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) + "\n" +
+            '}';
     }
 }

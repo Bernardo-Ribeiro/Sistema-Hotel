@@ -1,0 +1,80 @@
+package com.hotel.gerenciador.dao;
+
+import com.hotel.gerenciador.model.Funcionario;
+
+import java.sql.*;
+
+public class FuncionarioDAO extends BaseDAO<Funcionario> {
+
+    @Override
+    protected String getTableName() {
+        return "Funcionarios";
+    }
+
+    @Override
+    protected Funcionario fromResultSet(ResultSet rs) throws SQLException {
+        return new Funcionario(
+            rs.getInt("FuncionarioID"),
+            rs.getString("Nome"),
+            rs.getString("Cargo"),
+            rs.getDouble("Salario"),
+            rs.getString("Telefone"),
+            rs.getString("CPF"),
+            rs.getString("Email"),
+            rs.getString("Endereco"),
+            rs.getDate("DataAdmissao").toLocalDate(),
+            rs.getTimestamp("DataCriacao").toLocalDateTime(),
+            rs.getTimestamp("DataAtualizacao").toLocalDateTime()
+        );
+    }
+
+    public boolean insert(Funcionario funcionario) throws SQLException {
+        String sql = "INSERT INTO Funcionarios (Nome, Cargo, Salario, Telefone, CPF, Email, Endereco, DataAdmissao) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, funcionario.getNome());
+            stmt.setString(2, funcionario.getCargo());
+            stmt.setDouble(3, funcionario.getSalario());
+            stmt.setString(4, funcionario.getTelefone());
+            stmt.setString(5, funcionario.getCpf());
+            stmt.setString(6, funcionario.getEmail());
+            stmt.setString(7, funcionario.getEndereco());
+            stmt.setDate(8, Date.valueOf(funcionario.getDataAdmissao()));
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        funcionario.setId(rs.getInt(1));
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean update(Funcionario funcionario) throws SQLException {
+        String sql = "UPDATE Funcionarios SET Nome = ?, Cargo = ?, Salario = ?, Telefone = ?, CPF = ?, Email = ?, Endereco = ?, DataAdmissao = ? " +
+                     "WHERE FuncionarioID = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, funcionario.getNome());
+            stmt.setString(2, funcionario.getCargo());
+            stmt.setDouble(3, funcionario.getSalario());
+            stmt.setString(4, funcionario.getTelefone());
+            stmt.setString(5, funcionario.getCpf());
+            stmt.setString(6, funcionario.getEmail());
+            stmt.setString(7, funcionario.getEndereco());
+            stmt.setDate(8, Date.valueOf(funcionario.getDataAdmissao()));
+            stmt.setInt(9, funcionario.getId());
+
+            return stmt.executeUpdate() > 0;
+        }
+    }
+}

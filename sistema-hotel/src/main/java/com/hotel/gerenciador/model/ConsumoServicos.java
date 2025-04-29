@@ -3,6 +3,9 @@ package com.hotel.gerenciador.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.hotel.gerenciador.util.Formatter;
+import com.hotel.gerenciador.util.Validator;
+
 public class ConsumoServicos {
     private int id;
     private int reservaId;
@@ -17,7 +20,7 @@ public class ConsumoServicos {
         this.id = id;
         this.reservaId = reservaId;
         this.servicoId = servicoId;
-        this.quantidade = quantidade;
+        setQuantidade(quantidade);
         this.dataConsumo = dataConsumo;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
@@ -52,6 +55,7 @@ public class ConsumoServicos {
     }
 
     public void setQuantidade(int quantidade) {
+        Validator.validatePositiveValue(quantidade);
         this.quantidade = quantidade;
     }
 
@@ -78,9 +82,10 @@ public class ConsumoServicos {
                 ", reservaId=" + reservaId +
                 ", servicoId=" + servicoId +
                 ", quantidade=" + quantidade +
-                ", dataConsumo=" + dataConsumo +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataConsumo=" + Formatter.formatDate(dataConsumo) +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
+
 }

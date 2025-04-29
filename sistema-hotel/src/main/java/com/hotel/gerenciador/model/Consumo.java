@@ -3,9 +3,12 @@ package com.hotel.gerenciador.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.hotel.gerenciador.util.Formatter;
+import com.hotel.gerenciador.util.Validator;
+
 public class Consumo {
     private int id;
-    private int idHospede;
+    private int idReserva;
     private int idProduto;
     private double valor;
     private int quantidade;
@@ -13,14 +16,14 @@ public class Consumo {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Consumo(int id, int idHospede, int idProduto, double valor, int quantidade,
-                    LocalDate dataConsumo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Consumo(int id, int idReserva, int idProduto, double valor, int quantidade,
+                   LocalDate dataConsumo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.idHospede = idHospede;
+        this.idReserva = idReserva;
         this.idProduto = idProduto;
-        this.valor = valor;
-        this.quantidade = quantidade;
-        this.dataConsumo = dataConsumo;
+        setValor(valor);
+        setQuantidade(quantidade);
+        setDataConsumo(dataConsumo);
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
@@ -32,11 +35,11 @@ public class Consumo {
         this.id = id;
     }
 
-    public int getIdHospede() {
-        return idHospede;
+    public int getIdReserva() {
+        return idReserva;
     }
-    public void setIdHospede(int idHospede) {
-        this.idHospede = idHospede;
+    public void setIdReserva(int idReserva) {
+        this.idReserva = idReserva;
     }
 
     public int getIdProduto() {
@@ -50,6 +53,7 @@ public class Consumo {
         return valor;
     }
     public void setValor(double valor) {
+        Validator.validatePositiveValue(valor);
         this.valor = valor;
     }
 
@@ -57,6 +61,7 @@ public class Consumo {
         return quantidade;
     }
     public void setQuantidade(int quantidade) {
+        Validator.validatePositiveValue(quantidade);
         this.quantidade = quantidade;
     }
 
@@ -64,13 +69,13 @@ public class Consumo {
         return dataConsumo;
     }
     public void setDataConsumo(LocalDate dataConsumo) {
+        Validator.validateNotFutureDate(dataConsumo);
         this.dataConsumo = dataConsumo;
     }
 
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
-
 
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
@@ -80,13 +85,13 @@ public class Consumo {
     public String toString() {
         return "Consumo{" +
                 "id=" + id +
-                ", idHospede=" + idHospede +
+                ", idReserva=" + idReserva +
                 ", idProduto=" + idProduto +
-                ", valor=" + valor +
+                ", valor=" + Formatter.formatCurrency(valor) +
                 ", quantidade=" + quantidade +
-                ", dataConsumo='" + dataConsumo + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataConsumo=" + Formatter.formatDate(dataConsumo) +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

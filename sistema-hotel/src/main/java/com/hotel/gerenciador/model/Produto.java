@@ -3,6 +3,8 @@ package com.hotel.gerenciador.model;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.CategoriaProduto;
+import com.hotel.gerenciador.util.Formatter;
+import com.hotel.gerenciador.util.Validator;
 
 public class Produto {
     private int id;
@@ -16,12 +18,12 @@ public class Produto {
     public Produto(int id, String nome, String descricao, double preco, CategoriaProduto categoria,
                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.categoria = categoria;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+        setNome(nome);
+        setDescricao(descricao);
+        setPreco(preco);
+        setCategoria(categoria);
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
     }
 
     public int getId() {
@@ -35,6 +37,9 @@ public class Produto {
         return nome;
     }
     public void setNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
+        }
         this.nome = nome;
     }
 
@@ -42,13 +47,14 @@ public class Produto {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = descricao == null ? "" : descricao;
     }
 
     public double getPreco() {
         return preco;
     }
     public void setPreco(double preco) {
+        Validator.validatePositiveValue(preco);
         this.preco = preco;
     }
 
@@ -56,14 +62,26 @@ public class Produto {
         return categoria;
     }
     public void setCategoria(CategoriaProduto categoria) {
+        if (categoria == null) {
+            throw new IllegalArgumentException("A categoria do produto não pode ser nula.");
+        }
         this.categoria = categoria;
     }
+
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        Validator.validateNotFutureDateTime(dataCriacao);
+        this.dataCriacao = dataCriacao;
     }
 
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        Validator.validateNotFutureDateTime(dataAtualizacao);
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     @Override
@@ -72,10 +90,10 @@ public class Produto {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
+                ", preco=" + Formatter.formatCurrency(preco) +
                 ", categoria=" + categoria +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }
