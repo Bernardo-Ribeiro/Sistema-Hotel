@@ -1,32 +1,30 @@
 package com.hotel.gerenciador.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.StatusManutencao;
+import com.hotel.gerenciador.util.Formatter;
 
 public class Manutencao {
     private int id;
     private Integer idQuarto;
-    private Integer idFuncionario;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private String descricao;
-    private LocalDateTime dataSolicitacao;
-    private LocalDateTime dataConclusao;
     private StatusManutencao status;
+    private Integer idFuncionario;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Manutencao(int id, Integer idQuarto, Integer idFuncionario, String descricao,
-                        LocalDateTime dataSolicitacao, LocalDateTime dataConclusao,
-                        StatusManutencao status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        this.id = id;
+    public Manutencao(Integer idQuarto, LocalDate dataInicio, LocalDate dataFim, String descricao, 
+                      StatusManutencao status, Integer idFuncionario) {
         this.idQuarto = idQuarto;
-        this.idFuncionario = idFuncionario;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.descricao = descricao;
-        this.dataSolicitacao = dataSolicitacao;
-        this.dataConclusao = dataConclusao;
         this.status = status;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+        this.idFuncionario = idFuncionario;
     }
 
     public int getId() {
@@ -43,11 +41,18 @@ public class Manutencao {
         this.idQuarto = idQuarto;
     }
 
-    public Integer getIdFuncionario() {
-        return idFuncionario;
+    public LocalDate getDataInicio() {
+        return dataInicio;
     }
-    public void setIdFuncionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public LocalDate getDataFim() {
+        return dataFim;
+    }
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
     }
 
     public String getDescricao() {
@@ -57,25 +62,18 @@ public class Manutencao {
         this.descricao = descricao;
     }
 
-    public LocalDateTime getDataSolicitacao() {
-        return dataSolicitacao;
-    }
-    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
-        this.dataSolicitacao = dataSolicitacao;
-    }
-
-    public LocalDateTime getDataConclusao() {
-        return dataConclusao;
-    }
-    public void setDataConclusao(LocalDateTime dataConclusao) {
-        this.dataConclusao = dataConclusao;
-    }
-
     public StatusManutencao getStatus() {
         return status;
     }
     public void setStatus(StatusManutencao status) {
         this.status = status;
+    }
+
+    public Integer getIdFuncionario() {
+        return idFuncionario;
+    }
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     public LocalDateTime getDataCriacao() {
@@ -91,13 +89,13 @@ public class Manutencao {
         return "Manutencao{" +
                 "id=" + id +
                 ", idQuarto=" + idQuarto +
-                ", idFuncionario=" + idFuncionario +
+                ", dataInicio=" + Formatter.formatDate(dataInicio) +
+                ", dataFim=" + Formatter.formatDate(dataFim) +
                 ", descricao='" + descricao + '\'' +
-                ", dataSolicitacao=" + dataSolicitacao +
-                ", dataConclusao=" + dataConclusao +
                 ", status=" + status +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", idFuncionario=" + idFuncionario +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

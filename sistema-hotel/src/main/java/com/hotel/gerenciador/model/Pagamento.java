@@ -1,24 +1,27 @@
 package com.hotel.gerenciador.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.MetodoPagamento;
 import com.hotel.gerenciador.util.StatusPagamento;
+import com.hotel.gerenciador.util.Validator;
+import com.hotel.gerenciador.util.Formatter;
 
 public class Pagamento {
     private int id;
     private double valor;
-    private LocalDate dataPagamento;
+    private LocalDateTime dataPagamento;
     private MetodoPagamento metodo;
     private StatusPagamento status;
     private String referencia;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Pagamento(int id, double valor, LocalDate dataPagamento, MetodoPagamento metodo,
+    public Pagamento(int id, double valor, LocalDateTime dataPagamento, MetodoPagamento metodo,
                     StatusPagamento status, String referencia, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
+        Validator.validatePositiveValue(valor);
+        Validator.validateNotFutureDateTime(dataPagamento);
         this.valor = valor;
         this.dataPagamento = dataPagamento;
         this.metodo = metodo;
@@ -42,10 +45,10 @@ public class Pagamento {
         this.valor = valor;
     }
 
-    public LocalDate getDataPagamento() {
+    public LocalDateTime getDataPagamento() {
         return dataPagamento;
     }
-    public void setDataPagamento(LocalDate dataPagamento) {
+    public void setDataPagamento(LocalDateTime dataPagamento) {
         this.dataPagamento = dataPagamento;
     }
 
@@ -82,13 +85,13 @@ public class Pagamento {
     public String toString() {
         return "Pagamento{" +
                 "id=" + id +
-                ", valor=" + valor +
-                ", dataPagamento=" + dataPagamento +
+                ", valor=" + Formatter.formatCurrency(valor) +
+                ", dataPagamento=" + Formatter.formatDateTime(dataPagamento) +
                 ", metodo=" + metodo +
                 ", status=" + status +
                 ", referencia='" + referencia + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

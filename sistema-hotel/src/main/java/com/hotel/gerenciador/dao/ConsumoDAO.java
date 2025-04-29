@@ -5,8 +5,6 @@ import com.hotel.gerenciador.model.Consumo;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConsumoDAO extends BaseDAO<Consumo> {
 
@@ -18,27 +16,27 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
     @Override
     protected Consumo fromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("ConsumoID");
-        int idHospede = rs.getInt("HospedeID");
+        int idReserva = rs.getInt("ReservaID");
         int idProduto = rs.getInt("ProdutoID");
-        double valor = rs.getDouble("Valor");
         int quantidade = rs.getInt("Quantidade");
+        double valor = rs.getDouble("Valor");
         LocalDate dataConsumo = rs.getDate("DataConsumo").toLocalDate();
         LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
         LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
 
-        return new Consumo(id, idHospede, idProduto, valor, quantidade, dataConsumo, dataCriacao, dataAtualizacao);
+        return new Consumo(id, idReserva, idProduto, valor, quantidade, dataConsumo, dataCriacao, dataAtualizacao);
     }
 
     public boolean insert(Consumo consumo) throws SQLException {
-        String sql = "INSERT INTO Consumo (HospedeID, ProdutoID, Valor, Quantidade, DataConsumo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Consumo (ReservaID, ProdutoID, Quantidade, Valor, DataConsumo) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, consumo.getIdHospede());
+            stmt.setInt(1, consumo.getIdReserva());
             stmt.setInt(2, consumo.getIdProduto());
-            stmt.setDouble(3, consumo.getValor());
-            stmt.setInt(4, consumo.getQuantidade());
+            stmt.setInt(3, consumo.getQuantidade());
+            stmt.setDouble(4, consumo.getValor());
             stmt.setDate(5, Date.valueOf(consumo.getDataConsumo()));
 
             int rowsAffected = stmt.executeUpdate();
@@ -52,19 +50,20 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
                 return true;
             }
         }
+
         return false;
     }
 
     public boolean update(Consumo consumo) throws SQLException {
-        String sql = "UPDATE Consumo SET HospedeID = ?, ProdutoID = ?, Valor = ?, Quantidade = ?, DataConsumo = ? WHERE ConsumoID = ?";
+        String sql = "UPDATE Consumo SET ReservaID = ?, ProdutoID = ?, Quantidade = ?, Valor = ?, DataConsumo = ? WHERE ConsumoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, consumo.getIdHospede());
+            stmt.setInt(1, consumo.getIdReserva());
             stmt.setInt(2, consumo.getIdProduto());
-            stmt.setDouble(3, consumo.getValor());
-            stmt.setInt(4, consumo.getQuantidade());
+            stmt.setInt(3, consumo.getQuantidade());
+            stmt.setDouble(4, consumo.getValor());
             stmt.setDate(5, Date.valueOf(consumo.getDataConsumo()));
             stmt.setInt(6, consumo.getId());
 

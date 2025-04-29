@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.StatusQuarto;
 import com.hotel.gerenciador.util.TipoQuarto;
+import com.hotel.gerenciador.util.Validator;
+import com.hotel.gerenciador.util.Formatter;
 
 public class Quarto {
     private int id;
@@ -16,15 +18,15 @@ public class Quarto {
     private LocalDateTime dataAtualizacao;
 
     public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade,
-                    StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+                  StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.numeroQuarto = numeroQuarto;
-        this.tipo = tipo;
-        this.precoDiaria = precoDiaria;
-        this.capacidade = capacidade;
-        this.status = status;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;        
+        setNumeroQuarto(numeroQuarto);
+        setTipo(tipo);
+        setPrecoDiaria(precoDiaria);
+        setCapacidade(capacidade);
+        setStatus(status);
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
     }
 
     public int getId() {
@@ -45,6 +47,9 @@ public class Quarto {
         return tipo;
     }
     public void setTipo(TipoQuarto tipo) {
+        if (tipo == null) {
+            throw new IllegalArgumentException("O tipo do quarto não pode ser nulo.");
+        }
         this.tipo = tipo;
     }
 
@@ -52,6 +57,7 @@ public class Quarto {
         return precoDiaria;
     }
     public void setPrecoDiaria(double precoDiaria) {
+        Validator.validatePositiveValue(precoDiaria);
         this.precoDiaria = precoDiaria;
     }
 
@@ -59,6 +65,9 @@ public class Quarto {
         return capacidade;
     }
     public void setCapacidade(int capacidade) {
+        if (capacidade <= 0) {
+            throw new IllegalArgumentException("A capacidade do quarto deve ser maior que zero.");
+        }
         this.capacidade = capacidade;
     }
 
@@ -66,7 +75,26 @@ public class Quarto {
         return status;
     }
     public void setStatus(StatusQuarto status) {
+        if (status == null) {
+            throw new IllegalArgumentException("O status do quarto não pode ser nulo.");
+        }
         this.status = status;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        Validator.validateNotFutureDateTime(dataCriacao);
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        Validator.validateNotFutureDateTime(dataAtualizacao);
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public double calcularPrecoTotal(int dias) {
@@ -77,26 +105,17 @@ public class Quarto {
         return this.status == StatusQuarto.DISPONIVEL;
     }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-
     @Override
     public String toString() {
         return "Quarto{" +
                 "id=" + id +
                 ", numeroQuarto=" + numeroQuarto +
                 ", tipo=" + tipo +
-                ", precoDiaria=" + precoDiaria +
+                ", precoDiaria=" + Formatter.formatCurrency(precoDiaria) +
                 ", capacidade=" + capacidade +
                 ", status=" + status +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

@@ -3,8 +3,6 @@ package com.hotel.gerenciador.dao;
 import com.hotel.gerenciador.model.ConsumoServicos;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ConsumoServicosDAO extends BaseDAO<ConsumoServicos> {
 

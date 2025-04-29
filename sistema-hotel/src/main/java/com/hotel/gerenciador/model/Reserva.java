@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.MetodoPagamento;
 import com.hotel.gerenciador.util.StatusReserva;
+import com.hotel.gerenciador.util.Validator;
+import com.hotel.gerenciador.util.Formatter;
 
 public class Reserva {
     private int id;
@@ -20,18 +22,18 @@ public class Reserva {
     private LocalDateTime dataAtualizacao;
 
     public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut,
-                    StatusReserva status, MetodoPagamento metodoPagamento, String observacoes,
-                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        this.id = id;
-        this.hospede = hospede;
-        this.quarto = quarto;
-        this.dataCheckIn = dataCheckIn;
-        this.dataCheckOut = dataCheckOut;
-        this.status = status;
-        this.metodoPagamento = metodoPagamento;
-        this.observacoes = observacoes;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+                   StatusReserva status, MetodoPagamento metodoPagamento, String observacoes,
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+        setId(id);
+        setHospede(hospede);
+        setQuarto(quarto);
+        setDataCheckIn(dataCheckIn);
+        setDataCheckOut(dataCheckOut);
+        setStatus(status);
+        setMetodoPagamento(metodoPagamento);
+        setObservacoes(observacoes);
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
         this.valorTotal = calcularValorTotal();
     }
 
@@ -46,6 +48,9 @@ public class Reserva {
         return hospede;
     }
     public void setHospede(Hospede hospede) {
+        if (hospede == null) {
+            throw new IllegalArgumentException("Hospede não pode ser nulo.");
+        }
         this.hospede = hospede;
     }
 
@@ -53,6 +58,9 @@ public class Reserva {
         return quarto;
     }
     public void setQuarto(Quarto quarto) {
+        if (quarto == null) {
+            throw new IllegalArgumentException("Quarto não pode ser nulo.");
+        }
         this.quarto = quarto;
     }
 
@@ -60,29 +68,47 @@ public class Reserva {
         return dataCheckIn;
     }
     public void setDataCheckIn(LocalDate dataCheckIn) {
+        Validator.validateNotFutureDate(dataCheckIn);
+        if (this.dataCheckOut != null && dataCheckIn.isAfter(this.dataCheckOut)) {
+            throw new IllegalArgumentException("A data de check-in não pode ser posterior à data de check-out.");
+        }
         this.dataCheckIn = dataCheckIn;
+        this.valorTotal = calcularValorTotal();
     }
 
     public LocalDate getDataCheckOut() {
         return dataCheckOut;
     }
     public void setDataCheckOut(LocalDate dataCheckOut) {
+        Validator.validateNotFutureDate(dataCheckOut);
+        if (this.dataCheckIn != null && dataCheckOut.isBefore(this.dataCheckIn)) {
+            throw new IllegalArgumentException("A data de check-out não pode ser anterior à data de check-in.");
+        }
         this.dataCheckOut = dataCheckOut;
+        this.valorTotal = calcularValorTotal();
     }
 
     public StatusReserva getStatus() {
         return status;
     }
     public void setStatus(StatusReserva status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status da reserva não pode ser nulo.");
+        }
         this.status = status;
     }
 
-    public double getValorTotal() { return valorTotal; }
+    public double getValorTotal() {
+        return valorTotal;
+    }
 
     public MetodoPagamento getMetodoPagamento() {
         return metodoPagamento;
     }
     public void setMetodoPagamento(MetodoPagamento metodoPagamento) {
+        if (metodoPagamento == null) {
+            throw new IllegalArgumentException("Método de pagamento não pode ser nulo.");
+        }
         this.metodoPagamento = metodoPagamento;
     }
 
@@ -94,6 +120,7 @@ public class Reserva {
     }
 
     public double calcularValorTotal() {
+        if (dataCheckIn == null || dataCheckOut == null || quarto == null) return 0;
         int dias = (int) (dataCheckOut.toEpochDay() - dataCheckIn.toEpochDay());
         return quarto.getPrecoDiaria() * dias;
     }
@@ -105,25 +132,33 @@ public class Reserva {
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        Validator.validateNotFutureDateTime(dataCriacao);
+        this.dataCriacao = dataCriacao;
+    }
 
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        Validator.validateNotFutureDateTime(dataAtualizacao);
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     @Override
     public String toString() {
         return "Reserva{" +
                 "id=" + id +
-                ", hospede=" + hospede.getNome() +
-                ", quarto=" + quarto.getNumeroQuarto() +
-                ", dataCheckIn=" + dataCheckIn +
-                ", dataCheckOut=" + dataCheckOut +
+                ", hospede=" + (hospede != null ? hospede.getNome() : "null") +
+                ", quarto=" + (quarto != null ? quarto.getNumeroQuarto() : "null") +
+                ", dataCheckIn=" + Formatter.formatDate(dataCheckIn) +
+                ", dataCheckOut=" + Formatter.formatDate(dataCheckOut) +
                 ", status=" + status +
-                ", valorTotal=" + valorTotal +
+                ", valorTotal=" + Formatter.formatCurrency(valorTotal) +
                 ", metodoPagamento=" + metodoPagamento +
                 ", observacoes='" + observacoes + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

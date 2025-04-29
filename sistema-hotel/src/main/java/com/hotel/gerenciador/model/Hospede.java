@@ -2,7 +2,9 @@ package com.hotel.gerenciador.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
+
+import com.hotel.gerenciador.util.Formatter;
+import com.hotel.gerenciador.util.Validator;
 
 public class Hospede {
     private int id;
@@ -10,22 +12,21 @@ public class Hospede {
     private String cpf;
     private String telefone;
     private String email;
-    private LocalDate dataNascimento;
     private String endereco;
-    private String veiculo;
+    private LocalDate dataNascimento;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Hospede(int id, String nome, String cpf, String telefone, String email, LocalDate dataNascimento,
-                    String endereco, String veiculo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Hospede(int id, String nome, String cpf, String telefone, String email,
+                   String endereco, LocalDate dataNascimento,
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
-        this.dataNascimento = dataNascimento;
         this.endereco = endereco;
-        this.veiculo = (veiculo == null || veiculo.isEmpty()) ? "Nenhum" : veiculo;
+        this.dataNascimento = dataNascimento;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
@@ -34,7 +35,8 @@ public class Hospede {
         return id;
     }
     public void setId(int id) {
-        this.id = id;}
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -47,6 +49,7 @@ public class Hospede {
         return cpf;
     }
     public void setCpf(String cpf) {
+        Validator.validateCpf(cpf);
         this.cpf = cpf;
     }
 
@@ -54,6 +57,7 @@ public class Hospede {
         return telefone;
     }
     public void setTelefone(String telefone) {
+        Validator.validateTelefone(telefone);
         this.telefone = telefone;
     }
 
@@ -61,14 +65,8 @@ public class Hospede {
         return email;
     }
     public void setEmail(String email) {
+        Validator.validateEmail(email);
         this.email = email;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
     }
 
     public String getEndereco() {
@@ -78,15 +76,12 @@ public class Hospede {
         this.endereco = endereco;
     }
 
-    public String getVeiculo() {
-        return veiculo;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
-    public void setVeiculo(String veiculo) { 
-        this.veiculo = (veiculo == null || veiculo.isEmpty()) ? "Nenhum" : veiculo; 
-    }
-
-    public int calcularIdade() {
-        return Period.between(this.dataNascimento, LocalDate.now()).getYears();
+    public void setDataNascimento(LocalDate dataNascimento) {
+        Validator.validateNotFutureDate(dataNascimento);
+        this.dataNascimento = dataNascimento;
     }
 
     public LocalDateTime getDataCriacao() {
@@ -102,15 +97,13 @@ public class Hospede {
         return "Hospede{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", email='" + email + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", idade=" + calcularIdade() + " anos" +
-                ", endereco='" + endereco + '\'' +
-                ", veiculo='" + veiculo + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
+                ", cpf='" + Formatter.formatCpf(cpf) + '\'' +
+                ", telefone='" + Formatter.formatPhone(telefone) + '\'' +
+                ", email='" + Formatter.formatEmail(email) + '\'' +
+                ", endereco='" + Validator.validateAndFormatEndereco(endereco) + '\'' +
+                ", dataNascimento=" + Formatter.formatDate(dataNascimento) +
+                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
+                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
     }
 }

@@ -3,7 +3,11 @@ package com.hotel.gerenciador.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.hotel.gerenciador.util.Formatter;
+import com.hotel.gerenciador.util.Validator;
+
 public class Funcionario {
+
     private int id;
     private String nome;
     private String cargo;
@@ -16,24 +20,24 @@ public class Funcionario {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Funcionario(int id, String nome, String cargo, double salario, String telefone, 
+    public Funcionario(int id, String nome, String cargo, double salario, String telefone,
                        String cpf, String email, String endereco, LocalDate dataAdmissao,
                        LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.cargo = cargo;
-        this.salario = salario;
-        this.telefone = telefone;
-        this.cpf = cpf;
-        this.email = email;
+        setSalario(salario);
+        setTelefone(telefone);
+        setCpf(cpf);
+        setEmail(email);
         this.endereco = endereco;
-        this.dataAdmissao = dataAdmissao;
+        setDataAdmissao(dataAdmissao);
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
-        return id; 
+        return id;
     }
     public void setId(int id) {
         this.id = id;
@@ -57,6 +61,7 @@ public class Funcionario {
         return salario;
     }
     public void setSalario(double salario) {
+        Validator.validatePositiveValue(salario);
         this.salario = salario;
     }
 
@@ -64,6 +69,7 @@ public class Funcionario {
         return telefone;
     }
     public void setTelefone(String telefone) {
+        Validator.validateTelefone(telefone);
         this.telefone = telefone;
     }
 
@@ -71,6 +77,7 @@ public class Funcionario {
         return cpf;
     }
     public void setCpf(String cpf) {
+        Validator.validateCpf(cpf);
         this.cpf = cpf;
     }
 
@@ -78,6 +85,7 @@ public class Funcionario {
         return email;
     }
     public void setEmail(String email) {
+        Validator.validateEmail(email);
         this.email = email;
     }
 
@@ -92,11 +100,8 @@ public class Funcionario {
         return dataAdmissao;
     }
     public void setDataAdmissao(LocalDate dataAdmissao) {
+        Validator.validateNotFutureDate(dataAdmissao);
         this.dataAdmissao = dataAdmissao;
-    }
-
-    public double calcularSalarioLiquido() {
-        return this.salario * 0.90;
     }
 
     public LocalDateTime getDataCriacao() {
@@ -109,18 +114,18 @@ public class Funcionario {
 
     @Override
     public String toString() {
-        return "Funcionario{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", salario=" + salario +
-                ", telefone='" + telefone + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", dataAdmissao=" + dataAdmissao +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
+        return "Funcionario {\n" +
+               "  id=" + id + ",\n" +
+               "  nome='" + nome + "',\n" +
+               "  cargo='" + cargo + "',\n" +
+               "  salario=" + Formatter.formatCurrency(salario) + ",\n" +
+               "  telefone='" + Formatter.formatPhone(telefone) + "',\n" +
+               "  cpf='" + Formatter.formatCpf(cpf) + "',\n" +
+               "  email='" + Formatter.formatEmail(email) + "',\n" +
+               "  endereco='" + Validator.validateAndFormatEndereco(endereco) + "',\n" +
+               "  dataAdmissao=" + Formatter.formatDate(dataAdmissao) + ",\n" +
+               "  dataCriacao=" + Formatter.formatDateTime(dataCriacao) + ",\n" +
+               "  dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) + "\n" +
+               '}';
     }
 }
