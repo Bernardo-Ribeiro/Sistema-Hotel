@@ -93,6 +93,7 @@ public class Funcionario {
         return endereco;
     }
     public void setEndereco(String endereco) {
+        Validator.validateEndereco(endereco);
         this.endereco = endereco;
     }
 
@@ -122,7 +123,7 @@ public class Funcionario {
                "  telefone='" + Formatter.formatPhone(telefone) + "',\n" +
                "  cpf='" + Formatter.formatCpf(cpf) + "',\n" +
                "  email='" + Formatter.formatEmail(email) + "',\n" +
-               "  endereco='" + Validator.validateAndFormatEndereco(endereco) + "',\n" +
+               "  endereco='" + endereco + "',\n" +
                "  dataAdmissao=" + Formatter.formatDate(dataAdmissao) + ",\n" +
                "  dataCriacao=" + Formatter.formatDateTime(dataCriacao) + ",\n" +
                "  dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) + "\n" +

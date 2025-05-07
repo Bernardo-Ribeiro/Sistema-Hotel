@@ -73,6 +73,7 @@ public class Hospede {
         return endereco;
     }
     public void setEndereco(String endereco) {
+        Validator.validateEndereco(endereco);
         this.endereco = endereco;
     }
 
@@ -100,7 +101,7 @@ public class Hospede {
                 ", cpf='" + Formatter.formatCpf(cpf) + '\'' +
                 ", telefone='" + Formatter.formatPhone(telefone) + '\'' +
                 ", email='" + Formatter.formatEmail(email) + '\'' +
-                ", endereco='" + Validator.validateAndFormatEndereco(endereco) + '\'' +
+                ", endereco='" + endereco + '\'' +
                 ", dataNascimento=" + Formatter.formatDate(dataNascimento) +
                 ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
                 ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +

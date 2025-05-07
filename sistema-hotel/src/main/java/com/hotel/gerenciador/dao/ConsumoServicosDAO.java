@@ -14,7 +14,7 @@ public class ConsumoServicosDAO extends BaseDAO<ConsumoServicos> {
     @Override
     protected ConsumoServicos fromResultSet(ResultSet rs) throws SQLException {
         return new ConsumoServicos(
-                rs.getInt("ConsumoID"),
+                rs.getInt("ConsumoServicoID"),
                 rs.getInt("ReservaID"),
                 rs.getInt("ServicoID"),
                 rs.getInt("Quantidade"),
@@ -43,7 +43,7 @@ public class ConsumoServicosDAO extends BaseDAO<ConsumoServicos> {
     }
 
     public boolean update(ConsumoServicos consumo) throws SQLException {
-        String sql = "UPDATE ConsumoServicos SET ReservaID=?, ServicoID=?, Quantidade=?, DataConsumo=? WHERE ConsumoID=?";
+        String sql = "UPDATE ConsumoServicos SET ReservaID=?, ServicoID=?, Quantidade=?, DataConsumo=? WHERE ConsumoServicoID=?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

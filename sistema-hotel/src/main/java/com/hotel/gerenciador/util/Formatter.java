@@ -24,18 +24,32 @@ public class Formatter {
     }
 
     public static String formatDecimal(double value, int decimalPlaces) {
-        StringBuilder pattern = new StringBuilder("#");
-        for (int i = 0; i < decimalPlaces; i++) {
-            pattern.append(",0");
+        StringBuilder pattern = new StringBuilder("#,##0");
+        if (decimalPlaces > 0) {
+            pattern.append(".");
+            for (int i = 0; i < decimalPlaces; i++) {
+                pattern.append("0");
+            }
         }
         DecimalFormat formatter = new DecimalFormat(pattern.toString());
         return formatter.format(value);
     }
+    
 
     public static String formatPhone(String phone) {
-        if (phone == null || phone.length() != 11) return phone;
-        return String.format("(%s) %s-%s", phone.substring(0, 2), phone.substring(2, 7), phone.substring(7));
+        if (phone == null) return phone;
+    
+        String digits = phone.replaceAll("\\D", "");
+    
+        if (digits.length() == 11) {
+            return String.format("(%s) %s-%s", digits.substring(0, 2), digits.substring(2, 7), digits.substring(7));
+        } else if (digits.length() == 10) {
+            return String.format("(%s) %s-%s", digits.substring(0, 2), digits.substring(2, 6), digits.substring(6));
+        }
+    
+        return phone;
     }
+    
     public static String formatEmail(String email) {
         if (email == null) return email;
         return email.trim().toLowerCase();
@@ -48,5 +62,4 @@ public class Formatter {
                              cpf.substring(6, 9), 
                              cpf.substring(9));
     }
-   
 }

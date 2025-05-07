@@ -95,38 +95,33 @@ public class Validator {
         }
     }
 
-    public static String validateAndFormatEndereco(String endereco) {
+    public static void validateEndereco(String endereco) {
         if (endereco == null || endereco.isBlank()) {
             throw new IllegalArgumentException("O endereço não pode ser nulo ou vazio.");
         }
-
+    
         String regexEndereco = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9\\s.,'-]+$";
         if (!Pattern.matches(regexEndereco, endereco)) {
             throw new IllegalArgumentException("O endereço contém caracteres inválidos.");
         }
-
+    
         String[] enderecoParts = endereco.split(",");
-
+    
         if (enderecoParts.length != 4) {
             throw new IllegalArgumentException("O endereço deve ter o formato: Logradouro/Nome, Bairro/Distrito, Localidade/UF, CEP (Exemplo: Rua ABC, Centro, São Paulo/SP, 12345-678)");
         }
-
+    
         String logradouro = enderecoParts[0].trim();
         String bairro = enderecoParts[1].trim();
         String localidadeUf = enderecoParts[2].trim();
         String cep = enderecoParts[3].trim();
-
+    
         validateLogradouro(logradouro);
-
         validateBairro(bairro);
-
         validateLocalidadeUF(localidadeUf);
-
         validateCep(cep);
-
-        return String.format("%s %s %s %s", logradouro, bairro, localidadeUf, cep);
     }
-
+    
     private static void validateLogradouro(String logradouro) {
         if (logradouro == null || logradouro.isBlank()) {
             throw new IllegalArgumentException("O logradouro não pode ser nulo ou vazio.");
