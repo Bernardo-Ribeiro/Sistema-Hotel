@@ -3,6 +3,8 @@ package com.hotel.gerenciador.dao;
 import com.hotel.gerenciador.model.ConsumoServicos;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsumoServicosDAO extends BaseDAO<ConsumoServicos> {
 
@@ -55,5 +57,22 @@ public class ConsumoServicosDAO extends BaseDAO<ConsumoServicos> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public List<ConsumoServicos> findByReservaId(int reservaId) throws SQLException {
+        List<ConsumoServicos> lista = new ArrayList<>();
+        String sql = "SELECT * FROM ConsumoServicos WHERE ReservaID = ?";
+
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, reservaId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(fromResultSet(rs));
+                }
+            }
+        }
+        return lista;
     }
 }

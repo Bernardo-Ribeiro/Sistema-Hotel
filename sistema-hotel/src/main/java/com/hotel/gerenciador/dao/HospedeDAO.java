@@ -5,6 +5,8 @@ import com.hotel.gerenciador.model.Hospede;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HospedeDAO extends BaseDAO<Hospede> {
 
@@ -71,5 +73,41 @@ public class HospedeDAO extends BaseDAO<Hospede> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public List<Hospede> findByName(String nome) throws SQLException {
+        String sql = "SELECT * FROM Hospedes WHERE Nome LIKE ?";
+        List<Hospede> hospedes = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                hospedes.add(fromResultSet(rs));
+            }
+        }
+
+        return hospedes;
+    }
+
+    public Hospede findByCpf(String cpf) throws SQLException {
+        String sql = "SELECT * FROM Hospedes WHERE CPF = ?";
+        Hospede hospede = null;
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                hospede = fromResultSet(rs);
+            }
+        }
+
+        return hospede;
     }
 }

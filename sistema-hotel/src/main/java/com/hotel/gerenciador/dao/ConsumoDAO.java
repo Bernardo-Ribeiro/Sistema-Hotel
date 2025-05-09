@@ -5,6 +5,8 @@ import com.hotel.gerenciador.model.Consumo;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsumoDAO extends BaseDAO<Consumo> {
 
@@ -69,5 +71,21 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+    public List<Consumo> findByReservaId(int reservaId) throws SQLException {
+        String sql = "SELECT * FROM Consumo WHERE ReservaID = ?";
+        List<Consumo> lista = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, reservaId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(fromResultSet(rs));
+                }
+            }
+        }
+        return lista;
     }
 }

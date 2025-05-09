@@ -3,7 +3,6 @@ package com.hotel.gerenciador.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.hotel.gerenciador.util.MetodoPagamento;
 import com.hotel.gerenciador.util.StatusReserva;
 import com.hotel.gerenciador.util.Validator;
 import com.hotel.gerenciador.util.Formatter;
@@ -16,22 +15,17 @@ public class Reserva {
     private LocalDate dataCheckOut;
     private StatusReserva status;
     private double valorTotal;
-    private MetodoPagamento metodoPagamento;
-    private String observacoes;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
     public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut,
-                   StatusReserva status, MetodoPagamento metodoPagamento, String observacoes,
-                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+                   StatusReserva status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         setId(id);
         setHospede(hospede);
         setQuarto(quarto);
         setDataCheckIn(dataCheckIn);
         setDataCheckOut(dataCheckOut);
         setStatus(status);
-        setMetodoPagamento(metodoPagamento);
-        setObservacoes(observacoes);
         setDataCriacao(dataCriacao);
         setDataAtualizacao(dataAtualizacao);
         this.valorTotal = calcularValorTotal();
@@ -102,23 +96,6 @@ public class Reserva {
         return valorTotal;
     }
 
-    public MetodoPagamento getMetodoPagamento() {
-        return metodoPagamento;
-    }
-    public void setMetodoPagamento(MetodoPagamento metodoPagamento) {
-        if (metodoPagamento == null) {
-            throw new IllegalArgumentException("Método de pagamento não pode ser nulo.");
-        }
-        this.metodoPagamento = metodoPagamento;
-    }
-
-    public String getObservacoes() {
-        return observacoes;
-    }
-    public void setObservacoes(String observacoes) {
-        this.observacoes = observacoes;
-    }
-
     public double calcularValorTotal() {
         if (dataCheckIn == null || dataCheckOut == null || quarto == null) return 0;
         int dias = (int) (dataCheckOut.toEpochDay() - dataCheckIn.toEpochDay());
@@ -155,8 +132,6 @@ public class Reserva {
                 ", dataCheckOut=" + Formatter.formatDate(dataCheckOut) +
                 ", status=" + status +
                 ", valorTotal=" + Formatter.formatCurrency(valorTotal) +
-                ", metodoPagamento=" + metodoPagamento +
-                ", observacoes='" + observacoes + '\'' +
                 ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
                 ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
                 '}';
