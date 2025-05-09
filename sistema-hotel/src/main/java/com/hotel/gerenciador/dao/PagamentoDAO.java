@@ -6,6 +6,8 @@ import com.hotel.gerenciador.util.StatusPagamento;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PagamentoDAO extends BaseDAO<Pagamento> {
 
@@ -70,5 +72,22 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+    public List<Pagamento> findByStatus(StatusPagamento status) throws SQLException {
+        String sql = "SELECT * FROM Pagamentos WHERE StatusPagamento = ?";
+        List<Pagamento> pagamentos = new ArrayList<>();
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.name());
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Pagamento pagamento = fromResultSet(rs);
+                pagamentos.add(pagamento);
+            }
+        }
+
+        return pagamentos;
     }
 }

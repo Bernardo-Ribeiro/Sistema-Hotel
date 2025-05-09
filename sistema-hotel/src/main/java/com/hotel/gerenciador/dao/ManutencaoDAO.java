@@ -5,7 +5,8 @@ import com.hotel.gerenciador.util.StatusManutencao;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManutencaoDAO extends BaseDAO<Manutencao> {
 
@@ -16,15 +17,12 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
 
     @Override
     protected Manutencao fromResultSet(ResultSet rs) throws SQLException {
-        int id = rs.getInt("ManutencaoID");
         int idQuarto = rs.getInt("QuartoID");
         LocalDate dataInicio = rs.getDate("DataInicio").toLocalDate();
         LocalDate dataFim = rs.getDate("DataFim") != null ? rs.getDate("DataFim").toLocalDate() : null;
         String descricao = rs.getString("Descricao");
         StatusManutencao status = StatusManutencao.valueOf(rs.getString("Status"));
         int idFuncionario = rs.getInt("FuncionarioID");
-        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
-        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
 
         return new Manutencao(idQuarto, dataInicio, dataFim, descricao, status, idFuncionario);
     }
@@ -72,6 +70,23 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
             stmt.setInt(7, manutencao.getId());
 
             return stmt.executeUpdate() > 0;
+        }
+    }
+    public List<Manutencao> findByStatus(StatusManutencao status) throws SQLException {
+        String sql = "SELECT * FROM Manutencao WHERE Status = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status.name());
+            ResultSet rs = stmt.executeQuery();
+
+            List<Manutencao> manutencoes = new ArrayList<>();
+            while (rs.next()) {
+                Manutencao manutencao = fromResultSet(rs);
+                manutencoes.add(manutencao);
+            }
+            return manutencoes;
         }
     }
 }

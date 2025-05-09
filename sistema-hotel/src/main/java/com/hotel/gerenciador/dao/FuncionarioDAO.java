@@ -3,6 +3,8 @@ package com.hotel.gerenciador.dao;
 import com.hotel.gerenciador.model.Funcionario;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuncionarioDAO extends BaseDAO<Funcionario> {
 
@@ -76,5 +78,40 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public Funcionario findByCpf(String cpf) throws SQLException {
+        String sql = "SELECT * FROM Funcionario WHERE CPF = ?";
+        Funcionario funcionario = null;
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                funcionario = fromResultSet(rs);
+            }
+        }
+
+        return funcionario;
+    }
+    public List<Funcionario> findByName(String nome) throws SQLException {
+        String sql = "SELECT * FROM Funcionarios WHERE Nome LIKE ?";
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                funcionarios.add(fromResultSet(rs));
+            }
+        }
+
+        return funcionarios;
     }
 }
