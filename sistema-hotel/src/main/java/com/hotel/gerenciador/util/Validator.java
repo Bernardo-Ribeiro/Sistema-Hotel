@@ -159,4 +159,28 @@ public class Validator {
             throw new IllegalArgumentException("O CEP deve ter 8 dígitos. Exemplo: 12345-678");
         }
     }
+    
+    public static void validateDateRange(LocalDate checkIn, LocalDate checkOut) {
+        if (checkIn == null || checkOut == null) {
+            throw new IllegalArgumentException("As datas não podem ser nulas");
+        }
+        
+        if (checkIn.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("A data de check-in não pode ser no passado");
+        }
+        
+        if (checkOut.isBefore(checkIn)) {
+            throw new IllegalArgumentException("A data de check-out deve ser após a data de check-in");
+        }
+        
+        if (checkIn.isEqual(checkOut)) {
+            throw new IllegalArgumentException("O período da reserva deve ser de pelo menos um dia");
+        }
+    }
+
+    public static void validateDisponibilidade(boolean disponivel) {
+        if (!disponivel) {
+            throw new IllegalStateException("O quarto não está disponível para o período solicitado");
+        }
+    }
 }

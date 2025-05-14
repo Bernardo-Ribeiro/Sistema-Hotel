@@ -1,13 +1,12 @@
 package com.hotel.gerenciador.dao;
 
 import com.hotel.gerenciador.model.Reserva;
-import com.hotel.gerenciador.model.Hospede;
-import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.util.StatusReserva;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class ReservaDAO extends BaseDAO<Reserva> {
 
@@ -18,22 +17,14 @@ public class ReservaDAO extends BaseDAO<Reserva> {
 
     @Override
     protected Reserva fromResultSet(ResultSet rs) throws SQLException {
-        HospedeDAO hospedeDAO = new HospedeDAO();
-        QuartoDAO quartoDAO = new QuartoDAO();
-
-        int hospedeId = rs.getInt("HospedeID");
-        int quartoId = rs.getInt("QuartoID");
-
-        Hospede hospede = hospedeDAO.findById(hospedeId);
-        Quarto quarto = quartoDAO.findById(quartoId);
-
         return new Reserva(
             rs.getInt("ReservaID"),
-            hospede,
-            quarto,
+            rs.getInt("HospedeID"),
+            rs.getInt("QuartoID"),
             rs.getDate("DataCheckIn").toLocalDate(),
             rs.getDate("DataCheckOut").toLocalDate(),
             StatusReserva.valueOf(rs.getString("Status")),
+            rs.getDouble("ValorTotal"),
             rs.getTimestamp("DataCriacao").toLocalDateTime(),
             rs.getTimestamp("DataAtualizacao").toLocalDateTime()
         );
@@ -84,6 +75,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
             return stmt.executeUpdate() > 0;
         }
     }
+
     public List<Reserva> findByStatus(StatusReserva status) throws SQLException {
         String sql = "SELECT * FROM Reservas WHERE Status = ?";
     
@@ -101,5 +93,87 @@ public class ReservaDAO extends BaseDAO<Reserva> {
             }
         }
     }
-    
+
+    public List<Reserva> findByQuartoAndPeriodo(int quartoId, LocalDate checkIn, LocalDate checkOut) throws SQLException {
+        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND " +
+                     "((DataCheckIn BETWEEN ? AND ?) OR " +
+                     "(DataCheckOut BETWEEN ? AND ?) OR " +
+                     "(DataCheckIn <= ? AND DataCheckOut >= ?)) AND " +
+                     "Status NOT IN ('CANCELADA', 'PENDENTE')";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+            stmt.setInt(1, quartoId);
+            stmt.setDate(2, Date.valueOf(checkIn));
+            stmt.setDate(3, Date.valueOf(checkOut.minusDays(1)));
+            stmt.setDate(4, Date.valueOf(checkIn.plusDays(1)));
+            stmt.setDate(5, Date.valueOf(checkOut));
+            stmt.setDate(6, Date.valueOf(checkIn));
+            stmt.setDate(7, Date.valueOf(checkOut));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Reserva> reservas = new ArrayList<>();
+                while (rs.next()) {
+                    reservas.add(fromResultSet(rs));
+                }
+                return reservas;
+            }
+        }
+    }
+
+    public List<Reserva> findByHospede(int hospedeId) throws SQLException {
+        String sql = "SELECT * FROM Reservas WHERE HospedeID = ? ORDER BY DataCheckIn DESC";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+            stmt.setInt(1, hospedeId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Reserva> reservas = new ArrayList<>();
+                while (rs.next()) {
+                    reservas.add(fromResultSet(rs));
+                }
+                return reservas;
+            }
+        }
+    }
+
+    public List<Reserva> findAtivasByQuarto(int quartoId) throws SQLException {
+        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND Status NOT IN ('CANCELADA', 'PENDENTE', 'CONCLUIDA')";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+            stmt.setInt(1, quartoId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Reserva> reservas = new ArrayList<>();
+                while (rs.next()) {
+                    reservas.add(fromResultSet(rs));
+                }
+                return reservas;
+            }
+        }
+    }
+    public List<Reserva> findByTipo(String tipoQuarto) throws SQLException {
+        String sql = "SELECT r.* FROM Reservas r " +
+                    "JOIN Quartos q ON r.QuartoID = q.QuartoID " +
+                    "WHERE q.Tipo = ? AND r.Status NOT IN ('CANCELADA', 'PENDENTE')";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, tipoQuarto);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Reserva> reservas = new ArrayList<>();
+                while (rs.next()) {
+                    reservas.add(fromResultSet(rs));
+                }
+                return reservas;
+            }
+        }
+    }
 }
