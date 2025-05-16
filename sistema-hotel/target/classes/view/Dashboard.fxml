@@ -20,6 +20,7 @@
     <left>
         <VBox spacing="10" style="-fx-background-color: #34495e; -fx-padding: 15;">
             <Button fx:id="btnDashboard" text="Dashboard" prefWidth="150" onAction="#abrirDashboard" />
+            <Button fx:id="btnMapaQuartos" text="Mapa de Quartos" prefWidth="150" onAction="#abrirMapaQuartos" />
             <Button fx:id="btnReservas" text="Reservas" prefWidth="150" onAction="#abrirReservas" />
             <Button fx:id="btnCheckIn" text="Check-in/Check-out" prefWidth="150" onAction="#abrirCheckIn" />
             <Button fx:id="btnFuncionarios" text="Funcionários" prefWidth="150" onAction="#abrirFuncionarios" />
@@ -27,6 +28,7 @@
             <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="150" onAction="#abrirRelatorios" />
             <Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" onAction="#sair" />
         </VBox>
+
     </left>
 
     <!-- CONTEÚDO PRINCIPAL -->

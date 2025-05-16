@@ -14,9 +14,11 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     protected String getTableName() {
         return "Hospedes";
     }
+    @Override
     protected String getIdColumnName() {
         return "HospedeID";
     }
+
     @Override
     protected Hospede fromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("HospedeID");

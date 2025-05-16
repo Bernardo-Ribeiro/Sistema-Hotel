@@ -49,8 +49,6 @@ public class ReservasController {
         List<Reserva> listaReservas = reservaService.findReservasPorStatus(StatusReserva.CONFIRMADA);
         if (listaReservas != null) {
             for (Reserva r : listaReservas) {
-                System.out.println("Hospede: " + (r.getHospede() != null ? r.getHospede().getNome() : "null"));
-                System.out.println("Quarto: " + (r.getQuarto() != null ? r.getQuarto().getNumeroQuarto() : "null"));
                 reservas.add(toViewModel(r));
             }
 

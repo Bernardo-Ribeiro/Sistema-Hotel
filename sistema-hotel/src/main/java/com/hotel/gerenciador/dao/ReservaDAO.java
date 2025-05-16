@@ -208,4 +208,18 @@ public class ReservaDAO extends BaseDAO<Reserva> {
             }
         }
     }
+    public List<Reserva> findAtivas() throws SQLException {
+        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'CONCLUIDA') ";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            List<Reserva> reservas = new ArrayList<>();
+            while (rs.next()) {
+                reservas.add(fromResultSet(rs));
+            }
+            return reservas;
+        }
+    }
 }
