@@ -23,16 +23,15 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         int numeroQuarto = rs.getInt("NumeroQuarto");
         TipoQuarto tipo = TipoQuarto.valueOf(rs.getString("Tipo"));
         double precoDiaria = rs.getDouble("PrecoDiaria");
-        int capacidade = rs.getInt("Capacidade");
         StatusQuarto status = StatusQuarto.valueOf(rs.getString("Status"));
         LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
         LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
 
-        return new Quarto(id, numeroQuarto, tipo, precoDiaria, capacidade, status, dataCriacao, dataAtualizacao);
+        return new Quarto(id, numeroQuarto, tipo, precoDiaria, status, dataCriacao, dataAtualizacao);
     }
 
     public boolean insert(Quarto quarto) throws SQLException {
-        String sql = "INSERT INTO Quartos (NumeroQuarto, Tipo, PrecoDiaria, Capacidade, Status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Quartos (NumeroQuarto, Tipo, PrecoDiaria, Status) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -40,7 +39,6 @@ public class QuartoDAO extends BaseDAO<Quarto> {
             stmt.setInt(1, quarto.getNumeroQuarto());
             stmt.setString(2, quarto.getTipo().toString());
             stmt.setDouble(3, quarto.getPrecoDiaria());
-            stmt.setInt(4, quarto.getCapacidade());
             stmt.setString(5, quarto.getStatus().toString());
 
             int rowsAffected = stmt.executeUpdate();
@@ -58,7 +56,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     }
 
     public boolean update(Quarto quarto) throws SQLException {
-        String sql = "UPDATE Quartos SET NumeroQuarto = ?, Tipo = ?, PrecoDiaria = ?, Capacidade = ?, Status = ? WHERE QuartoID = ?";
+        String sql = "UPDATE Quartos SET NumeroQuarto = ?, Tipo = ?, PrecoDiaria = ?, Status = ? WHERE QuartoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -66,7 +64,6 @@ public class QuartoDAO extends BaseDAO<Quarto> {
             stmt.setInt(1, quarto.getNumeroQuarto());
             stmt.setString(2, quarto.getTipo().toString());
             stmt.setDouble(3, quarto.getPrecoDiaria());
-            stmt.setInt(4, quarto.getCapacidade());
             stmt.setString(5, quarto.getStatus().toString());
             stmt.setInt(6, quarto.getId());
 

@@ -7,7 +7,9 @@ import com.hotel.gerenciador.util.Validator;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReservaService {
 
@@ -109,6 +111,28 @@ public class ReservaService {
             return null;
         }
     }
-
-    
+    public Map<Integer, Reserva> findReservasAtivasMapPorQuarto() {
+        try {
+            List<Reserva> reservasAtivas = reservaDAO.findAtivas();
+            Map<Integer, Reserva> mapa = new HashMap<>();
+            
+            for (Reserva r : reservasAtivas) {
+                if (r.getQuarto() != null) {
+                    System.out.println("Adicionando ao mapa: Quarto ID=" + r.getQuarto().getId() + 
+                                    ", Número=" + r.getQuarto().getNumeroQuarto() + 
+                                    ", Reserva ID=" + r.getId() + 
+                                    ", Hóspede=" + (r.getHospede() != null ? r.getHospede().getNome() : "null"));
+                    
+                    mapa.put(r.getQuarto().getId(), r);
+                } else {
+                    System.out.println("Reserva ID=" + r.getId() + " sem quarto associado - ignorada");
+                }
+            }
+            return mapa;
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar reservas ativas: " + e.getMessage());
+            e.printStackTrace();
+            return new HashMap<>();
+        }
+    }
 }

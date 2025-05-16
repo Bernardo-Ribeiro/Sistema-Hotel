@@ -18,6 +18,8 @@ public class Reserva {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    public Reserva(){}
+
     public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, StatusReserva status,
                double valorTotal, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;

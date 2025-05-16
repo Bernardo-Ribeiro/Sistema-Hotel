@@ -5,6 +5,7 @@ import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.util.StatusQuarto;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class QuartoService {
 
@@ -19,10 +20,6 @@ public class QuartoService {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
         }
 
-        if (quarto.getCapacidade() <= 0) {
-            throw new IllegalArgumentException("A capacidade do quarto deve ser maior que zero.");
-        }
-
         try {
             return quartoDAO.insert(quarto);
         } catch (SQLException e) {
@@ -31,13 +28,18 @@ public class QuartoService {
         }
     }
 
+    public List<Quarto> findAll() {
+        try {
+            return quartoDAO.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean upQuarto(Quarto quarto) {
         if (quarto.getPrecoDiaria() <= 0) {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
-        }
-
-        if (quarto.getCapacidade() <= 0) {
-            throw new IllegalArgumentException("A capacidade do quarto deve ser maior que zero.");
         }
 
         try {

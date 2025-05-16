@@ -12,23 +12,21 @@ public class Quarto {
     private int numeroQuarto;
     private TipoQuarto tipo;
     private double precoDiaria;
-    private int capacidade;
     private StatusQuarto status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
     public Quarto() {}
 
-    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade,
+    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria,
                   StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        setNumeroQuarto(numeroQuarto);
-        setTipo(tipo);
-        setPrecoDiaria(precoDiaria);
-        setCapacidade(capacidade);
-        setStatus(status);
-        setDataCriacao(dataCriacao);
-        setDataAtualizacao(dataAtualizacao);
+        this.numeroQuarto = numeroQuarto;
+        this.tipo = tipo;
+        this.precoDiaria = precoDiaria;
+        this.status = status;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -61,16 +59,6 @@ public class Quarto {
     public void setPrecoDiaria(double precoDiaria) {
         Validator.validatePositiveValue(precoDiaria);
         this.precoDiaria = precoDiaria;
-    }
-
-    public int getCapacidade() {
-        return capacidade;
-    }
-    public void setCapacidade(int capacidade) {
-        if (capacidade <= 0) {
-            throw new IllegalArgumentException("A capacidade do quarto deve ser maior que zero.");
-        }
-        this.capacidade = capacidade;
     }
 
     public StatusQuarto getStatus() {
@@ -114,7 +102,6 @@ public class Quarto {
                 ", numeroQuarto=" + numeroQuarto +
                 ", tipo=" + tipo +
                 ", precoDiaria=" + Formatter.formatCurrency(precoDiaria) +
-                ", capacidade=" + capacidade +
                 ", status=" + status +
                 ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
                 ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +

@@ -44,11 +44,15 @@ public class DashboardController {
     }
 
     @FXML
+    private void abrirMapaQuartos() {
+        loadView("/view/MapaQuartos.fxml");
+    }
+
+    @FXML
     private void abrirReservas() {
         System.out.println("clicou");
         loadView("/view/Reservas.fxml");
     }
-
 
     @FXML
     private void abrirCheckIn() {
