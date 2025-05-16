@@ -14,6 +14,9 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
     protected String getTableName() {
         return "Consumo";
     }
+    protected String getIdColumnName() {
+        return "ConsumoID";
+    }
 
     @Override
     protected Consumo fromResultSet(ResultSet rs) throws SQLException {

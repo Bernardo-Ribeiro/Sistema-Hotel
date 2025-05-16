@@ -3,6 +3,7 @@ package com.hotel.gerenciador.service;
 import com.hotel.gerenciador.dao.ReservaDAO;
 import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.util.StatusReserva;
+import com.hotel.gerenciador.util.Validator;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -72,4 +73,42 @@ public class ReservaService {
             return null;
         }
     }
+    public boolean verificarDisponibilidade(int quartoId, LocalDate dataCheckIn, LocalDate dataCheckOut) {
+        Validator.validateDateRange(dataCheckIn, dataCheckOut);
+        
+        try {
+            List<Reserva> reservasConflitantes = reservaDAO.findByQuartoAndPeriodo(
+                quartoId, 
+                dataCheckIn, 
+                dataCheckOut
+            );
+            
+            return reservasConflitantes.stream()
+                .noneMatch(r -> r.getStatus() != StatusReserva.CANCELADA && 
+                            r.getStatus() != StatusReserva.PENDENTE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Reserva> findReservasPorHospede(int hospedeId) {
+        try {
+            return reservaDAO.findByHospede(hospedeId);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar reservas de hóspede: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Reserva> findReservasAtivasPorQuarto(int quartoId) {
+        try {
+            return reservaDAO.findAtivasByQuarto(quartoId);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar reservas ativas de quarto: " + e.getMessage());
+            return null;
+        }
+    }
+
+    
 }

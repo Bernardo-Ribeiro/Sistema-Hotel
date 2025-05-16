@@ -12,6 +12,9 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
     protected String getTableName() {
         return "Funcionarios";
     }
+    protected String getIdColumnName() {
+        return "FuncionarioID";
+    }
 
     @Override
     protected Funcionario fromResultSet(ResultSet rs) throws SQLException {

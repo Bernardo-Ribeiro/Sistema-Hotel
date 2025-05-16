@@ -10,6 +10,7 @@ public abstract class BaseDAO<T> {
     }
 
     protected abstract String getTableName();
+    protected abstract String getIdColumnName();
     protected abstract T fromResultSet(ResultSet rs) throws SQLException;
 
     public List<T> findAll() throws SQLException {
@@ -28,7 +29,7 @@ public abstract class BaseDAO<T> {
     }
 
     public T findById(int id) throws SQLException {
-        String sql = "SELECT * FROM " + getTableName() + " WHERE " + getTableName() + "ID = ?";
+        String sql = "SELECT * FROM " + getTableName() + " WHERE " + getIdColumnName() + " = ?";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -44,7 +45,7 @@ public abstract class BaseDAO<T> {
     }
 
     public boolean delete(int id) throws SQLException {
-        String sql = "DELETE FROM " + getTableName() + " WHERE " + getTableName() + "ID = ?";
+        String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumnName() + " = ?";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

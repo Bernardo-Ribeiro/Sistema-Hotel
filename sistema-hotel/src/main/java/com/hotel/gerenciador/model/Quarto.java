@@ -17,6 +17,8 @@ public class Quarto {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    public Quarto() {}
+
     public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria, int capacidade,
                   StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;

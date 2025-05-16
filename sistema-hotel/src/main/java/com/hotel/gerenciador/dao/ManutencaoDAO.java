@@ -14,6 +14,9 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
     protected String getTableName() {
         return "Manutencao";
     }
+    protected String getIdColumnName() {
+        return "QuartoID";
+    }
 
     @Override
     protected Manutencao fromResultSet(ResultSet rs) throws SQLException {

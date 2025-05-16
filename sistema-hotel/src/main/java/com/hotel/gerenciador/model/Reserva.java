@@ -18,18 +18,19 @@ public class Reserva {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut,
-                   StatusReserva status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        setId(id);
-        setHospede(hospede);
-        setQuarto(quarto);
-        setDataCheckIn(dataCheckIn);
-        setDataCheckOut(dataCheckOut);
-        setStatus(status);
-        setDataCriacao(dataCriacao);
-        setDataAtualizacao(dataAtualizacao);
-        this.valorTotal = calcularValorTotal();
+    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, StatusReserva status,
+               double valorTotal, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+        this.id = id;
+        this.hospede = hospede;
+        this.quarto = quarto;
+        this.dataCheckIn = dataCheckIn;
+        this.dataCheckOut = dataCheckOut;
+        this.status = status;
+        this.valorTotal = valorTotal;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
+
 
     public int getId() {
         return id;

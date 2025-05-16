@@ -17,6 +17,8 @@ public class Hospede {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    public Hospede() {}
+
     public Hospede(int id, String nome, String cpf, String telefone, String email,
                    String endereco, LocalDate dataNascimento,
                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {

@@ -14,7 +14,9 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     protected String getTableName() {
         return "Hospedes";
     }
-
+    protected String getIdColumnName() {
+        return "HospedeID";
+    }
     @Override
     protected Hospede fromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("HospedeID");
@@ -109,5 +111,38 @@ public class HospedeDAO extends BaseDAO<Hospede> {
         }
 
         return hospede;
+    }
+
+    public List<Hospede> findWithActiveReservas() throws SQLException {
+        String sql = "SELECT DISTINCT h.* FROM Hospedes h " +
+                    "JOIN Reservas r ON h.HospedeID = r.HospedeID " +
+                    "WHERE r.Status NOT IN ('CANCELADA', 'CONCLUIDA')";
+        
+        List<Hospede> hospedes = new ArrayList<>();
+        
+        try (Connection conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                hospedes.add(fromResultSet(rs));
+            }
+        }
+        return hospedes;
+    }
+
+    public boolean isCpfInUse(String cpf, int excludeId) throws SQLException {
+        String sql = "SELECT 1 FROM Hospedes WHERE CPF = ? AND HospedeID != ?";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, cpf);
+            stmt.setInt(2, excludeId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 }
