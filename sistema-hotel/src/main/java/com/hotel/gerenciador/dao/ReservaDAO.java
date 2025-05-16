@@ -1,5 +1,7 @@
 package com.hotel.gerenciador.dao;
 
+import com.hotel.gerenciador.model.Hospede;
+import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.util.StatusReserva;
 
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ReservaDAO extends BaseDAO<Reserva> {
 
@@ -14,21 +17,50 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     protected String getTableName() {
         return "Reservas";
     }
+    @Override
+    protected String getIdColumnName() {
+        return "ReservaID";
+    }
 
     @Override
     protected Reserva fromResultSet(ResultSet rs) throws SQLException {
+        int reservaId = rs.getInt("ReservaID");
+        int hospedeId = rs.getInt("HospedeID");
+        int quartoId = rs.getInt("QuartoID");
+        LocalDate dataCheckIn = rs.getDate("DataCheckIn").toLocalDate();
+        LocalDate dataCheckOut = rs.getDate("DataCheckOut").toLocalDate();
+        StatusReserva status = StatusReserva.valueOf(rs.getString("Status"));
+        double valorTotal = rs.getDouble("ValorTotal");
+        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
+        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
+
+        Hospede hospede = null;
+        try {
+            hospede = new HospedeDAO().findById(hospedeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Quarto quarto = null;
+        try {
+            quarto = new QuartoDAO().findById(quartoId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new Reserva(
-            rs.getInt("ReservaID"),
-            rs.getInt("HospedeID"),
-            rs.getInt("QuartoID"),
-            rs.getDate("DataCheckIn").toLocalDate(),
-            rs.getDate("DataCheckOut").toLocalDate(),
-            StatusReserva.valueOf(rs.getString("Status")),
-            rs.getDouble("ValorTotal"),
-            rs.getTimestamp("DataCriacao").toLocalDateTime(),
-            rs.getTimestamp("DataAtualizacao").toLocalDateTime()
+            reservaId,
+            hospede,
+            quarto,
+            dataCheckIn,
+            dataCheckOut,
+            status,
+            valorTotal,
+            dataCriacao,
+            dataAtualizacao
         );
     }
+
 
     public boolean insert(Reserva reserva) throws SQLException {
         String sql = "INSERT INTO Reservas (HospedeID, QuartoID, DataCheckIn, DataCheckOut, Status, ValorTotal) " +

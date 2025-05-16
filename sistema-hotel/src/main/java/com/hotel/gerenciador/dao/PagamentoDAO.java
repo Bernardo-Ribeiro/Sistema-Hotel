@@ -15,6 +15,9 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
     protected String getTableName() {
         return "Pagamentos";
     }
+    protected String getIdColumnName() {
+        return "PagamentoID";
+    }
 
     @Override
     protected Pagamento fromResultSet(ResultSet rs) throws SQLException {

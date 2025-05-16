@@ -18,10 +18,11 @@ VALUES
 (201, 'LUXO', 500.00, 'MANUTENCAO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Inserções na tabela Reservas
-INSERT INTO Reservas (HospedeID, QuartoID, DataCheckIn, DataCheckOut, Status, DataCriacao, DataAtualizacao)
+INSERT INTO Reservas (HospedeID, QuartoID, DataCheckIn, DataCheckOut, Status, ValorTotal, DataCriacao, DataAtualizacao)
 VALUES 
-(1, 1, '2023-10-01', '2023-10-05', 'CONFIRMADA', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, 2, '2023-10-10', '2023-10-15', 'PENDENTE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+(1, 1, '2023-10-01', '2023-10-05', 'CONFIRMADA', 800.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 2, '2023-10-10', '2023-10-15', 'PENDENTE', 1250.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 -- Inserções na tabela Pagamentos
 INSERT INTO Pagamentos (ReservaID, ValorPago, MetodoPagamento, DataPagamento, DataCriacao, DataAtualizacao)

@@ -13,6 +13,9 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     protected String getTableName() {
         return "Quartos";
     }
+    protected String getIdColumnName() {
+        return "QuartoID";
+    }
 
     @Override
     protected Quarto fromResultSet(ResultSet rs) throws SQLException {

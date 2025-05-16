@@ -18,16 +18,11 @@ public class Reserva {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Reserva(int id, int hospedeId, int quartoId, LocalDate dataCheckIn, LocalDate dataCheckOut,
-               StatusReserva status, double valorTotal, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, StatusReserva status,
+               double valorTotal, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        
-        this.hospede = new Hospede();
-        this.hospede.setId(hospedeId);
-
-        this.quarto = new Quarto();
-        this.quarto.setId(quartoId);
-
+        this.hospede = hospede;
+        this.quarto = quarto;
         this.dataCheckIn = dataCheckIn;
         this.dataCheckOut = dataCheckOut;
         this.status = status;
@@ -35,7 +30,6 @@ public class Reserva {
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
-
 
 
     public int getId() {

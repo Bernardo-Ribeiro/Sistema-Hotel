@@ -12,6 +12,9 @@ public class ProdutoDAO extends BaseDAO<Produto> {
     protected String getTableName() {
         return "Produtos";
     }
+    protected String getIdColumnName() {
+        return "ProdutoID";
+    }
 
     @Override
     protected Produto fromResultSet(ResultSet rs) throws SQLException {

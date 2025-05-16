@@ -11,6 +11,9 @@ public class ServicoDAO extends BaseDAO<Servico> {
     protected String getTableName() {
         return "Servicos";
     }
+    protected String getIdColumnName() {
+        return "ServicoID";
+    }
 
     @Override
     protected Servico fromResultSet(ResultSet rs) throws SQLException {
