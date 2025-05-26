@@ -2,8 +2,10 @@ package com.hotel.gerenciador.service;
 
 import com.hotel.gerenciador.dao.HospedeDAO;
 import com.hotel.gerenciador.model.Hospede;
+import com.hotel.gerenciador.util.Validator;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 public class HospedeService {
@@ -19,6 +21,7 @@ public class HospedeService {
             throw new IllegalArgumentException("O CPF do hóspede é obrigatório.");
         }
 
+
         try {
             return hospedeDAO.insert(hospede);
         } catch (SQLException e) {
@@ -30,6 +33,14 @@ public class HospedeService {
     public boolean updateHospede(Hospede hospede) {
         if (hospede.getCpf() == null || hospede.getCpf().isEmpty()) {
             throw new IllegalArgumentException("O CPF do hóspede é obrigatório.");
+        }
+        try {
+            Hospede existenteComCpf = hospedeDAO.findByCpf(hospede.getCpf());
+            if (existenteComCpf != null && existenteComCpf.getId() != hospede.getId()) {
+                throw new IllegalArgumentException("CPF já cadastrado para outro hóspede.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         try {
@@ -59,20 +70,34 @@ public class HospedeService {
     }
 
     public List<Hospede> findHospedesByName(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return getAllHospedes(); 
+        }
         try {
             return hospedeDAO.findByName(nome);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    public Hospede findHospedeByCpf(String cpf) {
+        Validator.validateCpf(cpf);
+        try {
+            return hospedeDAO.findByCpf(cpf);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public Hospede findHospedeByCpf(String cpf) {
+    public List<Hospede> getAllHospedes() {
         try {
-            return hospedeDAO.findByCpf(cpf);
+            return hospedeDAO.findAll();
         } catch (SQLException e) {
+            System.err.println("Erro ao buscar todos os hóspedes: " + e.getMessage());
             e.printStackTrace();
-            return null;
+            return Collections.emptyList();
         }
     }
 }

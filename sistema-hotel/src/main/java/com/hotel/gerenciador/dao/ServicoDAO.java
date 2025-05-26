@@ -2,7 +2,13 @@ package com.hotel.gerenciador.dao;
 
 import com.hotel.gerenciador.model.Servico;
 
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class ServicoDAO extends BaseDAO<Servico> {
@@ -11,6 +17,8 @@ public class ServicoDAO extends BaseDAO<Servico> {
     protected String getTableName() {
         return "Servicos";
     }
+
+    @Override
     protected String getIdColumnName() {
         return "ServicoID";
     }
@@ -18,25 +26,36 @@ public class ServicoDAO extends BaseDAO<Servico> {
     @Override
     protected Servico fromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("ServicoID");
-        String nome = rs.getString("NomeServico");
+        String nome = rs.getString("Nome");
         String descricao = rs.getString("Descricao");
-        double preco = rs.getDouble("Preco");
+        BigDecimal preco = rs.getBigDecimal("Preco");
         boolean disponivel = rs.getBoolean("Disponivel");
-        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
-        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
+        
+        LocalDateTime dataCriacao = null;
+        Timestamp dataCriacaoTs = rs.getTimestamp("DataCriacao");
+        if (dataCriacaoTs != null) {
+            dataCriacao = dataCriacaoTs.toLocalDateTime();
+        }
 
+        LocalDateTime dataAtualizacao = null;
+        Timestamp dataAtualizacaoTs = rs.getTimestamp("DataAtualizacao");
+        if (dataAtualizacaoTs != null) {
+            dataAtualizacao = dataAtualizacaoTs.toLocalDateTime();
+        }
+
+        // Assumindo que o construtor de Servico foi atualizado para BigDecimal preco
         return new Servico(id, nome, descricao, preco, disponivel, dataCriacao, dataAtualizacao);
     }
 
     public boolean insert(Servico servico) throws SQLException {
-        String sql = "INSERT INTO Servicos (NomeServico, Descricao, Preco, Disponivel) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Servicos (Nome, Descricao, Preco, Disponivel) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, servico.getNome());
             stmt.setString(2, servico.getDescricao());
-            stmt.setDouble(3, servico.getPreco());
+            stmt.setBigDecimal(3, servico.getPreco());
             stmt.setBoolean(4, servico.isDisponivel());
 
             int rowsAffected = stmt.executeUpdate();
@@ -54,14 +73,14 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     public boolean update(Servico servico) throws SQLException {
-        String sql = "UPDATE Servicos SET NomeServico = ?, Descricao = ?, Preco = ?, Disponivel = ? WHERE ServicoID = ?";
+        String sql = "UPDATE Servicos SET Nome = ?, Descricao = ?, Preco = ?, Disponivel = ? WHERE ServicoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, servico.getNome());
             stmt.setString(2, servico.getDescricao());
-            stmt.setDouble(3, servico.getPreco());
+            stmt.setBigDecimal(3, servico.getPreco());
             stmt.setBoolean(4, servico.isDisponivel());
             stmt.setInt(5, servico.getId());
 
