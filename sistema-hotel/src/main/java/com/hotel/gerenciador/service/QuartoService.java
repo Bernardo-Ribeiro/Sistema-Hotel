@@ -2,21 +2,26 @@ package com.hotel.gerenciador.service;
 
 import com.hotel.gerenciador.dao.QuartoDAO;
 import com.hotel.gerenciador.model.Quarto;
+import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.util.StatusQuarto;
+import com.hotel.gerenciador.service.ReservaService;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
 public class QuartoService {
 
     private final QuartoDAO quartoDAO;
+    private final ReservaService reservaService;
 
     public QuartoService() {
         this.quartoDAO = new QuartoDAO();
+        this.reservaService = new ReservaService();
     }
 
     public boolean addQuarto(Quarto quarto) {
-        if (quarto.getPrecoDiaria() <= 0) {
+        if (quarto.getPrecoDiaria() == null || quarto.getPrecoDiaria().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
         }
 
@@ -38,7 +43,7 @@ public class QuartoService {
     }
 
     public boolean upQuarto(Quarto quarto) {
-        if (quarto.getPrecoDiaria() <= 0) {
+        if (quarto.getPrecoDiaria() == null || quarto.getPrecoDiaria().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
         }
 
@@ -52,9 +57,16 @@ public class QuartoService {
 
     public boolean delQuarto(int quartoId) {
         try {
+            List<Reserva> reservas = reservaService.findReservasAtivasPorQuarto(quartoId);
+            if (reservas != null && !reservas.isEmpty()) {
+                throw new IllegalStateException("Não é possível deletar um quarto com reservas ativas.");
+            }
             return quartoDAO.delete(quartoId);
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } catch (IllegalStateException e) {
+            System.err.println("Erro ao deletar quarto: " + e.getMessage());
             return false;
         }
     }
@@ -78,6 +90,9 @@ public class QuartoService {
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } catch (IllegalStateException e) {
+            System.err.println("Erro ao alterar status do quarto: " + e.getMessage());
             return false;
         }
     }

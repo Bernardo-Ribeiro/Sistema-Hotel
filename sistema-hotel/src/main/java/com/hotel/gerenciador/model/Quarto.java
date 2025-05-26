@@ -1,5 +1,6 @@
 package com.hotel.gerenciador.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.StatusQuarto;
@@ -11,20 +12,22 @@ public class Quarto {
     private int id;
     private int numeroQuarto;
     private TipoQuarto tipo;
-    private double precoDiaria;
+    private BigDecimal precoDiaria;
     private StatusQuarto status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
     public Quarto() {}
 
-    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, double precoDiaria,
+    public Quarto(int id, int numeroQuarto, TipoQuarto tipo, BigDecimal precoDiaria,
                   StatusQuarto status, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.numeroQuarto = numeroQuarto;
-        this.tipo = tipo;
-        this.precoDiaria = precoDiaria;
-        this.status = status;
+        setTipo(tipo);
+        setPrecoDiaria(precoDiaria);
+        setStatus(status);
+        this.numeroQuarto = numeroQuarto;
+
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
@@ -40,6 +43,9 @@ public class Quarto {
         return numeroQuarto;
     }
     public void setNumeroQuarto(int numeroQuarto) {
+        if (numeroQuarto <= 0) {
+            throw new IllegalArgumentException("O número do quarto deve ser positivo.");
+        }
         this.numeroQuarto = numeroQuarto;
     }
 
@@ -53,10 +59,10 @@ public class Quarto {
         this.tipo = tipo;
     }
 
-    public double getPrecoDiaria() {
+    public BigDecimal getPrecoDiaria() {
         return precoDiaria;
     }
-    public void setPrecoDiaria(double precoDiaria) {
+    public void setPrecoDiaria(BigDecimal precoDiaria) {
         Validator.validatePositiveValue(precoDiaria);
         this.precoDiaria = precoDiaria;
     }
@@ -75,7 +81,9 @@ public class Quarto {
         return dataCriacao;
     }
     public void setDataCriacao(LocalDateTime dataCriacao) {
-        Validator.validateNotFutureDateTime(dataCriacao);
+        if (dataCriacao != null) {
+            Validator.validateNotFutureDateTime(dataCriacao);
+        }
         this.dataCriacao = dataCriacao;
     }
 
@@ -83,12 +91,20 @@ public class Quarto {
         return dataAtualizacao;
     }
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        Validator.validateNotFutureDateTime(dataAtualizacao);
+        if (dataAtualizacao != null) {
+            Validator.validateNotFutureDateTime(dataAtualizacao);
+        }
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public double calcularPrecoTotal(int dias) {
-        return precoDiaria * dias;
+    public BigDecimal calcularPrecoTotal(int dias) {
+        if (dias < 0) {
+            throw new IllegalArgumentException("O número de dias não pode ser negativo.");
+        }
+        if (this.precoDiaria == null) {
+            return BigDecimal.ZERO; 
+        }
+        return this.precoDiaria.multiply(new BigDecimal(dias));
     }
 
     public boolean isDisponivel() {
@@ -101,10 +117,10 @@ public class Quarto {
                 "id=" + id +
                 ", numeroQuarto=" + numeroQuarto +
                 ", tipo=" + tipo +
-                ", precoDiaria=" + Formatter.formatCurrency(precoDiaria) +
+                ", precoDiaria=" + Formatter.formatCurrency(precoDiaria) + 
                 ", status=" + status +
-                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
-                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
+                ", dataCriacao=" + (dataCriacao != null ? Formatter.formatDateTime(dataCriacao) : "null") +
+                ", dataAtualizacao=" + (dataAtualizacao != null ? Formatter.formatDateTime(dataAtualizacao) : "null") +
                 '}';
     }
 }

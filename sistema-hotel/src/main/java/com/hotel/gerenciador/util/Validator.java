@@ -1,5 +1,6 @@
 package com.hotel.gerenciador.util;
 
+import java.math.BigDecimal;
 import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ public class Validator {
             throw new IllegalArgumentException("O telefone fornecido é inválido. Ex: (11)98765-4321");
         }
     }
-    
 
     public static void validatePositiveValue(double valor) {
         if (valor <= 0) {
@@ -24,14 +24,20 @@ public class Validator {
         }
     }
 
+    public static void validatePositiveValue(BigDecimal valor) {
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor deve ser maior que zero.");
+        }
+    }
+
     public static void validateNotFutureDate(LocalDate data) {
-        if (data.isAfter(LocalDate.now())) {
+        if (data != null && data.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("A data não pode ser no futuro.");
         }
     }
 
     public static void validateNotFutureDateTime(LocalDateTime dateTime) {
-        if (dateTime.isAfter(LocalDateTime.now())) {
+        if (dateTime != null && dateTime.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("A data e hora não podem ser no futuro.");
         }
     }
@@ -47,17 +53,19 @@ public class Validator {
     }
 
     private static boolean isValidCpf(String cpf) {
-        int[] multiplicador1 = {10, 9, 8, 7, 6, 5, 4, 3, 2};
-        int[] multiplicador2 = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
-
         String cpfLimpo = cpf.replaceAll("\\D", "");
 
         if (cpfLimpo.length() != 11) {
             return false;
         }
+        if (cpfLimpo.matches("(\\d)\\1{10}")) {
+            return false;
+        }
+
+        int[] multiplicador1 = {10, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] multiplicador2 = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
 
         String cpfCalculado = cpfLimpo.substring(0, 9);
-
         int soma = 0;
         for (int i = 0; i < 9; i++) {
             soma += Integer.parseInt(String.valueOf(cpfCalculado.charAt(i))) * multiplicador1[i];
@@ -90,7 +98,10 @@ public class Validator {
     }
 
     public static void validateEmail(String email) {
-        if (email == null || !Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$", email)) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("O email não pode ser nulo ou vazio.");
+        }
+        if (!Pattern.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", email)) {
             throw new IllegalArgumentException("O email fornecido é inválido.");
         }
     }
@@ -99,12 +110,7 @@ public class Validator {
         if (endereco == null || endereco.isBlank()) {
             throw new IllegalArgumentException("O endereço não pode ser nulo ou vazio.");
         }
-    
-        String regexEndereco = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9\\s.,'-]+$";
-        if (!Pattern.matches(regexEndereco, endereco)) {
-            throw new IllegalArgumentException("O endereço contém caracteres inválidos.");
-        }
-    
+
         String[] enderecoParts = endereco.split(",");
     
         if (enderecoParts.length != 4) {
@@ -132,7 +138,7 @@ public class Validator {
         if (bairro == null || bairro.isBlank()) {
             throw new IllegalArgumentException("O bairro não pode ser nulo ou vazio.");
         }
-        String regexBairro = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9\\s.-]+$";
+        String regexBairro = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9\\s.'-]+$";
         if (!Pattern.matches(regexBairro, bairro)) {
             throw new IllegalArgumentException("O nome do bairro contém caracteres inválidos.");
         }
@@ -143,9 +149,9 @@ public class Validator {
             throw new IllegalArgumentException("A localidade/UF não pode ser nula ou vazia.");
         }
 
-        String regexLocalidadeUf = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+/[A-Za-z]{2}$";
+        String regexLocalidadeUf = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s.'-]+/[A-Za-z]{2}$";
         if (!Pattern.matches(regexLocalidadeUf, localidadeUf)) {
-            throw new IllegalArgumentException("A localidade e UF devem estar no formato: Localidade/UF");
+            throw new IllegalArgumentException("A localidade e UF devem estar no formato: Localidade/UF (Ex: São Paulo/SP)");
         }
     }
 
@@ -156,31 +162,27 @@ public class Validator {
 
         String regexCep = "^[0-9]{5}-?[0-9]{3}$";
         if (!Pattern.matches(regexCep, cep)) {
-            throw new IllegalArgumentException("O CEP deve ter 8 dígitos. Exemplo: 12345-678");
+            throw new IllegalArgumentException("O CEP deve ter 8 dígitos e pode estar no formato 12345-678 ou 12345678.");
         }
     }
     
     public static void validateDateRange(LocalDate checkIn, LocalDate checkOut) {
         if (checkIn == null || checkOut == null) {
-            throw new IllegalArgumentException("As datas não podem ser nulas");
-        }
-        
-        if (checkIn.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("A data de check-in não pode ser no passado");
+            throw new IllegalArgumentException("As datas de check-in e check-out não podem ser nulas.");
         }
         
         if (checkOut.isBefore(checkIn)) {
-            throw new IllegalArgumentException("A data de check-out deve ser após a data de check-in");
+            throw new IllegalArgumentException("A data de check-out deve ser igual ou após a data de check-in.");
         }
         
         if (checkIn.isEqual(checkOut)) {
-            throw new IllegalArgumentException("O período da reserva deve ser de pelo menos um dia");
+            throw new IllegalArgumentException("O período da reserva deve ser de pelo menos um dia (data de check-out diferente da data de check-in).");
         }
     }
 
     public static void validateDisponibilidade(boolean disponivel) {
         if (!disponivel) {
-            throw new IllegalStateException("O quarto não está disponível para o período solicitado");
+            throw new IllegalStateException("O quarto não está disponível para o período solicitado.");
         }
     }
 }

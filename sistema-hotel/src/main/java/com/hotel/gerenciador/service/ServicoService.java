@@ -3,6 +3,7 @@ package com.hotel.gerenciador.service;
 import com.hotel.gerenciador.dao.ServicoDAO;
 import com.hotel.gerenciador.model.Servico;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class ServicoService {
@@ -14,10 +15,10 @@ public class ServicoService {
     }
 
     public boolean addServico(Servico servico) {
-        if (servico.getPreco() < 20.0) {
+        if (servico.getPreco() == null || servico.getPreco().compareTo(new BigDecimal("20.00")) <= 0) {
             throw new IllegalArgumentException("O preço do serviço deve ser superior a 20 reais.");
         }
-        
+
         try {
             return servicoDAO.insert(servico);
         } catch (SQLException e) {
@@ -27,7 +28,7 @@ public class ServicoService {
     }
 
     public boolean upServico(Servico servico) {
-        if (servico.getPreco() < 0) {
+        if (servico.getPreco() == null || servico.getPreco().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("O preço do serviço não pode ser negativo.");
         }
 

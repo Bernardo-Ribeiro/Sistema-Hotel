@@ -4,7 +4,13 @@ import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.util.StatusQuarto;
 import com.hotel.gerenciador.util.TipoQuarto;
 
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class QuartoDAO extends BaseDAO<Quarto> {
@@ -13,6 +19,8 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     protected String getTableName() {
         return "Quartos";
     }
+
+    @Override
     protected String getIdColumnName() {
         return "QuartoID";
     }
@@ -22,10 +30,20 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         int id = rs.getInt("QuartoID");
         int numeroQuarto = rs.getInt("NumeroQuarto");
         TipoQuarto tipo = TipoQuarto.valueOf(rs.getString("Tipo"));
-        double precoDiaria = rs.getDouble("PrecoDiaria");
+        BigDecimal precoDiaria = rs.getBigDecimal("PrecoDiaria");
         StatusQuarto status = StatusQuarto.valueOf(rs.getString("Status"));
-        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
-        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
+        
+        LocalDateTime dataCriacao = null;
+        Timestamp dataCriacaoTs = rs.getTimestamp("DataCriacao");
+        if (dataCriacaoTs != null) {
+            dataCriacao = dataCriacaoTs.toLocalDateTime();
+        }
+
+        LocalDateTime dataAtualizacao = null;
+        Timestamp dataAtualizacaoTs = rs.getTimestamp("DataAtualizacao");
+        if (dataAtualizacaoTs != null) {
+            dataAtualizacao = dataAtualizacaoTs.toLocalDateTime();
+        }
 
         return new Quarto(id, numeroQuarto, tipo, precoDiaria, status, dataCriacao, dataAtualizacao);
     }
@@ -37,9 +55,9 @@ public class QuartoDAO extends BaseDAO<Quarto> {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, quarto.getNumeroQuarto());
-            stmt.setString(2, quarto.getTipo().toString());
-            stmt.setDouble(3, quarto.getPrecoDiaria());
-            stmt.setString(5, quarto.getStatus().toString());
+            stmt.setString(2, quarto.getTipo().name());
+            stmt.setBigDecimal(3, quarto.getPrecoDiaria());
+            stmt.setString(4, quarto.getStatus().name());
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -62,10 +80,10 @@ public class QuartoDAO extends BaseDAO<Quarto> {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, quarto.getNumeroQuarto());
-            stmt.setString(2, quarto.getTipo().toString());
-            stmt.setDouble(3, quarto.getPrecoDiaria());
-            stmt.setString(5, quarto.getStatus().toString());
-            stmt.setInt(6, quarto.getId());
+            stmt.setString(2, quarto.getTipo().name());
+            stmt.setBigDecimal(3, quarto.getPrecoDiaria());
+            stmt.setString(4, quarto.getStatus().name());
+            stmt.setInt(5, quarto.getId());
 
             return stmt.executeUpdate() > 0;
         }

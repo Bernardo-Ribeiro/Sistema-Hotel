@@ -4,6 +4,7 @@ import com.hotel.gerenciador.dao.PagamentoDAO;
 import com.hotel.gerenciador.model.Pagamento;
 import com.hotel.gerenciador.util.StatusPagamento;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class PagamentoService {
     }
 
     public boolean addPagamento(Pagamento pagamento) {
-        if (pagamento.getValor() <= 0) {
+        if (pagamento.getValor() == null || pagamento.getValor().compareTo(BigDecimal.ZERO) <= 0) { //
             throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
         }
 
@@ -47,6 +48,10 @@ public class PagamentoService {
 
     public boolean delPagamento(int pagamentoId) {
         try {
+            Pagamento pagamentoExistente = pagamentoDAO.findById(pagamentoId);
+            if (pagamentoExistente != null && pagamentoExistente.getStatus() == StatusPagamento.PAGO) {
+                throw new IllegalStateException("Não é possível deletar um pagamento já efetuado.");
+            }
             return pagamentoDAO.delete(pagamentoId);
         } catch (SQLException e) {
             e.printStackTrace();

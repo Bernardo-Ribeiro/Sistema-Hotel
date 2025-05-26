@@ -1,7 +1,9 @@
 package com.hotel.gerenciador.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import com.hotel.gerenciador.util.StatusReserva;
 import com.hotel.gerenciador.util.Validator;
@@ -14,25 +16,31 @@ public class Reserva {
     private LocalDate dataCheckIn;
     private LocalDate dataCheckOut;
     private StatusReserva status;
-    private double valorTotal;
+    private BigDecimal valorTotal;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
     public Reserva(){}
 
-    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, StatusReserva status,
-               double valorTotal, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Reserva(int id, Hospede hospede, Quarto quarto, LocalDate dataCheckIn, LocalDate dataCheckOut, 
+                   StatusReserva status, BigDecimal valorTotal,
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.hospede = hospede;
-        this.quarto = quarto;
-        this.dataCheckIn = dataCheckIn;
-        this.dataCheckOut = dataCheckOut;
-        this.status = status;
-        this.valorTotal = valorTotal;
+        setHospede(hospede);
+        setQuarto(quarto);
+        setDataCheckIn(dataCheckIn);
+        setDataCheckOut(dataCheckOut);
+        setStatus(status);
+        
+        if (valorTotal != null) {
+            this.valorTotal = valorTotal;
+        } else {
+            this.valorTotal = calcularValorTotal();
+        }
+        
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
-
 
     public int getId() {
         return id;
@@ -59,13 +67,16 @@ public class Reserva {
             throw new IllegalArgumentException("Quarto não pode ser nulo.");
         }
         this.quarto = quarto;
+        this.valorTotal = calcularValorTotal();
     }
 
     public LocalDate getDataCheckIn() {
         return dataCheckIn;
     }
     public void setDataCheckIn(LocalDate dataCheckIn) {
-        Validator.validateNotFutureDate(dataCheckIn);
+        if (dataCheckIn == null) {
+            throw new IllegalArgumentException("A data de check-in não pode ser nula.");
+        }
         if (this.dataCheckOut != null && dataCheckIn.isAfter(this.dataCheckOut)) {
             throw new IllegalArgumentException("A data de check-in não pode ser posterior à data de check-out.");
         }
@@ -77,9 +88,14 @@ public class Reserva {
         return dataCheckOut;
     }
     public void setDataCheckOut(LocalDate dataCheckOut) {
-        Validator.validateNotFutureDate(dataCheckOut);
+        if (dataCheckOut == null) {
+            throw new IllegalArgumentException("A data de check-out não pode ser nula.");
+        }
         if (this.dataCheckIn != null && dataCheckOut.isBefore(this.dataCheckIn)) {
             throw new IllegalArgumentException("A data de check-out não pode ser anterior à data de check-in.");
+        }
+        if (this.dataCheckIn != null && dataCheckOut.isEqual(this.dataCheckIn)) {
+            throw new IllegalArgumentException("A data de check-out não pode ser igual à data de check-in para o cálculo de diárias.");
         }
         this.dataCheckOut = dataCheckOut;
         this.valorTotal = calcularValorTotal();
@@ -95,14 +111,25 @@ public class Reserva {
         this.status = status;
     }
 
-    public double getValorTotal() {
+    public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
-    public double calcularValorTotal() {
-        if (dataCheckIn == null || dataCheckOut == null || quarto == null) return 0;
-        int dias = (int) (dataCheckOut.toEpochDay() - dataCheckIn.toEpochDay());
-        return quarto.getPrecoDiaria() * dias;
+    public BigDecimal calcularValorTotal() {
+        if (dataCheckIn == null || dataCheckOut == null || quarto == null || quarto.getPrecoDiaria() == null) {
+            return BigDecimal.ZERO;
+        }
+        if (dataCheckOut.isBefore(dataCheckIn) || dataCheckOut.isEqual(dataCheckIn)) {
+            return BigDecimal.ZERO;
+        }
+        
+        long dias = ChronoUnit.DAYS.between(dataCheckIn, dataCheckOut);
+        
+        if (dias <= 0) {
+            return BigDecimal.ZERO;
+        }
+        
+        return quarto.getPrecoDiaria().multiply(new BigDecimal(dias));
     }
 
     public boolean isAtiva() {
@@ -113,7 +140,9 @@ public class Reserva {
         return dataCriacao;
     }
     public void setDataCriacao(LocalDateTime dataCriacao) {
-        Validator.validateNotFutureDateTime(dataCriacao);
+        if (dataCriacao != null) {
+            Validator.validateNotFutureDateTime(dataCriacao);
+        }
         this.dataCriacao = dataCriacao;
     }
 
@@ -121,7 +150,9 @@ public class Reserva {
         return dataAtualizacao;
     }
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        Validator.validateNotFutureDateTime(dataAtualizacao);
+        if (dataAtualizacao != null) {
+            Validator.validateNotFutureDateTime(dataAtualizacao);
+        }
         this.dataAtualizacao = dataAtualizacao;
     }
 
@@ -131,12 +162,12 @@ public class Reserva {
                 "id=" + id +
                 ", hospede=" + (hospede != null ? hospede.getNome() : "null") +
                 ", quarto=" + (quarto != null ? quarto.getNumeroQuarto() : "null") +
-                ", dataCheckIn=" + Formatter.formatDate(dataCheckIn) +
-                ", dataCheckOut=" + Formatter.formatDate(dataCheckOut) +
+                ", dataCheckIn=" + (dataCheckIn != null ? Formatter.formatDate(dataCheckIn) : "null") +
+                ", dataCheckOut=" + (dataCheckOut != null ? Formatter.formatDate(dataCheckOut) : "null") +
                 ", status=" + status +
-                ", valorTotal=" + Formatter.formatCurrency(valorTotal) +
-                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
-                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
+                ", valorTotal=" + Formatter.formatCurrency(valorTotal) + // Formatter.formatCurrency agora aceita BigDecimal
+                ", dataCriacao=" + (dataCriacao != null ? Formatter.formatDateTime(dataCriacao) : "null") +
+                ", dataAtualizacao=" + (dataAtualizacao != null ? Formatter.formatDateTime(dataAtualizacao) : "null") +
                 '}';
     }
 }

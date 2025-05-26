@@ -4,6 +4,7 @@ import com.hotel.gerenciador.dao.ProdutoDAO;
 import com.hotel.gerenciador.model.Produto;
 import com.hotel.gerenciador.util.CategoriaProduto;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class ProdutoService {
@@ -15,7 +16,7 @@ public class ProdutoService {
     }
 
     public boolean addProduto(Produto produto) {
-        if (produto.getPreco() <= 0) {
+        if (produto.getPreco() == null || produto.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
         }
 
@@ -32,7 +33,7 @@ public class ProdutoService {
     }
 
     public boolean upProduto(Produto produto) {
-        if (produto.getPreco() <= 0) {
+        if (produto.getPreco() == null || produto.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
         }
 

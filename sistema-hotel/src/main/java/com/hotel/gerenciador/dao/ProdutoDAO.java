@@ -3,7 +3,13 @@ package com.hotel.gerenciador.dao;
 import com.hotel.gerenciador.model.Produto;
 import com.hotel.gerenciador.util.CategoriaProduto;
 
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class ProdutoDAO extends BaseDAO<Produto> {
@@ -12,6 +18,8 @@ public class ProdutoDAO extends BaseDAO<Produto> {
     protected String getTableName() {
         return "Produtos";
     }
+
+    @Override
     protected String getIdColumnName() {
         return "ProdutoID";
     }
@@ -21,24 +29,36 @@ public class ProdutoDAO extends BaseDAO<Produto> {
         int id = rs.getInt("ProdutoID");
         String nome = rs.getString("Nome");
         String descricao = rs.getString("Descricao");
-        double preco = rs.getDouble("Preco");
+        BigDecimal preco = rs.getBigDecimal("Preco");
+        int estoque = rs.getInt("Estoque");
         CategoriaProduto categoria = CategoriaProduto.valueOf(rs.getString("Categoria"));
-        LocalDateTime dataCriacao = rs.getTimestamp("DataCriacao").toLocalDateTime();
-        LocalDateTime dataAtualizacao = rs.getTimestamp("DataAtualizacao").toLocalDateTime();
+        
+        LocalDateTime dataCriacao = null;
+        Timestamp dataCriacaoTs = rs.getTimestamp("DataCriacao");
+        if (dataCriacaoTs != null) {
+            dataCriacao = dataCriacaoTs.toLocalDateTime();
+        }
 
-        return new Produto(id, nome, descricao, preco, categoria, dataCriacao, dataAtualizacao);
+        LocalDateTime dataAtualizacao = null;
+        Timestamp dataAtualizacaoTs = rs.getTimestamp("DataAtualizacao");
+        if (dataAtualizacaoTs != null) {
+            dataAtualizacao = dataAtualizacaoTs.toLocalDateTime();
+        }
+        return new Produto(id, nome, descricao, preco, estoque, categoria, dataCriacao, dataAtualizacao);
     }
 
     public boolean insert(Produto produto) throws SQLException {
-        String sql = "INSERT INTO Produtos (Nome, Descricao, Preco, Categoria, DataCriacao, DataAtualizacao) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+        String sql = "INSERT INTO Produtos (Nome, Descricao, Preco, Estoque, Categoria, DataCriacao, DataAtualizacao) " +
+                     "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getDescricao());
-            stmt.setDouble(3, produto.getPreco());
-            stmt.setString(4, produto.getCategoria().name());
+            stmt.setBigDecimal(3, produto.getPreco());
+            stmt.setInt(4, produto.getEstoque());
+            stmt.setString(5, produto.getCategoria().name());
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -55,16 +75,18 @@ public class ProdutoDAO extends BaseDAO<Produto> {
     }
 
     public boolean update(Produto produto) throws SQLException {
-        String sql = "UPDATE Produtos SET Nome = ?, Descricao = ?, Preco = ?, Categoria = ?, DataAtualizacao = CURRENT_TIMESTAMP WHERE ProdutoID = ?";
+        String sql = "UPDATE Produtos SET Nome = ?, Descricao = ?, Preco = ?, Estoque = ?, Categoria = ?, DataAtualizacao = CURRENT_TIMESTAMP " +
+                     "WHERE ProdutoID = ?";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getDescricao());
-            stmt.setDouble(3, produto.getPreco());
-            stmt.setString(4, produto.getCategoria().name());
-            stmt.setInt(5, produto.getId());
+            stmt.setBigDecimal(3, produto.getPreco());
+            stmt.setInt(4, produto.getEstoque());
+            stmt.setString(5, produto.getCategoria().name());
+            stmt.setInt(6, produto.getId());
 
             return stmt.executeUpdate() > 0;
         }

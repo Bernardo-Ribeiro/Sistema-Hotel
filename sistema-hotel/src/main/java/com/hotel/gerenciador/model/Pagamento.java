@@ -1,5 +1,7 @@
 package com.hotel.gerenciador.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.MetodoPagamento;
@@ -9,24 +11,30 @@ import com.hotel.gerenciador.util.Formatter;
 
 public class Pagamento {
     private int id;
-    private double valor;
-    private LocalDateTime dataPagamento;
+    private BigDecimal valor;
+    private LocalDate dataPagamento;
     private MetodoPagamento metodo;
     private StatusPagamento status;
-    private String referencia;
+    private int reservaId;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Pagamento(int id, double valor, LocalDateTime dataPagamento, MetodoPagamento metodo,
-                    StatusPagamento status, String referencia, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Pagamento() {}
+
+    public Pagamento(int id, BigDecimal valor, LocalDate dataPagamento, MetodoPagamento metodo,
+                   StatusPagamento status, int reservaId, 
+                   LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        Validator.validatePositiveValue(valor);
-        Validator.validateNotFutureDateTime(dataPagamento);
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
+        }
+        Validator.validateNotFutureDate(dataPagamento);
+
         this.valor = valor;
         this.dataPagamento = dataPagamento;
         this.metodo = metodo;
         this.status = status;
-        this.referencia = referencia;
+        this.reservaId = reservaId;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
     }
@@ -38,17 +46,21 @@ public class Pagamento {
         this.id = id;
     }
 
-    public double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
-    public void setValor(double valor) {
+    public void setValor(BigDecimal valor) {
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
+        }
         this.valor = valor;
     }
 
-    public LocalDateTime getDataPagamento() {
+    public LocalDate getDataPagamento() {
         return dataPagamento;
     }
-    public void setDataPagamento(LocalDateTime dataPagamento) {
+    public void setDataPagamento(LocalDate dataPagamento) {
+        Validator.validateNotFutureDate(dataPagamento);
         this.dataPagamento = dataPagamento;
     }
 
@@ -66,14 +78,14 @@ public class Pagamento {
         this.status = status;
     }
 
-    public String getReferencia() {
-        return referencia;
+    public int getReservaId() {
+        return reservaId;
     }
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
+    public void setReservaId(int reservaId) {
+        this.reservaId = reservaId;
     }
 
-        public LocalDateTime getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
@@ -85,13 +97,13 @@ public class Pagamento {
     public String toString() {
         return "Pagamento{" +
                 "id=" + id +
-                ", valor=" + Formatter.formatCurrency(valor) +
-                ", dataPagamento=" + Formatter.formatDateTime(dataPagamento) +
+                ", valor=" + (valor != null ? Formatter.formatCurrency(valor.doubleValue()) : "null") +
+                ", dataPagamento=" + (dataPagamento != null ? Formatter.formatDate(dataPagamento) : "null") +
                 ", metodo=" + metodo +
                 ", status=" + status +
-                ", referencia='" + referencia + '\'' +
-                ", dataCriacao=" + Formatter.formatDateTime(dataCriacao) +
-                ", dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) +
+                ", reservaId=" + reservaId +
+                ", dataCriacao=" + (dataCriacao != null ? Formatter.formatDateTime(dataCriacao) : "null") +
+                ", dataAtualizacao=" + (dataAtualizacao != null ? Formatter.formatDateTime(dataAtualizacao) : "null") +
                 '}';
     }
 }

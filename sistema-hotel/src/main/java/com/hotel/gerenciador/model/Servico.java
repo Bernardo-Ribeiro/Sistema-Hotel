@@ -1,29 +1,31 @@
 package com.hotel.gerenciador.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.Validator;
-
 import com.hotel.gerenciador.util.Formatter;
 
 public class Servico {
     private int id;
     private String nome;
     private String descricao;
-    private double preco;
+    private BigDecimal preco;
     private boolean disponivel;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    public Servico(int id, String nome, String descricao, double preco, boolean disponivel,
+    public Servico() {}
+
+    public Servico(int id, String nome, String descricao, BigDecimal preco, boolean disponivel,
                    LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        setId(id);
+        this.id = id;
         setNome(nome);
         setDescricao(descricao);
         setPreco(preco);
         setDisponivel(disponivel);
-        setDataCriacao(dataCriacao);
-        setDataAtualizacao(dataAtualizacao);
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public int getId() {
@@ -47,19 +49,20 @@ public class Servico {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao == null || descricao.isBlank()) {
-            throw new IllegalArgumentException("Descrição do serviço não pode ser nula ou vazia.");
+        if (descricao != null && descricao.length() > 255) {
+            throw new IllegalArgumentException("Descrição do serviço não pode ter mais de 255 caracteres.");
         }
-        this.descricao = descricao;
+        this.descricao = (descricao == null) ? "" : descricao.trim();
     }
 
-    public double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
-    public void setPreco(double preco) {
-        if (preco < 0) {
-            throw new IllegalArgumentException("Preço do serviço não pode ser negativo.");
+    public void setPreco(BigDecimal preco) {
+        if (preco == null || preco.compareTo(BigDecimal.ZERO) < 0) {
+             throw new IllegalArgumentException("Preço do serviço não pode ser negativo.");
         }
+
         this.preco = preco;
     }
 
@@ -74,7 +77,9 @@ public class Servico {
         return dataCriacao;
     }
     public void setDataCriacao(LocalDateTime dataCriacao) {
-        Validator.validateNotFutureDateTime(dataCriacao);
+        if (dataCriacao != null) {
+            Validator.validateNotFutureDateTime(dataCriacao);
+        }
         this.dataCriacao = dataCriacao;
     }
 
@@ -82,7 +87,9 @@ public class Servico {
         return dataAtualizacao;
     }
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        Validator.validateNotFutureDateTime(dataAtualizacao);
+        if (dataAtualizacao != null) {
+            Validator.validateNotFutureDateTime(dataAtualizacao);
+        }
         this.dataAtualizacao = dataAtualizacao;
     }
 
@@ -92,10 +99,10 @@ public class Servico {
             "  id=" + id + ",\n" +
             "  nome='" + nome + "',\n" +
             "  descricao='" + descricao + "',\n" +
-            "  preco=" + Formatter.formatCurrency(preco) + ",\n" +
+            "  preco=" + (preco != null ? Formatter.formatCurrency(preco.doubleValue()) : "null") + ",\n" +
             "  disponivel=" + disponivel + ",\n" +
-            "  dataCriacao=" + Formatter.formatDateTime(dataCriacao) + ",\n" +
-            "  dataAtualizacao=" + Formatter.formatDateTime(dataAtualizacao) + "\n" +
+            "  dataCriacao=" + (dataCriacao != null ? Formatter.formatDateTime(dataCriacao) : "null") + ",\n" +
+            "  dataAtualizacao=" + (dataAtualizacao != null ? Formatter.formatDateTime(dataAtualizacao) : "null") + "\n" +
             '}';
     }
 }

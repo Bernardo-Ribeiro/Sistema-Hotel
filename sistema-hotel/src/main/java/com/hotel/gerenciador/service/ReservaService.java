@@ -7,6 +7,7 @@ import com.hotel.gerenciador.util.Validator;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,31 +76,35 @@ public class ReservaService {
             return null;
         }
     }
+
+
+    public List<Reserva> findAll() {
+        try {
+            return reservaDAO.findAll();
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar todas as reservas: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList(); 
+        }
+    }
+
     public boolean verificarDisponibilidade(int quartoId, LocalDate dataCheckIn, LocalDate dataCheckOut) {
         Validator.validateDateRange(dataCheckIn, dataCheckOut);
-        
         try {
-            List<Reserva> reservasConflitantes = reservaDAO.findByQuartoAndPeriodo(
-                quartoId, 
-                dataCheckIn, 
-                dataCheckOut
-            );
-            
-            return reservasConflitantes.stream()
-                .noneMatch(r -> r.getStatus() != StatusReserva.CANCELADA && 
-                            r.getStatus() != StatusReserva.PENDENTE);
+            List<Reserva> reservasConflitantes = reservaDAO.findByQuartoAndPeriodo(quartoId, dataCheckIn, dataCheckOut);
+            return reservasConflitantes.isEmpty();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
     public List<Reserva> findReservasPorHospede(int hospedeId) {
         try {
             return reservaDAO.findByHospede(hospedeId);
         } catch (SQLException e) {
             System.err.println("Erro ao buscar reservas de hóspede: " + e.getMessage());
-            return null;
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 
@@ -108,9 +113,11 @@ public class ReservaService {
             return reservaDAO.findAtivasByQuarto(quartoId);
         } catch (SQLException e) {
             System.err.println("Erro ao buscar reservas ativas de quarto: " + e.getMessage());
-            return null;
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
+
     public Map<Integer, Reserva> findReservasAtivasMapPorQuarto() {
         try {
             List<Reserva> reservasAtivas = reservaDAO.findAtivas();
@@ -119,9 +126,9 @@ public class ReservaService {
             for (Reserva r : reservasAtivas) {
                 if (r.getQuarto() != null) {
                     System.out.println("Adicionando ao mapa: Quarto ID=" + r.getQuarto().getId() + 
-                                    ", Número=" + r.getQuarto().getNumeroQuarto() + 
-                                    ", Reserva ID=" + r.getId() + 
-                                    ", Hóspede=" + (r.getHospede() != null ? r.getHospede().getNome() : "null"));
+                    ", Número=" + r.getQuarto().getNumeroQuarto() + 
+                    ", Reserva ID=" + r.getId() + 
+                    ", Hóspede=" + (r.getHospede() != null ? r.getHospede().getNome() : "null"));
                     
                     mapa.put(r.getQuarto().getId(), r);
                 } else {
@@ -133,6 +140,19 @@ public class ReservaService {
             System.err.println("Erro ao buscar reservas ativas: " + e.getMessage());
             e.printStackTrace();
             return new HashMap<>();
+        }
+    }
+
+    public List<Reserva> buscarReservasComFiltros(StatusReserva status, LocalDate dataDe, LocalDate dataAte, String termoBusca) {
+        try {
+            if (dataDe != null && dataAte != null && dataDe.isAfter(dataAte)) {
+                System.err.println("Erro no serviço: Data 'De' não pode ser posterior à data 'Até'.");
+                return Collections.emptyList();
+            }
+            return reservaDAO.buscarComFiltros(status, dataDe, dataAte, termoBusca);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 }
