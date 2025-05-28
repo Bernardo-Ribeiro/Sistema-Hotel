@@ -4,8 +4,11 @@ import com.hotel.gerenciador.dao.QuartoDAO;
 import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.util.StatusQuarto;
+import com.hotel.gerenciador.util.TipoQuarto;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 public class QuartoService {
@@ -22,6 +25,15 @@ public class QuartoService {
         if (quarto.getPrecoDiaria() == null || quarto.getPrecoDiaria().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
         }
+        if (quarto.getNumeroQuarto() <= 0) {
+             throw new IllegalArgumentException("O número do quarto deve ser positivo.");
+        }
+        if (quarto.getTipo() == null) {
+            throw new IllegalArgumentException("O tipo do quarto não pode ser nulo.");
+        }
+        if (quarto.getStatus() == null) {
+            throw new IllegalArgumentException("O status do quarto não pode ser nulo.");
+        }
 
         try {
             return quartoDAO.insert(quarto);
@@ -36,13 +48,22 @@ public class QuartoService {
             return quartoDAO.findAll();
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return Collections.emptyList();
         }
     }
 
     public boolean upQuarto(Quarto quarto) {
         if (quarto.getPrecoDiaria() == null || quarto.getPrecoDiaria().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
+        }
+        if (quarto.getNumeroQuarto() <= 0) {
+             throw new IllegalArgumentException("O número do quarto deve ser positivo.");
+        }
+        if (quarto.getTipo() == null) {
+            throw new IllegalArgumentException("O tipo do quarto não pode ser nulo.");
+        }
+         if (quarto.getStatus() == null) {
+            throw new IllegalArgumentException("O status do quarto não pode ser nulo.");
         }
 
         try {
@@ -79,6 +100,9 @@ public class QuartoService {
     }
 
     public boolean altStatusQuarto(int quartoId, StatusQuarto novoStatus) {
+        if (novoStatus == null) {
+            throw new IllegalArgumentException("O novo status não pode ser nulo.");
+        }
         try {
             Quarto quarto = quartoDAO.findById(quartoId);
             if (quarto != null) {
@@ -89,9 +113,20 @@ public class QuartoService {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } catch (IllegalStateException e) {
-            System.err.println("Erro ao alterar status do quarto: " + e.getMessage());
-            return false;
+        }
+    }
+
+    public List<Quarto> findByTipo(TipoQuarto tipo) {
+        if (tipo == null) {
+            System.err.println("Tentativa de buscar quartos com tipo nulo.");
+            return Collections.emptyList();
+        }
+        try {
+            return quartoDAO.findByTipo(tipo); 
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar quartos por tipo (" + tipo + "): " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 }
