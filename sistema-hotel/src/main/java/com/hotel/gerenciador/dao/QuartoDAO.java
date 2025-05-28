@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuartoDAO extends BaseDAO<Quarto> {
 
@@ -87,5 +89,23 @@ public class QuartoDAO extends BaseDAO<Quarto> {
 
             return stmt.executeUpdate() > 0;
         }
+    }
+
+    public List<Quarto> findByTipo(TipoQuarto tipo) throws SQLException {
+        List<Quarto> quartosDoTipo = new ArrayList<>();
+        String sql = "SELECT * FROM " + getTableName() + " WHERE Tipo = ?";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, tipo.name());
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    quartosDoTipo.add(fromResultSet(rs));
+                }
+            }
+        }
+        return quartosDoTipo;
     }
 }
