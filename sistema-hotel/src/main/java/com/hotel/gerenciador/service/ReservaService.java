@@ -155,4 +155,17 @@ public class ReservaService {
             return Collections.emptyList();
         }
     }
+    public boolean verificarDisponibilidade(int quartoId, LocalDate dataCheckIn, LocalDate dataCheckOut, int reservaIdParaIgnorar) {
+        Validator.validateDateRange(dataCheckIn, dataCheckOut);
+        try {
+            List<Reserva> reservasConflitantes = reservaDAO.findByQuartoAndPeriodo(quartoId, dataCheckIn, dataCheckOut, reservaIdParaIgnorar);
+            return reservasConflitantes.isEmpty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; 
+        } catch (IllegalArgumentException e) {
+            System.err.println("verificarDisponibilidade: " + e.getMessage());
+            return false;
+        }
+    }
 }

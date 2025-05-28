@@ -4,8 +4,6 @@ import com.hotel.gerenciador.dao.QuartoDAO;
 import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.util.StatusQuarto;
-import com.hotel.gerenciador.service.ReservaService;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;

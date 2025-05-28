@@ -1,6 +1,6 @@
 package com.hotel.gerenciador.controller;
 
-import com.hotel.gerenciador.model.Reserva; // Removidas Hospede e Quarto se não usadas diretamente aqui
+import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.viewmodel.ReservaViewModel;
 import com.hotel.gerenciador.service.ReservaService;
 import com.hotel.gerenciador.util.Formatter;
@@ -22,7 +22,6 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 public class ReservasController {
@@ -40,8 +39,8 @@ public class ReservasController {
     @FXML private DatePicker dateFiltroCheckInDe;
     @FXML private DatePicker dateFiltroCheckInAte;
     @FXML private TextField txtFiltroBusca;
-    // @FXML private Button btnAplicarFiltros; // Se não for usar, pode remover
-    // @FXML private Button btnLimparFiltros; // Se não for usar, pode remover
+    // @FXML private Button btnAplicarFiltros;
+    // @FXML private Button btnLimparFiltros;
 
     private ReservaService reservaService = new ReservaService();
 
@@ -174,18 +173,40 @@ public class ReservasController {
 
     @FXML
     private void editarReserva() {
-        ReservaViewModel selecionada = tabelaReservas.getSelectionModel().getSelectedItem();
-        if (selecionada == null) {
+        ReservaViewModel selecionadaVM = tabelaReservas.getSelectionModel().getSelectedItem();
+        if (selecionadaVM == null) {
             mostrarAlerta("Aviso", "Por favor, selecione uma reserva para editar.");
             return;
         }
-        System.out.println("Editar reserva ID: " + selecionada.idProperty().get());
-        // TODO: Implementar a abertura da janela de edição, similar à novaReserva()
-        // Passar o ID da reserva para o controller de edição para carregar os dados.
-        // Ex: EditarReservaController editController = loader.getController();
-        //     editController.carregarReserva(selecionada.idProperty().get());
-        //     editController.setOnReservaSalva(() -> aplicarFiltros());
-        mostrarAlerta("Informação", "Funcionalidade de edição ainda não implementada.");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditarReserva.fxml"));
+            Parent root = loader.load();
+
+            EditarReservaController editarReservaController = loader.getController(); 
+            
+            editarReservaController.carregarDadosReserva(selecionadaVM.idProperty().get()); 
+            
+            editarReservaController.setOnReservaSalva(() -> aplicarFiltros());
+
+            Stage stage = new Stage();
+            stage.setTitle("Editar Reserva - ID: " + selecionadaVM.idProperty().get());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            if (tabelaReservas.getScene() != null && tabelaReservas.getScene().getWindow() != null) {
+                 stage.initOwner(tabelaReservas.getScene().getWindow());
+            }
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Não foi possível abrir a tela de edição de reserva: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro de Configuração", "Verifique o caminho para EditarReserva.fxml ou se o controller está configurado corretamente: " + e.getMessage());
+        }
     }
 
     @FXML

@@ -300,4 +300,34 @@ public class ReservaDAO extends BaseDAO<Reserva> {
         }
         return listaReservas;
     }
+    public List<Reserva> findByQuartoAndPeriodo(int quartoId, LocalDate checkIn, LocalDate checkOut, int reservaIdParaIgnorar) throws SQLException {
+        StringBuilder sqlBuilder = new StringBuilder(
+            "SELECT * FROM Reservas WHERE QuartoID = ? " +
+            "AND Status NOT IN ('CANCELADA') " + 
+            "AND DataCheckIn < ? AND DataCheckOut > ? " 
+        );
+        List<Object> params = new ArrayList<>();
+        params.add(quartoId);
+        params.add(Date.valueOf(checkOut));
+        params.add(Date.valueOf(checkIn));
+
+        if (reservaIdParaIgnorar > 0) {
+            sqlBuilder.append(" AND ReservaID != ?");
+            params.add(reservaIdParaIgnorar);
+        }
+
+        List<Reserva> lista = new ArrayList<>();
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString())) {
+            int paramIndex = 1;
+            for (Object param : params) {
+                stmt.setObject(paramIndex++, param);
+            }
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(fromResultSet(rs));
+            }
+        }
+        return lista;
+    }
 }
