@@ -23,6 +23,7 @@
             <Button fx:id="btnMapaQuartos" text="Mapa de Quartos" prefWidth="150" onAction="#abrirMapaQuartos" />
             <Button fx:id="btnReservas" text="Reservas" prefWidth="150" onAction="#abrirReservas" />
             <Button fx:id="btnCheckIn" text="Check-in/Check-out" prefWidth="150" onAction="#abrirCheckIn" />
+            <Button fx:id="btnGerenciarHospedes" text="Gerenciar Hóspedes" prefWidth="150" onAction="#abrirGerenciamentoHospedes" />
             <Button fx:id="btnFuncionarios" text="Funcionários" prefWidth="150" onAction="#abrirFuncionarios" />
             <Button fx:id="btnManutencao" text="Manutenção" prefWidth="150" onAction="#abrirManutencao" />
             <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="150" onAction="#abrirRelatorios" />

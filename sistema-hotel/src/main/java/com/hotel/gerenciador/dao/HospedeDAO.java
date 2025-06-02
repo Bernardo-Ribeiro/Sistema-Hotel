@@ -147,4 +147,26 @@ public class HospedeDAO extends BaseDAO<Hospede> {
             }
         }
     }
+    public List<Hospede> findByNameOrCPF(String termoBusca) throws SQLException {
+        List<Hospede> hospedes = new ArrayList<>();
+        String termoLike = "%" + termoBusca + "%"; 
+
+        String cpfBusca = termoBusca; 
+
+        String sql = "SELECT * FROM " + getTableName() + " WHERE Nome LIKE ? OR CPF = ?";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, termoLike); // Para a busca por Nome
+            stmt.setString(2, cpfBusca);    // Para a busca por CPF exato
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    hospedes.add(fromResultSet(rs)); // Reutiliza seu método existente
+                }
+            }
+        }
+        return hospedes;
+    }
 }

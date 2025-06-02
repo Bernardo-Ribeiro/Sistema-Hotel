@@ -5,6 +5,7 @@ import com.hotel.gerenciador.model.Hospede;
 import com.hotel.gerenciador.util.Validator;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -98,6 +99,25 @@ public class HospedeService {
             System.err.println("Erro ao buscar todos os hóspedes: " + e.getMessage());
             e.printStackTrace();
             return Collections.emptyList();
+        }
+    }
+    public List<Hospede> findHospedeByNameOrCPF(String termo) {
+        if (termo == null || termo.trim().isEmpty()) {
+            return getAllHospedes();
+        }
+        try {
+            return hospedeDAO.findByNameOrCPF(termo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    public boolean isCpfEmUso(String cpf, int idExcluir) {
+        try {
+            return hospedeDAO.isCpfInUse(cpf, idExcluir); //
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; 
         }
     }
 }
