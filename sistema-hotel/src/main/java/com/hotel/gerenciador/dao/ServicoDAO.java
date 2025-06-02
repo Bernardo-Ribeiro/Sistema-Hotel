@@ -43,7 +43,6 @@ public class ServicoDAO extends BaseDAO<Servico> {
             dataAtualizacao = dataAtualizacaoTs.toLocalDateTime();
         }
 
-        // Assumindo que o construtor de Servico foi atualizado para BigDecimal preco
         return new Servico(id, nome, descricao, preco, disponivel, dataCriacao, dataAtualizacao);
     }
 

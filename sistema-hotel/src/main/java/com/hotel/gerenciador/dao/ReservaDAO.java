@@ -197,7 +197,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findAtivasByQuarto(int quartoId) throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND Status NOT IN ('CANCELADA', 'CONCLUIDA')"; 
+        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -217,7 +217,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     public List<Reserva> findByTipo(String tipoQuarto) throws SQLException {
         String sql = "SELECT r.* FROM Reservas r " +
                     "JOIN Quartos q ON r.QuartoID = q.QuartoID " +
-                    "WHERE q.Tipo = ? AND r.Status NOT IN ('CANCELADA', 'CONCLUIDA')"; 
+                    "WHERE q.Tipo = ? AND r.Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
         
         try (Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -235,7 +235,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findAtivas() throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'CONCLUIDA')"; 
+        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
         
         try (Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);

@@ -38,10 +38,6 @@ public class ReservaService {
     }
 
     public boolean upReserva(Reserva reserva) {
-        if (reserva.getStatus() == StatusReserva.CONCLUIDA) {
-            throw new IllegalArgumentException("Não é possível alterar uma reserva com status CONCLUÍDA.");
-        }
-
         try {
             return reservaDAO.update(reserva);
         } catch (SQLException e) {
