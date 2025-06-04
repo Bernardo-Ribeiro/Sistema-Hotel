@@ -16,6 +16,9 @@ public class Consumo {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    public Consumo() {
+    }
+
     public Consumo(int id, int idReserva, int idProduto, double valor, int quantidade,
                    LocalDate dataConsumo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;

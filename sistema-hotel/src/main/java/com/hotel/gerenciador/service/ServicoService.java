@@ -5,6 +5,8 @@ import com.hotel.gerenciador.model.Servico;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServicoService {
 
@@ -55,6 +57,15 @@ public class ServicoService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public List<Servico> getAllServicos() {
+        try {
+            return servicoDAO.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

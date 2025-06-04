@@ -114,4 +114,18 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
         }
         return pagamentos;
     }
+    public List<Pagamento> findByReservaId(int reservaId) throws SQLException {
+        List<Pagamento> pagamentos = new ArrayList<>();
+        String sql = "SELECT * FROM " + getTableName() + " WHERE ReservaID = ?";
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, reservaId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    pagamentos.add(fromResultSet(rs));
+                }
+            }
+        }
+        return pagamentos;
+    }
 }

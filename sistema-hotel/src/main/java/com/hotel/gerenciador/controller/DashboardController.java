@@ -2,7 +2,8 @@ package com.hotel.gerenciador.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import java.io.IOException;
@@ -60,13 +61,18 @@ public class DashboardController {
     }
 
     @FXML
+    private void abrirGerenciamentoHospedes() {
+        loadView("/view/GerenciamentoHospedes.fxml");
+    }
+
+    @FXML
     private void abrirFuncionarios() {
-        loadView("/view/Funcionarios.fxml");
+        loadView("/view/GerenciamentoFuncionario.fxml");
     }
 
     @FXML
     private void abrirManutencao() {
-        loadView("/view/Manutencao.fxml");
+        loadView("/view/GerenciamentoManutencao.fxml");
     }
 
     @FXML
@@ -80,13 +86,19 @@ public class DashboardController {
         System.exit(0);
     }
 
-    private void loadView(String fxmlPath) {    
-        System.out.println("Carregando view: " + fxmlPath);
+    private void loadView(String fxmlPath) {
         try {
-            Node view = FXMLLoader.load(getClass().getResource(fxmlPath));
+            mainContent.getChildren().clear();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent view = loader.load();
             mainContent.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao Carregar Tela");
+            alert.setContentText("Não foi possível carregar a tela: " + fxmlPath);
+            alert.showAndWait();
         }
     }
 

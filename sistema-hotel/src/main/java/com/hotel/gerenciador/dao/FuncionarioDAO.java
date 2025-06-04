@@ -18,19 +18,23 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
 
     @Override
     protected Funcionario fromResultSet(ResultSet rs) throws SQLException {
-        return new Funcionario(
-            rs.getInt("FuncionarioID"),
-            rs.getString("Nome"),
-            rs.getString("Cargo"),
-            rs.getDouble("Salario"),
-            rs.getString("Telefone"),
-            rs.getString("CPF"),
-            rs.getString("Email"),
-            rs.getString("Endereco"),
-            rs.getDate("DataAdmissao").toLocalDate(),
-            rs.getTimestamp("DataCriacao").toLocalDateTime(),
-            rs.getTimestamp("DataAtualizacao").toLocalDateTime()
-        );
+        try {
+            return new Funcionario(
+                rs.getInt("FuncionarioID"),
+                rs.getString("Nome"),
+                rs.getString("Cargo"),
+                rs.getDouble("Salario"),
+                rs.getString("Telefone"),
+                rs.getString("CPF"),
+                rs.getString("Email"),
+                rs.getString("Endereco"),
+                rs.getDate("DataAdmissao").toLocalDate(),
+                rs.getTimestamp("DataCriacao").toLocalDateTime(),
+                rs.getTimestamp("DataAtualizacao").toLocalDateTime()
+            );
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 
     public boolean insert(Funcionario funcionario) throws SQLException {

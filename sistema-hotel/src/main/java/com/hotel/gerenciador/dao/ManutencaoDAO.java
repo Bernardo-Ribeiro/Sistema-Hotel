@@ -4,7 +4,6 @@ import com.hotel.gerenciador.model.Manutencao;
 import com.hotel.gerenciador.util.StatusManutencao;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,19 +14,23 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
         return "Manutencao";
     }
     protected String getIdColumnName() {
-        return "QuartoID";
+        return "ManutencaoID";
     }
 
     @Override
     protected Manutencao fromResultSet(ResultSet rs) throws SQLException {
-        int idQuarto = rs.getInt("QuartoID");
-        LocalDate dataInicio = rs.getDate("DataInicio").toLocalDate();
-        LocalDate dataFim = rs.getDate("DataFim") != null ? rs.getDate("DataFim").toLocalDate() : null;
-        String descricao = rs.getString("Descricao");
-        StatusManutencao status = StatusManutencao.valueOf(rs.getString("Status"));
-        int idFuncionario = rs.getInt("FuncionarioID");
+        Manutencao manutencao = new Manutencao(
+            rs.getInt("QuartoID"),
+            rs.getDate("DataInicio").toLocalDate(),
+            rs.getDate("DataFim") != null ? rs.getDate("DataFim").toLocalDate() : null,
+            rs.getString("Descricao"),
+            StatusManutencao.valueOf(rs.getString("Status")),
+            rs.getInt("FuncionarioID")
+        );
 
-        return new Manutencao(idQuarto, dataInicio, dataFim, descricao, status, idFuncionario);
+        manutencao.setId(rs.getInt("ManutencaoID"));
+
+        return manutencao;
     }
 
     public boolean insert(Manutencao manutencao) throws SQLException {

@@ -6,6 +6,7 @@ import com.hotel.gerenciador.util.StatusPagamento;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PagamentoService {
@@ -19,10 +20,6 @@ public class PagamentoService {
     public boolean addPagamento(Pagamento pagamento) {
         if (pagamento.getValor() == null || pagamento.getValor().compareTo(BigDecimal.ZERO) <= 0) { //
             throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
-        }
-
-        if (pagamento.getStatus() == StatusPagamento.PAGO) {
-            throw new IllegalArgumentException("O pagamento já está concluído.");
         }
 
         try {
@@ -74,6 +71,14 @@ public class PagamentoService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    public List<Pagamento> getPagamentosPorReservaId(int reservaId) {
+        try {
+            return pagamentoDAO.findByReservaId(reservaId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

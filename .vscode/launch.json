@@ -3,18 +3,11 @@
   "configurations": [
     {
         "type": "java",
-        "name": "Main",
-        "request": "launch",
-        "mainClass": "com.hotel.gerenciador.Main",
-        "projectName": "sistema-hotel"
-    },
-    {
-        "type": "java",
         "name": "Rodar JavaFX",
         "request": "launch",
         "mainClass": "com.hotel.gerenciador.Main",
-        "vmArgs": "--module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml",
-        "projectName": "sistema-hotel"
+        "projectName": "sistema-hotel",
+        "vmArgs": "--module-path \"C:/javafx-sdk/lib\" --add-modules javafx.controls,javafx.fxml --enable-native-access=ALL-UNNAMED"
     }
-]
+  ]
 }
