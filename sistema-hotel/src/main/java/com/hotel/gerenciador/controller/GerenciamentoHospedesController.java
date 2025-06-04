@@ -5,7 +5,7 @@ import com.hotel.gerenciador.service.HospedeService;
 import com.hotel.gerenciador.util.Formatter;
 import com.hotel.gerenciador.util.Validator;
 
-import javafx.application.Platform; // Import para formatação as-you-type
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,12 +23,11 @@ public class GerenciamentoHospedesController {
     @FXML private TextField txtCpfHospede;
     @FXML private TextField txtTelefoneHospede;
     @FXML private TextField txtEmailHospede;
-    // Campos de endereço separados
     @FXML private TextField txtLogradouroHospede;
     @FXML private TextField txtBairroHospede;
     @FXML private TextField txtLocalidadeUfHospede;
     @FXML private TextField txtCepHospede;
-    // @FXML private TextArea txtEnderecoHospede; // Removido
+
     @FXML private DatePicker dpDataNascimentoHospede;
     @FXML private Button btnSalvarHospede;
     @FXML private Button btnNovoHospede;
@@ -48,7 +47,6 @@ public class GerenciamentoHospedesController {
     private ObservableList<Hospede> listaHospedesObservavel;
     private Hospede hospedeSelecionadoParaEdicao = null;
 
-    // Flags para controlar recursão nos listeners de formatação
     private boolean isFormattingCpf = false;
     private boolean isFormattingTelefone = false;
     private boolean isFormattingCep = false;
@@ -63,7 +61,7 @@ public class GerenciamentoHospedesController {
         configurarTabelaHospedes();
         carregarHospedesNaTabela();
         configurarListeners();
-        configurarFormatadoresDeTexto(); // Novo método para formatadores
+        configurarFormatadoresDeTexto();
         limparFormulario(); 
         btnExcluirHospede.setDisable(true);
     }
@@ -88,19 +86,17 @@ public class GerenciamentoHospedesController {
                 } else {
                     hospedeSelecionadoParaEdicao = null;
                     btnExcluirHospede.setDisable(true);
-                    // Considerar se deve limpar o formulário aqui ou apenas pelo botão "Novo"
                 }
             });
     }
 
     private void configurarFormatadoresDeTexto() {
-        // Formatação para CPF
         txtCpfHospede.textProperty().addListener((observable, oldValue, newValue) -> {
             if (isFormattingCpf) return;
             isFormattingCpf = true;
 
             String digitsOnly = newValue.replaceAll("\\D", "");
-            String formattedCpf = digitsOnly; // Inicia com os dígitos
+            String formattedCpf = digitsOnly;
 
             if (digitsOnly.length() > 9) {
                 formattedCpf = String.format("%s.%s.%s-%s",
@@ -119,19 +115,18 @@ public class GerenciamentoHospedesController {
                     digitsOnly.substring(3));
             }
             
-            if (formattedCpf.length() > 14) { // Limita ao tamanho do formato 000.000.000-00
+            if (formattedCpf.length() > 14) {
                 formattedCpf = formattedCpf.substring(0, 14);
             }
 
             final String finalFormattedCpf = formattedCpf;
-            Platform.runLater(() -> { // Platform.runLater para evitar problemas de concorrência na UI
+            Platform.runLater(() -> {
                 txtCpfHospede.setText(finalFormattedCpf);
-                txtCpfHospede.positionCaret(finalFormattedCpf.length()); // Põe o cursor no final
+                txtCpfHospede.positionCaret(finalFormattedCpf.length());
                 isFormattingCpf = false;
             });
         });
 
-        // Formatação para Telefone
         txtTelefoneHospede.textProperty().addListener((observable, oldValue, newValue) -> {
             if (isFormattingTelefone) return;
             isFormattingTelefone = true;
@@ -149,7 +144,8 @@ public class GerenciamentoHospedesController {
                     digitsOnly.substring(0, 2), 
                     digitsOnly.substring(2, 6), 
                     digitsOnly.substring(6, 10));
-            } else if (digitsOnly.length() > 7) { // Inicia formatação de (XX) XXXXX-... ou (XX) XXXX-...
+
+            } else if (digitsOnly.length() > 7) {
                  if (newValue.startsWith("(") && digitsOnly.length() > 2) {
                     formattedPhone = "(" + digitsOnly.substring(0, 2) + ") " + digitsOnly.substring(2);
                  } else if (digitsOnly.length() > 2) {
@@ -161,7 +157,6 @@ public class GerenciamentoHospedesController {
                  formattedPhone = "(" + digitsOnly;
             }
 
-            // Limitar o tamanho máximo da string formatada (ex: (XX) XXXXX-XXXX tem 15 chars)
             if (formattedPhone.length() > 15) {
                 formattedPhone = formattedPhone.substring(0, 15);
             }
@@ -178,9 +173,9 @@ public class GerenciamentoHospedesController {
                 if (isFormattingCep) return;
                 isFormattingCep = true;
 
-                String digitsOnly = newValue.replaceAll("\\D", ""); // Remove tudo que não for dígito
+                String digitsOnly = newValue.replaceAll("\\D", "");
 
-                if (digitsOnly.length() > 8) { // Limita a 8 dígitos
+                if (digitsOnly.length() > 8) {
                     digitsOnly = digitsOnly.substring(0, 8);
                 }
 
@@ -188,7 +183,6 @@ public class GerenciamentoHospedesController {
                 if (digitsOnly.length() > 5) {
                     formattedCep = digitsOnly.substring(0, 5) + "-" + digitsOnly.substring(5);
                 }
-                // Não formata se tiver 5 dígitos ou menos, apenas mostra os dígitos
 
                 final String finalFormattedCep = formattedCep;
                 Platform.runLater(() -> {
@@ -216,9 +210,8 @@ public class GerenciamentoHospedesController {
         txtEmailHospede.setText(hospede.getEmail());
         dpDataNascimentoHospede.setValue(hospede.getDataNascimento());
 
-        // Parse do endereço combinado para os campos separados
         if (hospede.getEndereco() != null && !hospede.getEndereco().isEmpty()) {
-            String[] partesEndereco = hospede.getEndereco().split(",", 4); // Limita a 4 partes
+            String[] partesEndereco = hospede.getEndereco().split(",", 4);
             txtLogradouroHospede.setText(partesEndereco.length > 0 ? partesEndereco[0].trim() : "");
             txtBairroHospede.setText(partesEndereco.length > 1 ? partesEndereco[1].trim() : "");
             txtLocalidadeUfHospede.setText(partesEndereco.length > 2 ? partesEndereco[2].trim() : "");
@@ -239,14 +232,11 @@ public class GerenciamentoHospedesController {
         String email = txtEmailHospede.getText();
         LocalDate dataNascimento = dpDataNascimentoHospede.getValue();
 
-        // Obter dados dos campos de endereço separados
         String logradouro = txtLogradouroHospede.getText();
         String bairro = txtBairroHospede.getText();
         String localidadeUf = txtLocalidadeUfHospede.getText();
         String cep = txtCepHospede.getText();
 
-        // Montar a string de endereço no formato esperado pelo Validator
-        // Só montar e validar se algum campo do endereço foi preenchido
         String enderecoCompleto = "";
         boolean enderecoPreenchido = (logradouro != null && !logradouro.trim().isEmpty()) ||
                                    (bairro != null && !bairro.trim().isEmpty()) ||
@@ -254,7 +244,6 @@ public class GerenciamentoHospedesController {
                                    (cep != null && !cep.trim().isEmpty());
         
         if (enderecoPreenchido) {
-             // Garante que todos os componentes existam para formar a string completa, mesmo que vazios, para a validação.
             enderecoCompleto = String.format("%s, %s, %s, %s",
                 logradouro != null ? logradouro.trim() : "",
                 bairro != null ? bairro.trim() : "",
@@ -274,8 +263,6 @@ public class GerenciamentoHospedesController {
 
             String telefoneLimpo = (telefoneInput != null) ? telefoneInput.replaceAll("[^0-9]", "") : "";
             if (telefoneLimpo != null && !telefoneLimpo.trim().isEmpty()) {
-                 // Validator.validateTelefone espera o telefone formatado ou uma sequência de dígitos.
-                 // Se o seu validador for muito estrito com o formato de entrada, ajuste aqui.
                 Validator.validateTelefone(telefoneInput); 
             }
             
@@ -283,15 +270,14 @@ public class GerenciamentoHospedesController {
                 Validator.validateEmail(email);
             }
 
-            if (enderecoPreenchido) { // Validar endereço somente se algo foi preenchido
+            if (enderecoPreenchido) {
                 Validator.validateEndereco(enderecoCompleto);
             }
             
             if (dataNascimento != null) {
                 Validator.validateNotFutureDate(dataNascimento);
             } else {
-                 // Considerar se data de nascimento é obrigatória
-                 // throw new IllegalArgumentException("Data de nascimento é obrigatória.");
+                 throw new IllegalArgumentException("Data de nascimento é obrigatória.");
             }
 
 
@@ -315,9 +301,9 @@ public class GerenciamentoHospedesController {
 
             hospede.setNome(nome.trim());
             hospede.setCpf(cpfLimpo); 
-            hospede.setTelefone(telefoneInput != null ? telefoneInput.trim() : null); // Salva o telefone como foi digitado (ou limpo)
+            hospede.setTelefone(telefoneInput != null ? telefoneInput.trim() : null);
             hospede.setEmail(email != null ? email.trim() : null);
-            hospede.setEndereco(enderecoPreenchido ? enderecoCompleto : null); // Salva endereço combinado ou null
+            hospede.setEndereco(enderecoPreenchido ? enderecoCompleto : null);
             hospede.setDataNascimento(dataNascimento);
             
             boolean sucesso;
@@ -393,7 +379,7 @@ public class GerenciamentoHospedesController {
         txtCpfHospede.clear();
         txtTelefoneHospede.clear();
         txtEmailHospede.clear();
-        // Limpar novos campos de endereço
+        
         txtLogradouroHospede.clear();
         txtBairroHospede.clear();
         txtLocalidadeUfHospede.clear();

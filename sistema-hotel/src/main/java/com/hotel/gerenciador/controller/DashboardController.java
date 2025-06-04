@@ -2,7 +2,6 @@ package com.hotel.gerenciador.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -63,17 +62,17 @@ public class DashboardController {
 
     @FXML
     private void abrirGerenciamentoHospedes() {
-        loadView("/view/GerenciamentoHospedes.fxml"); // Ajuste o caminho conforme sua estrutura
+        loadView("/view/GerenciamentoHospedes.fxml");
     }
 
     @FXML
     private void abrirFuncionarios() {
-        loadView("/view/Funcionarios.fxml");
+        loadView("/view/GerenciamentoFuncionario.fxml");
     }
 
     @FXML
     private void abrirManutencao() {
-        loadView("/view/Manutencao.fxml");
+        loadView("/view/GerenciamentoManutencao.fxml");
     }
 
     @FXML
@@ -89,15 +88,12 @@ public class DashboardController {
 
     private void loadView(String fxmlPath) {
         try {
-            // Limpa o conteúdo anterior
             mainContent.getChildren().clear();
-            // Carrega a nova view
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent view = loader.load();
             mainContent.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
-            // Mostrar alerta de erro ao carregar view
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao Carregar Tela");

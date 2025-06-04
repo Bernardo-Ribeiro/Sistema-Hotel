@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10.0" style="-fx-background-color: #f0f2f5; -fx-padding: 15;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoFuncionariosController">
+    <children>
+        <Label text="💼 Gerenciamento de Funcionários" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+        <GridPane hgap="10" vgap="8">
+            <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtNomeFuncionario" promptText="Nome completo" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250"/>
+
+            <Label text="CPF:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtCpfFuncionario" promptText="000.000.000-00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Telefone:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtTelefoneFuncionario" promptText="(00) 00000-0000" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Email:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtEmailFuncionario" promptText="email@example.com" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            
+            <Label text="Cargo:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <TextField fx:id="txtCargoFuncionario" promptText="Ex: Recepcionista" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="250"/>
+
+            <Label text="Salário (R$):" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+            <TextField fx:id="txtSalarioFuncionario" promptText="Ex: 2500.75" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+            <Label text="Data Admissão:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+            <DatePicker fx:id="dpDataAdmissaoFuncionario" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="250"/>
+            
+            <Label text="Endereço:" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+            <TextField fx:id="txtEnderecoFuncionario" promptText="Rua, Número, Bairro, Cidade - UF, CEP" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="100"/> 
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints halignment="RIGHT" minWidth="100"/> 
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+        </GridPane>
+
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0 5 0;">
+            <Button fx:id="btnNovoFuncionario" text="✨ Novo / Limpar" onAction="#handleNovoFuncionario"/>
+            <Button fx:id="btnSalvarFuncionario" text="💾 Salvar Funcionário" onAction="#handleSalvarFuncionario" style="-fx-base: #27ae60;"/>
+            <Button fx:id="btnDemitirFuncionario" text="🚪 Demitir Selecionado" onAction="#handleDemitirFuncionario" style="-fx-base: #e74c3c;" />
+            <Button fx:id="btnRegistrarPagamento" text="💰 Registrar Pagamento" onAction="#handleRegistrarPagamento" style="-fx-base: #3498db;"/>
+        </HBox>
+
+        <TextField fx:id="txtBuscaFuncionario" promptText="Buscar por nome, CPF ou cargo..." />
+        <Button fx:id="btnBuscarFuncionarios" text="🔎 Buscar Funcionários" onAction="#handleBuscarFuncionarios" maxWidth="Infinity"/>
+
+        <TableView fx:id="tblFuncionarios" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colFuncionarioId" text="ID" prefWidth="40"/>
+                <TableColumn fx:id="colNomeFuncionario" text="Nome" prefWidth="180"/>
+                <TableColumn fx:id="colCargoFuncionario" text="Cargo" prefWidth="120"/>
+                <TableColumn fx:id="colSalarioFuncionario" text="Salário" prefWidth="100"/>
+                <TableColumn fx:id="colCpfFuncionario" text="CPF" prefWidth="110"/>
+                <TableColumn fx:id="colTelefoneFuncionario" text="Telefone" prefWidth="110"/>
+                <TableColumn fx:id="colDataAdmissaoFuncionario" text="Admissão" prefWidth="100"/>
+                <TableColumn fx:id="colEmailFuncionario" text="Email" prefWidth="150"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </children>
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+</VBox>

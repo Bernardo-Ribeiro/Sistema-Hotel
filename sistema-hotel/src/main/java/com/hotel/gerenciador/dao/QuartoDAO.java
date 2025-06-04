@@ -108,4 +108,20 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         }
         return quartosDoTipo;
     }
+    public Quarto findByNumero(int numeroQuarto) throws SQLException {
+        String sql = "SELECT * FROM " + getTableName() + " WHERE NumeroQuarto = ?";
+        Quarto quarto = null;
+
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, numeroQuarto);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                quarto = fromResultSet(rs);
+            }
+        }
+        return quarto;
+    }
 }

@@ -43,29 +43,34 @@ public class Validator {
     }
 
     public static void validateCpf(String cpf) {
-        if (cpf == null || cpf.length() != 11) {
-            throw new IllegalArgumentException("O CPF precisa ter 11 dígitos.");
+        System.out.println("Validator.validateCpf: Recebido cpf = [" + cpf + "]");
+        if (cpf == null) {
+            throw new IllegalArgumentException("O CPF não pode ser nulo.");
         }
 
-        if (!isValidCpf(cpf)) {
-            throw new IllegalArgumentException("O CPF fornecido é inválido.");
-        }
-    }
-
-    private static boolean isValidCpf(String cpf) {
         String cpfLimpo = cpf.replaceAll("\\D", "");
+        System.out.println("Validator.validateCpf: cpfLimpo = [" + cpfLimpo + "], length = " + cpfLimpo.length());
 
         if (cpfLimpo.length() != 11) {
-            return false;
+            throw new IllegalArgumentException("O CPF precisa ter 11 dígitos numéricos. (Valor processado: " + cpfLimpo + ")");
         }
-        if (cpfLimpo.matches("(\\d)\\1{10}")) {
+
+        if (!isValidCpfInternal(cpfLimpo)) {
+            System.err.println("Validator.validateCpf: isValidCpfInternal retornou false para cpfLimpo = [" + cpfLimpo + "]");
+            throw new IllegalArgumentException("O CPF fornecido é inválido (dígitos verificadores não conferem).");
+        }
+        System.out.println("Validator.validateCpf: CPF [" + cpfLimpo + "] validado com sucesso.");
+    }
+
+    private static boolean isValidCpfInternal(String cpfLimpoDe11Digitos) {
+        if (cpfLimpoDe11Digitos.matches("(\\d)\\1{10}")) {
             return false;
         }
 
         int[] multiplicador1 = {10, 9, 8, 7, 6, 5, 4, 3, 2};
         int[] multiplicador2 = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
 
-        String cpfCalculado = cpfLimpo.substring(0, 9);
+        String cpfCalculado = cpfLimpoDe11Digitos.substring(0, 9);
         int soma = 0;
         for (int i = 0; i < 9; i++) {
             soma += Integer.parseInt(String.valueOf(cpfCalculado.charAt(i))) * multiplicador1[i];
@@ -84,7 +89,7 @@ public class Validator {
         int digito2 = resto < 2 ? 0 : 11 - resto;
         cpfCalculado += digito2;
 
-        return cpfLimpo.equals(cpfCalculado);
+        return cpfLimpoDe11Digitos.equals(cpfCalculado); 
     }
 
     public static void validatePassword(String senha) {

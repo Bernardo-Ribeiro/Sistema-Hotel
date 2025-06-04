@@ -129,4 +129,18 @@ public class QuartoService {
             return Collections.emptyList();
         }
     }
+    public Quarto findQuartoByNumero(int numeroQuarto) {
+        if (numeroQuarto <= 0) {
+            System.err.println("Tentativa de buscar quarto com número inválido: " + numeroQuarto);
+            new IllegalArgumentException("O número do quarto deve ser positivo.");
+            return null;
+        }
+        try {
+            return quartoDAO.findByNumero(numeroQuarto);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar quarto pelo número " + numeroQuarto + ": " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

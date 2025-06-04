@@ -9,7 +9,7 @@
         
         <GridPane hgap="10" vgap="8">
             <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtNomeHospede" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="300"/>
+            <TextField fx:id="txtNomeHospede" promptText="Nome completo" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="300"/>
             
             <Label text="CPF:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <TextField fx:id="txtCpfHospede" promptText="000.000.000-00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -18,7 +18,7 @@
             <TextField fx:id="txtTelefoneHospede" promptText="(00) 00000-0000" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
             
             <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-            <TextField fx:id="txtEmailHospede" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="300"/>
+            <TextField fx:id="txtEmailHospede" promptText="email@example.com" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="300"/>
             
             <Label text="Data Nasc.:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
             <DatePicker fx:id="dpDataNascimentoHospede" GridPane.rowIndex="1" GridPane.columnIndex="3"/>

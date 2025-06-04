@@ -54,4 +54,30 @@ public class ManutencaoService {
             return null;
         }
     }
+    public boolean updateManutencao(Manutencao manutencao) {
+        try {
+            return manutencaoDAO.update(manutencao);
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar manutenção: " + e.getMessage());
+            return false;
+        }
+    }
+    public List<Manutencao> getAllManutencoes() {
+        try {
+            return manutencaoDAO.findAll();
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar todas as manutenções: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean deleteManutencao(int idManutencao) {
+        try {
+            return manutencaoDAO.delete(idManutencao);
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir manutenção: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

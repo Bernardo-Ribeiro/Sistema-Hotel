@@ -1,13 +1,12 @@
 package com.hotel.gerenciador.controller;
 
-import com.hotel.gerenciador.model.Hospede;
 import com.hotel.gerenciador.model.Quarto;
 import com.hotel.gerenciador.model.Reserva;
 import com.hotel.gerenciador.model.Pagamento;
-import com.hotel.gerenciador.model.Consumo;      // For products
-import com.hotel.gerenciador.model.ConsumoServicos; // For hotel services
-import com.hotel.gerenciador.model.Produto;   // For product details
-import com.hotel.gerenciador.model.Servico;   // For service details
+import com.hotel.gerenciador.model.Consumo;
+import com.hotel.gerenciador.model.ConsumoServicos;
+import com.hotel.gerenciador.model.Produto;
+import com.hotel.gerenciador.model.Servico;
 import com.hotel.gerenciador.viewmodel.ReservaViewModel;
 import com.hotel.gerenciador.service.HospedeService;
 import com.hotel.gerenciador.service.QuartoService;
@@ -44,9 +43,8 @@ import java.util.Optional;
 
 public class CheckInController {
 
-    // == ViewModel Interna para ComboBox de Consumíveis ==
     public static class ItemCobrancaViewModel {
-        private Object item; // Pode ser Produto ou Servico
+        private Object item;
         private String displayName;
         private java.math.BigDecimal price;
         private boolean isProduto;
@@ -103,7 +101,6 @@ public class CheckInController {
     @FXML private Label lblCINomeHospede, lblCICPF, lblCITelefone, lblCIEmail;
     @FXML private Label lblCINumQuarto, lblCITipoQuarto, lblCIDatasEstadia, lblCIValorTotalReserva, lblCIStatusPagamento;
     @FXML private ComboBox<Quarto> cmbCIQuartoDisponivel;
-    // @FXML private TextArea txtCIObservacoes; // Removido conforme decisão do usuário
     @FXML private CheckBox chkCIDocumentosConfirmados;
     @FXML private Button btnConfirmarCheckIn;
     @FXML private ComboBox<MetodoPagamento> cmbCIPagamentoMetodo;
@@ -138,7 +135,6 @@ public class CheckInController {
 
     private ReservaService reservaService;
     private QuartoService quartoService;
-    private HospedeService hospedeService; 
     private PagamentoService pagamentoService;
     private ConsumoService produtoConsumoService;
     private ConsumoServicosService servicoConsumoService;
@@ -154,7 +150,7 @@ public class CheckInController {
     public CheckInController() {
         this.reservaService = new ReservaService();
         this.quartoService = new QuartoService();
-        this.hospedeService = new HospedeService(); 
+        new HospedeService(); 
         this.pagamentoService = new PagamentoService();
         this.produtoConsumoService = new ConsumoService();
         this.servicoConsumoService = new ConsumoServicosService();
@@ -201,13 +197,13 @@ public class CheckInController {
         tblChegadas.setItems(listaChegadas);
         tblChegadas.setPlaceholder(new Label("Nenhuma chegada para a data/filtros selecionados."));
         tblChegadas.getSelectionModel().selectedItemProperty().addListener(
-            (obs, oldSelection, newSelectionVM) -> { // newSelectionVM é ReservaViewModel
+            (obs, oldSelection, newSelectionVM) -> {
                 Reserva reserva = null;
                 if (newSelectionVM != null) {
                     reserva = reservaService.findReservaPorId(newSelectionVM.idProperty().get());
                 }
-                this.reservaSelecionadaParaCheckIn = reserva; // Atualiza o membro da classe
-                mostrarDetalhesCheckInUI(this.reservaSelecionadaParaCheckIn); // Passa o membro da classe
+                this.reservaSelecionadaParaCheckIn = reserva;
+                mostrarDetalhesCheckInUI(this.reservaSelecionadaParaCheckIn);
             });
 
         colSaidaHospede.setCellValueFactory(cellData -> cellData.getValue().clienteProperty());
@@ -227,9 +223,8 @@ public class CheckInController {
         tblHospedesSaidas.setItems(listaHospedesSaidas);
         tblHospedesSaidas.setPlaceholder(new Label("Nenhum hóspede na casa ou saída para a data/filtros."));
         
-        // CORREÇÃO DO LISTENER tblHospedesSaidas
         tblHospedesSaidas.getSelectionModel().selectedItemProperty().addListener(
-            (obs, oldSelection, newSelectionVM) -> { // newSelectionVM é ReservaViewModel
+            (obs, oldSelection, newSelectionVM) -> {
                 Reserva novaReservaSelecionada = null;
                 if (newSelectionVM != null) {
                    novaReservaSelecionada = reservaService.findReservaPorId(newSelectionVM.idProperty().get());
@@ -281,7 +276,7 @@ public class CheckInController {
     
     private void configurarPainelDetalhes() {
         limparDetalhesCheckIn();
-        limparDetalhesCheckOut(); // Esta chamada já anula reservaSelecionadaParaCheckOut
+        limparDetalhesCheckOut();
         if (chkCIDocumentosConfirmados != null) chkCIDocumentosConfirmados.setSelected(false);
         if (chkCOConsumosConfirmados != null) chkCOConsumosConfirmados.setSelected(false);
         
@@ -325,7 +320,6 @@ public class CheckInController {
         carregarChegadas(dataSelecionada, termoBusca);
         carregarHospedesSaidas(dataSelecionada, termoBusca);
         
-        // Chamadas de limpeza e clearSelection permanecem aqui, pois é uma atualização completa
         limparDetalhesCheckIn(); 
         limparDetalhesCheckOut();
         if (tblChegadas != null) tblChegadas.getSelectionModel().clearSelection();
@@ -414,7 +408,7 @@ public class CheckInController {
     }
 
     private BigDecimal calcularTotalPagoParaReserva(int reservaId) {
-        if (pagamentoService == null) { // Defensiva
+        if (pagamentoService == null) {
              System.err.println("PagamentoService não inicializado em CheckInController!");
             return BigDecimal.ZERO;
         }
@@ -489,15 +483,12 @@ public class CheckInController {
         }
     }
 
-    // Método renomeado para clareza
     private void mostrarDetalhesCheckInUI(Reserva reserva) {
-        // this.reservaSelecionadaParaCheckIn já é atualizado pelo listener
         if (reserva == null) {
-            limparDetalhesCheckIn(); // Este já anula this.reservaSelecionadaParaCheckIn
+            limparDetalhesCheckIn();
             return;
         }
 
-        // Preenche a UI com base no parâmetro 'reserva'
         if (reserva.getHospede() != null && reserva.getQuarto() != null) {
             lblCINomeHospede.setText(reserva.getHospede().getNome());
             lblCICPF.setText(Formatter.formatCpf(reserva.getHospede().getCpf()));
@@ -569,7 +560,6 @@ public class CheckInController {
             cmbCIQuartoDisponivel.getItems().clear();
             cmbCIQuartoDisponivel.setDisable(true);
         }
-        // txtCIObservacoes.clear(); // Removido pois txtCIObservacoes não é mais um campo FXML
         if (cmbCIPagamentoMetodo != null) {
             cmbCIPagamentoMetodo.getSelectionModel().clearSelection(); 
             cmbCIPagamentoMetodo.setDisable(true);
@@ -586,7 +576,6 @@ public class CheckInController {
 
     @FXML
     private void handleRegistrarPagamentoCheckIn() {
-        // CORRIGIDO: Usar reservaSelecionadaParaCheckIn
         if (reservaSelecionadaParaCheckIn == null) { 
             mostrarAlerta("Ação Inválida", "Nenhuma reserva selecionada para registrar pagamento.");
             return;
@@ -606,14 +595,12 @@ public class CheckInController {
         novoPagamento.setValor(valorPago);
         novoPagamento.setMetodo(metodo);
         novoPagamento.setDataPagamento(LocalDate.now());
-        // Assumindo que o PagamentoService.addPagamento foi ajustado para aceitar PAGO
-        // ou que o fluxo de negócio implica que este pagamento já é considerado PAGO.
         novoPagamento.setStatus(StatusPagamento.PAGO); 
 
         try {
             if (pagamentoService.addPagamento(novoPagamento)) {
                mostrarAlerta("Sucesso", "Pagamento de " + Formatter.formatCurrency(valorPago) + " registrado para a reserva.");
-               mostrarDetalhesCheckInUI(reservaSelecionadaParaCheckIn); // CORRIGIDO: Usar o método de UI
+               mostrarDetalhesCheckInUI(reservaSelecionadaParaCheckIn);
             } else {
                mostrarAlerta("Erro", "Não foi possível registrar o pagamento (retorno do serviço foi false).");
             }
@@ -695,9 +682,7 @@ public class CheckInController {
                 return; 
             }
 
-            reserva.setStatus(StatusReserva.HOSPEDADO); 
-            // if (reserva.getDataRealCheckIn() == null) reserva.setDataRealCheckIn(LocalDate.now()); // Se tiver o campo observacoes no seu modelo
-            // reserva.setObservacoes(txtCIObservacoes.getText()); // Removido
+            reserva.setStatus(StatusReserva.HOSPEDADO);
             
             if (!reservaService.upReserva(reserva)) {
                 quartoAtualizadoNoSistema.setStatus(StatusQuarto.DISPONIVEL); 
@@ -736,13 +721,11 @@ public class CheckInController {
         cmbCOItemParaAdicionar.setItems(itensCobraveis);
     }
 
-    // MÉTODO RENOMEADO E CORRIGIDO
     private void atualizarPainelDetalhesCheckOutUI(Reserva reserva) { 
         if (reserva == null) {
             limparDetalhesCheckOut(); 
             return;
         }
-        // this.reservaSelecionadaParaCheckOut já foi setado pelo listener
         System.out.println("atualizarPainelDetalhesCheckOutUI: Processando Reserva ID: " + reserva.getId());
 
         if (reserva.getHospede() != null && reserva.getQuarto() != null) {
@@ -841,7 +824,7 @@ public class CheckInController {
                 if (registrarPagamentoHabilitado) {
                     txtCOValorPago.setText(saldoDevedorVal.toString().replace(".",","));
                 } else {
-                    txtCOValorPago.clear(); // Limpa se não houver saldo a pagar
+                    txtCOValorPago.clear();
                 }
             }
         }  else {
@@ -885,7 +868,7 @@ public class CheckInController {
         }
         
         System.out.println("limparDetalhesCheckOut: Limpando reservaSelecionadaParaCheckOut. Valor anterior: " + (this.reservaSelecionadaParaCheckOut != null ? "ID " + this.reservaSelecionadaParaCheckOut.getId() : "null"));
-        this.reservaSelecionadaParaCheckOut = null; // GARANTE QUE A VARIÁVEL DE MEMBRO SEJA ANULADA
+        this.reservaSelecionadaParaCheckOut = null;
     }
 
     @FXML
@@ -937,9 +920,7 @@ public class CheckInController {
                 Servico servico = (Servico) itemSelecionado.getItem();
                 nomeItemAdicionado = servico.getNome();
 
-                // Assumindo que ConsumoServicos tem um construtor padrão e setters,
-                // ou ajuste para o construtor correto.
-                ConsumoServicos novoConsumoServico = new ConsumoServicos(0,0,0,0,null,null,null); // Placeholder, ajuste conforme seu modelo
+                ConsumoServicos novoConsumoServico = new ConsumoServicos(0,0,0,0,null,null,null);
                 novoConsumoServico.setReservaId(reservaSelecionadaParaCheckOut.getId());
                 novoConsumoServico.setServicoId(servico.getId());
                 novoConsumoServico.setQuantidade(quantidade);
@@ -952,7 +933,7 @@ public class CheckInController {
                 mostrarAlerta("Sucesso", "Consumo de " + quantidade + "x " + nomeItemAdicionado + " adicionado.");
                 txtCOConsumoQuantidade.clear();
                 cmbCOItemParaAdicionar.getSelectionModel().clearSelection();
-                atualizarPainelDetalhesCheckOutUI(reservaSelecionadaParaCheckOut); // Usa o método de UI atualizado
+                atualizarPainelDetalhesCheckOutUI(reservaSelecionadaParaCheckOut);
             } else {
                 mostrarAlerta("Erro", "Não foi possível adicionar o consumo. Verifique os logs para mais detalhes.");
             }
@@ -998,7 +979,6 @@ public class CheckInController {
             }
 
             reserva.setStatus(StatusReserva.CONCLUIDA);
-            // if(reserva.getDataRealCheckOut() == null) reserva.setDataRealCheckOut(LocalDate.now()); 
             
             if(!reservaService.upReserva(reserva)){
                 quarto.setStatus(StatusQuarto.OCUPADO); 
@@ -1042,12 +1022,12 @@ public class CheckInController {
         novoPagamento.setValor(valorPago);
         novoPagamento.setMetodo(metodo);
         novoPagamento.setDataPagamento(LocalDate.now()); 
-        novoPagamento.setStatus(StatusPagamento.PAGO); // Assumindo que o PagamentoService.addPagamento aceita PAGO
+        novoPagamento.setStatus(StatusPagamento.PAGO);
         
         try {
             if (pagamentoService.addPagamento(novoPagamento)) {
                mostrarAlerta("Sucesso", "Pagamento de " + Formatter.formatCurrency(valorPago) + " registrado.");
-               atualizarPainelDetalhesCheckOutUI(reserva); // CORRIGIDO: Usar o método de UI atualizado
+               atualizarPainelDetalhesCheckOutUI(reserva);
             } else {
                mostrarAlerta("Erro", "Não foi possível registrar o pagamento (serviço retornou false).");
             }
@@ -1068,19 +1048,17 @@ public class CheckInController {
         try {
             DecimalFormatSymbols symbolsComma = new DecimalFormatSymbols();
             symbolsComma.setDecimalSeparator(',');
-            symbolsComma.setGroupingSeparator('.'); // Considerar ponto como agrupador de milhar
+            symbolsComma.setGroupingSeparator('.');
             DecimalFormat dfComma = new DecimalFormat("#,##0.00", symbolsComma); 
             dfComma.setParseBigDecimal(true);
-            // Remover pontos de milhar antes de tentar o parse, pois o pattern já lida com agrupamento
             valor = (BigDecimal) dfComma.parse(valorStr.trim().replace(".", "")); 
         } catch (java.text.ParseException e) {
             try {
                 DecimalFormatSymbols symbolsDot = new DecimalFormatSymbols();
                 symbolsDot.setDecimalSeparator('.');
-                symbolsDot.setGroupingSeparator(','); // Considerar vírgula como agrupador de milhar
+                symbolsDot.setGroupingSeparator(',');
                 DecimalFormat dfDot = new DecimalFormat("#,##0.00", symbolsDot); 
                 dfDot.setParseBigDecimal(true);
-                 // Remover vírgulas de milhar antes de tentar o parse
                 valor = (BigDecimal) dfDot.parse(valorStr.trim().replace(",", ""));  
             } catch (java.text.ParseException ex) {
                  try { 
