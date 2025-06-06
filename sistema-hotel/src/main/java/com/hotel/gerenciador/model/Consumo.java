@@ -22,19 +22,20 @@ public class Consumo {
     public Consumo(int id, int idReserva, int idProduto, double valor, int quantidade,
                    LocalDate dataConsumo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.idReserva = idReserva;
-        this.idProduto = idProduto;
+        setIdReserva(idReserva);
+        setIdProduto(idProduto);
         setValor(valor);
         setQuantidade(quantidade);
         setDataConsumo(dataConsumo);
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
     }
 
     public int getId() {
         return id;
     }
     public void setId(int id) {
+        Validator.validatePositiveId(id, "ID do consumo");
         this.id = id;
     }
 
@@ -42,6 +43,7 @@ public class Consumo {
         return idReserva;
     }
     public void setIdReserva(int idReserva) {
+        Validator.validatePositiveId(idReserva, "ID da reserva");
         this.idReserva = idReserva;
     }
 
@@ -49,6 +51,7 @@ public class Consumo {
         return idProduto;
     }
     public void setIdProduto(int idProduto) {
+        Validator.validatePositiveId(idProduto, "ID do produto");
         this.idProduto = idProduto;
     }
 
@@ -72,6 +75,7 @@ public class Consumo {
         return dataConsumo;
     }
     public void setDataConsumo(LocalDate dataConsumo) {
+        Validator.validateNotNull(dataConsumo, "Data de consumo");
         Validator.validateNotFutureDate(dataConsumo);
         this.dataConsumo = dataConsumo;
     }
@@ -79,9 +83,21 @@ public class Consumo {
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        if (dataCriacao != null) {
+            Validator.validateNotFutureDateTime(dataCriacao);
+        }
+        this.dataCriacao = dataCriacao;
+    }
 
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
+    }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        if (dataAtualizacao != null) {
+            Validator.validateNotFutureDateTime(dataAtualizacao);
+        }
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     @Override

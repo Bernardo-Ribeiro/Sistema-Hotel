@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hotel.gerenciador.controller.checkin.CheckOutTabController">
+    <top>
+        <Label fx:id="lblHospedesSaidasData" style="-fx-font-size: 16px; -fx-padding: 5;" text="Hóspedes na Casa / Saídas para: DD/MM/YYYY" BorderPane.alignment="CENTER_LEFT" />
+    </top>
+    <center>
+        <TableView fx:id="tblHospedesSaidas" prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TableColumn fx:id="colSaidaHospede" prefWidth="150.0" text="Hóspede" />
+                <TableColumn fx:id="colSaidaQuarto" prefWidth="70.0" text="Quarto" />
+                <TableColumn fx:id="colSaidaDtCheckOutPrevista" prefWidth="120.0" text="Check-out Prev." />
+                <TableColumn fx:id="colSaidaSaldo" prefWidth="120.0" text="Saldo" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </center>
+    <right>
+        <VBox fx:id="paneDetalhesCheckOut" spacing="8.0" style="-fx-padding: 10; -fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;" prefWidth="350.0" visible="false" managed="false">
+            <BorderPane.margin>
+                <Insets left="10.0" />
+            </BorderPane.margin>
+            <children>
+                <Label text="Detalhes para Check-out" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                <GridPane hgap="5.0" vgap="5.0">
+                    <Label text="Hóspede:" GridPane.halignment="RIGHT" /> <Label fx:id="lblCONomeHospede" GridPane.columnIndex="1" style="-fx-font-weight: bold;"/>
+                    <Label text="Quarto Nº:" GridPane.rowIndex="1" GridPane.halignment="RIGHT" /> <Label fx:id="lblCONumQuarto" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Período:" GridPane.rowIndex="2" GridPane.halignment="RIGHT" /> <Label fx:id="lblCODatasEstadia" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                </GridPane>
+
+                <Label text="Adicionar Consumo à Conta:" style="-fx-font-weight: bold;">
+                    <VBox.margin>
+                        <Insets top="10.0" bottom="5.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <children>
+                        <ComboBox fx:id="cmbCOItemParaAdicionar" prefWidth="200.0" promptText="Selecione Produto/Serviço" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtCOConsumoQuantidade" prefWidth="60.0" promptText="Qtd." />
+                        <Button fx:id="btnCOAdicionarConsumo" text="Adicionar" onAction="#handleAdicionarConsumo" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <Label text="Conta / Consumos:" style="-fx-font-weight: bold;">
+                    <VBox.margin>
+                        <Insets top="8.0" />
+                    </VBox.margin>
+                </Label>
+                <TableView fx:id="tblCOContaConsumo" prefHeight="120.0">
+                    <columns>
+                        <TableColumn fx:id="colCOItemConsumo" prefWidth="330.0" text="Item (Descrição e Valor)" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+                <GridPane hgap="5.0" vgap="3.0" style="-fx-font-size: 13px;">
+                    <Label text="Valor Reserva:" GridPane.halignment="RIGHT" GridPane.rowIndex="0" /> <Label fx:id="lblCOTotalReserva" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Total Consumos:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" /> <Label fx:id="lblCOTotalConsumos" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Total da Conta:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" /> <Label fx:id="lblCOTotalConta" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Total Já Pago:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" /> <Label fx:id="lblCOValorJaPago" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="Saldo Devedor:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" style="-fx-text-fill: red; -fx-font-weight: bold;" /> <Label fx:id="lblCOSaldoDevedor" style="-fx-text-fill: red; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" prefWidth="110.0" />
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+                </GridPane>
+                <CheckBox fx:id="chkCOConsumosConfirmados" text="Consumos verificados e lançados">
+                    <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                    </VBox.margin>
+                </CheckBox>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 5 0 0 0;">
+                    <Label text="Pagar Agora:" />
+                    <ComboBox fx:id="cmbCOMetodoPagamento" prefWidth="120.0" promptText="Método"/>
+                    <TextField fx:id="txtCOValorPago" prefWidth="80.0" promptText="Valor" />
+                    <Button fx:id="btnCORegistrarPagamento" text="Registrar" onAction="#handleRegistrarPagamentoFinal" />
+                </HBox>
+                <Button fx:id="btnCOConfirmarCheckOut" text="✔️ Confirmar Check-out" onAction="#handleConfirmarCheckOut" maxWidth="Infinity" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </right>
+</BorderPane> 

@@ -20,6 +20,8 @@ public class Funcionario {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
+    public Funcionario() {}
+
     public Funcionario(int id, String nome, String cargo, double salario, String telefone,
                        String cpf, String email, String endereco, LocalDate dataAdmissao,
                        LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
@@ -47,6 +49,7 @@ public class Funcionario {
         return nome;
     }
     public void setNome(String nome) {
+        Validator.validateNotEmpty(nome, "Nome do funcionário");
         this.nome = nome;
     }
 
@@ -54,6 +57,7 @@ public class Funcionario {
         return cargo;
     }
     public void setCargo(String cargo) {
+        Validator.validateNotEmpty(cargo, "Cargo do funcionário");
         this.cargo = cargo;
     }
 

@@ -26,6 +26,8 @@ public class ConsumoServicos {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+    public ConsumoServicos() {}
+
     public int getId() {
         return id;
     }
@@ -39,6 +41,7 @@ public class ConsumoServicos {
     }
 
     public void setReservaId(int reservaId) {
+        Validator.validatePositiveId(reservaId, "ID da reserva");
         this.reservaId = reservaId;
     }
 
@@ -47,6 +50,7 @@ public class ConsumoServicos {
     }
 
     public void setServicoId(int servicoId) {
+        Validator.validatePositiveId(servicoId, "ID do serviço");
         this.servicoId = servicoId;
     }
 
@@ -64,6 +68,8 @@ public class ConsumoServicos {
     }
 
     public void setDataConsumo(LocalDate dataConsumo) {
+        Validator.validateNotNull(dataConsumo, "Data de consumo");
+        Validator.validateNotFutureDate(dataConsumo);
         this.dataConsumo = dataConsumo;
     }
     

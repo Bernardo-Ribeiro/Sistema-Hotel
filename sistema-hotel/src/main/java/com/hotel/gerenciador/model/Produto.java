@@ -27,14 +27,15 @@ public class Produto {
         setPreco(preco);
         setEstoque(estoque);
         setCategoria(categoria);
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+        setDataCriacao(dataCriacao);
+        setDataAtualizacao(dataAtualizacao);
     }
 
     public int getId() {
         return id;
     }
     public void setId(int id) {
+        Validator.validatePositiveId(id, "ID do produto");
         this.id = id;
     }
 
@@ -42,9 +43,7 @@ public class Produto {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
-        }
+        Validator.validateNotEmpty(nome, "Nome do produto");
         this.nome = nome;
     }
 
@@ -52,9 +51,7 @@ public class Produto {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao != null && descricao.length() > 255) {
-            throw new IllegalArgumentException("A descrição do produto não pode ter mais de 255 caracteres.");
-        }
+        Validator.validateDescription(descricao, 255);
         this.descricao = descricao == null ? "" : descricao.trim();
     }
 
@@ -62,9 +59,7 @@ public class Produto {
         return preco;
     }
     public void setPreco(BigDecimal preco) {
-        if (preco == null || preco.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
-        }
+        Validator.validatePositiveValue(preco);
         this.preco = preco;
     }
 
@@ -82,9 +77,7 @@ public class Produto {
         return categoria;
     }
     public void setCategoria(CategoriaProduto categoria) {
-        if (categoria == null) {
-            throw new IllegalArgumentException("A categoria do produto não pode ser nula.");
-        }
+        Validator.validateEnum(categoria, "Categoria do produto");
         this.categoria = categoria;
     }
 
@@ -103,7 +96,7 @@ public class Produto {
     }
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         if (dataAtualizacao != null) {
-             Validator.validateNotFutureDateTime(dataAtualizacao);
+            Validator.validateNotFutureDateTime(dataAtualizacao);
         }
         this.dataAtualizacao = dataAtualizacao;
     }

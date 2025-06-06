@@ -22,19 +22,6 @@ public class QuartoService {
     }
 
     public boolean addQuarto(Quarto quarto) {
-        if (quarto.getPrecoDiaria() == null || quarto.getPrecoDiaria().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("O preço da diária deve ser maior que zero.");
-        }
-        if (quarto.getNumeroQuarto() <= 0) {
-             throw new IllegalArgumentException("O número do quarto deve ser positivo.");
-        }
-        if (quarto.getTipo() == null) {
-            throw new IllegalArgumentException("O tipo do quarto não pode ser nulo.");
-        }
-        if (quarto.getStatus() == null) {
-            throw new IllegalArgumentException("O status do quarto não pode ser nulo.");
-        }
-
         try {
             return quartoDAO.insert(quarto);
         } catch (SQLException e) {
@@ -83,9 +70,6 @@ public class QuartoService {
             return quartoDAO.delete(quartoId);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
-        } catch (IllegalStateException e) {
-            System.err.println("Erro ao deletar quarto: " + e.getMessage());
             return false;
         }
     }

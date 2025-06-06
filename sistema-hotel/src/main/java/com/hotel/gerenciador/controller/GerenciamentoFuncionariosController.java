@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.text.NumberFormat;
 import java.text.ParseException; 
@@ -22,7 +23,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class GerenciamentoFuncionariosController {
+public class GerenciamentoFuncionariosController extends BaseController {
 
     @FXML private TextField txtNomeFuncionario;
     @FXML private TextField txtCpfFuncionario;
@@ -59,8 +60,8 @@ public class GerenciamentoFuncionariosController {
     private boolean isFormattingTelefone = false;
     private boolean isFormattingSalario = false;
     
-    private static final Pattern NON_NUMERIC = Pattern.compile("[^\\d]");
-    private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    private static final Pattern NON_NUMERIC = Pattern.compile("[^0-9]");
+    private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
 
     public GerenciamentoFuncionariosController() {
         this.funcionarioService = new FuncionarioService();
@@ -244,29 +245,26 @@ public class GerenciamentoFuncionariosController {
 
     @FXML
     private void handleSalvarFuncionario() {
-        String nome = txtNomeFuncionario.getText();
-        String cpfInput = txtCpfFuncionario.getText();
-        String telefoneInput = txtTelefoneFuncionario.getText();
-        String email = txtEmailFuncionario.getText();
-        String cargo = txtCargoFuncionario.getText();
-        String salarioInput = txtSalarioFuncionario.getText();
-        String endereco = txtEnderecoFuncionario.getText();
-        LocalDate dataAdmissao = dpDataAdmissaoFuncionario.getValue();
-
         try {
-            if (nome == null || nome.trim().isEmpty()) {
-                throw new IllegalArgumentException("O nome do funcionário é obrigatório.");
-            }
-            if (cargo == null || cargo.trim().isEmpty()) {
-                throw new IllegalArgumentException("O cargo do funcionário é obrigatório.");
-            }
+            String nome = txtNomeFuncionario.getText();
+            String cpfInput = txtCpfFuncionario.getText();
+            String telefoneInput = txtTelefoneFuncionario.getText();
+            String email = txtEmailFuncionario.getText();
+            String cargo = txtCargoFuncionario.getText();
+            String salarioInput = txtSalarioFuncionario.getText();
+            String endereco = txtEnderecoFuncionario.getText();
+            LocalDate dataAdmissao = dpDataAdmissaoFuncionario.getValue();
 
+            // Validações usando o Validator
+            Validator.validateNotEmpty(nome, "Nome do funcionário");
+            Validator.validateNotEmpty(cargo, "Cargo do funcionário");
+            
             String cpfLimpo = NON_NUMERIC.matcher(cpfInput).replaceAll("");
             Validator.validateCpf(cpfLimpo);
-
+            
             String telefoneLimpo = NON_NUMERIC.matcher(telefoneInput).replaceAll("");
-            Validator.validateTelefone(telefoneLimpo); 
-
+            Validator.validateTelefone(telefoneLimpo);
+            
             if (email != null && !email.trim().isEmpty()) {
                 Validator.validateEmail(email);
             }
@@ -281,43 +279,23 @@ public class GerenciamentoFuncionariosController {
                 }
             }
             Validator.validatePositiveValue(salario);
-
-
-            if (endereco != null && !endereco.trim().isEmpty()){
-                 Validator.validateEndereco(endereco);
+            
+            if (endereco != null && !endereco.trim().isEmpty()) {
+                Validator.validateEndereco(endereco);
             } else {
-                 throw new IllegalArgumentException("Endereço é obrigatório.");
+                throw new IllegalArgumentException("Endereço é obrigatório.");
             }
-
-
+            
             if (dataAdmissao != null) {
                 Validator.validateNotFutureDate(dataAdmissao);
             } else {
-                 throw new IllegalArgumentException("Data de admissão é obrigatória.");
+                throw new IllegalArgumentException("Data de admissão é obrigatória.");
             }
-
-            Funcionario funcionario;
-            boolean isAtualizacao = false;
-            LocalDateTime agora = LocalDateTime.now();
-
-            if (funcionarioSelecionadoParaEdicao != null) {
-                funcionario = funcionarioSelecionadoParaEdicao;
-                if (!funcionario.getCpf().equals(cpfLimpo)) {
-                    Funcionario existenteComCpf = funcionarioService.findFuncionarioPorCpf(cpfLimpo);
-                    if (existenteComCpf != null && existenteComCpf.getId() != funcionario.getId()) {
-                         throw new IllegalArgumentException("O CPF informado já está cadastrado para outro funcionário.");
-                    }
-                }
-                isAtualizacao = true;
-            } else {
-                 Funcionario existenteComCpf = funcionarioService.findFuncionarioPorCpf(cpfLimpo);
-                 if (existenteComCpf != null) {
-                     throw new IllegalArgumentException("O CPF informado já está cadastrado.");
-                 }
-                funcionario = new Funcionario(0, nome.trim(), cargo.trim(), salario, telefoneLimpo, cpfLimpo, 
-                                              (email != null ? email.trim() : null), endereco.trim(), dataAdmissao, agora, agora);
-            }
-
+            
+            // Criar ou atualizar funcionário
+            Funcionario funcionario = funcionarioSelecionadoParaEdicao != null ? 
+                funcionarioSelecionadoParaEdicao : new Funcionario();
+            
             funcionario.setNome(nome.trim());
             funcionario.setCargo(cargo.trim());
             funcionario.setSalario(salario);
@@ -327,26 +305,21 @@ public class GerenciamentoFuncionariosController {
             funcionario.setEndereco(endereco.trim());
             funcionario.setDataAdmissao(dataAdmissao);
             
-            boolean sucesso;
-            if (isAtualizacao) {
-                sucesso = funcionarioService.upFuncionario(funcionario);
+            if (funcionarioSelecionadoParaEdicao == null) {
+                funcionarioService.addFuncionario(funcionario);
+                mostrarAlerta("Sucesso", "Funcionário cadastrado com sucesso!");
             } else {
-                sucesso = funcionarioService.addFuncionario(funcionario);
+                funcionarioService.upFuncionario(funcionario);
+                mostrarAlerta("Sucesso", "Funcionário atualizado com sucesso!");
             }
-
-            if (sucesso) {
-                mostrarAlerta("Sucesso", "Funcionário " + (isAtualizacao ? "atualizado" : "cadastrado") + " com sucesso!");
-                carregarFuncionariosNaTabela();
-                limparFormulario();
-            } else {
-                mostrarAlerta("Erro", "Falha ao " + (isAtualizacao ? "atualizar" : "cadastrar") + " o funcionário.");
-            }
-
+            
+            limparFormulario();
+            carregarFuncionariosNaTabela();
+            
         } catch (IllegalArgumentException e) {
             mostrarAlerta("Erro de Validação", e.getMessage());
         } catch (Exception e) {
-            mostrarAlerta("Erro Inesperado", "Ocorreu um erro: " + e.getMessage());
-            e.printStackTrace();
+            mostrarAlerta("Erro", "Ocorreu um erro ao salvar o funcionário: " + e.getMessage());
         }
     }
 
@@ -486,20 +459,6 @@ public class GerenciamentoFuncionariosController {
 
     }
 
-    private void mostrarAlerta(String titulo, String mensagem) {
-        Alert.AlertType tipo = Alert.AlertType.INFORMATION;
-        if (titulo.toLowerCase().contains("erro") || titulo.toLowerCase().contains("falha")) {
-            tipo = Alert.AlertType.ERROR;
-        } else if (titulo.toLowerCase().contains("aviso") || titulo.toLowerCase().contains("atenção") || titulo.toLowerCase().contains("inválid")) {
-            tipo = Alert.AlertType.WARNING;
-        }
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensagem);
-        alert.showAndWait();
-    }
-    
     private static class DatePickerDialog extends Dialog<LocalDate> {
         public DatePickerDialog(LocalDate initialDate) {
             setTitle("Selecione a Data");

@@ -3,6 +3,7 @@ package com.hotel.gerenciador.service;
 import com.hotel.gerenciador.dao.ConsumoDAO;
 import com.hotel.gerenciador.model.Consumo;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,10 +16,6 @@ public class ConsumoService {
     }
 
     public boolean addConsumo(Consumo consumo) {
-        if (consumo.getQuantidade() <= 0 || consumo.getValor() <= 0) {
-            throw new IllegalArgumentException("Quantidade e valor devem ser maiores que zero.");
-        }
-
         try {
             consumoDAO.insert(consumo);
             return true;
@@ -29,10 +26,6 @@ public class ConsumoService {
     }
 
     public boolean updateConsumo(Consumo consumo) {
-        if (consumo.getQuantidade() <= 0 || consumo.getValor() <= 0) {
-            throw new IllegalArgumentException("Quantidade e valor devem ser maiores que zero.");
-        }
-
         try {
             return consumoDAO.update(consumo);
         } catch (SQLException e) {
@@ -74,6 +67,17 @@ public class ConsumoService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    public BigDecimal calcularTotalConsumos(int reservaId) {
+        try {
+            List<Consumo> consumos = consumoDAO.findByReservaId(reservaId);
+            return consumos.stream()
+                .map(c -> BigDecimal.valueOf(c.getValor()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
         }
     }
 }
