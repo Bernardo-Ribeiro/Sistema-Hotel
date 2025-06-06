@@ -43,13 +43,11 @@ public class Validator {
     }
 
     public static void validateCpf(String cpf) {
-        System.out.println("Validator.validateCpf: Recebido cpf = [" + cpf + "]");
         if (cpf == null) {
             throw new IllegalArgumentException("O CPF não pode ser nulo.");
         }
 
         String cpfLimpo = cpf.replaceAll("\\D", "");
-        System.out.println("Validator.validateCpf: cpfLimpo = [" + cpfLimpo + "], length = " + cpfLimpo.length());
 
         if (cpfLimpo.length() != 11) {
             throw new IllegalArgumentException("O CPF precisa ter 11 dígitos numéricos. (Valor processado: " + cpfLimpo + ")");
@@ -59,7 +57,6 @@ public class Validator {
             System.err.println("Validator.validateCpf: isValidCpfInternal retornou false para cpfLimpo = [" + cpfLimpo + "]");
             throw new IllegalArgumentException("O CPF fornecido é inválido (dígitos verificadores não conferem).");
         }
-        System.out.println("Validator.validateCpf: CPF [" + cpfLimpo + "] validado com sucesso.");
     }
 
     private static boolean isValidCpfInternal(String cpfLimpoDe11Digitos) {
@@ -188,6 +185,48 @@ public class Validator {
     public static void validateDisponibilidade(boolean disponivel) {
         if (!disponivel) {
             throw new IllegalStateException("O quarto não está disponível para o período solicitado.");
+        }
+    }
+
+    public static void validateNotNull(Object value, String fieldName) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + " não pode ser nulo.");
+        }
+    }
+
+    public static void validateNotEmpty(String value, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(fieldName + " não pode ser nulo ou vazio.");
+        }
+    }
+
+    public static void validatePositiveId(int id, String fieldName) {
+        if (id <= 0) {
+            throw new IllegalArgumentException(fieldName + " deve ser um número positivo.");
+        }
+    }
+
+    public static void validateDateRangeWithFutureCheck(LocalDate startDate, LocalDate endDate) {
+        validateNotFutureDate(startDate);
+        validateNotFutureDate(endDate);
+        validateDateRange(startDate, endDate);
+    }
+
+    public static void validateEnum(Object value, String fieldName) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + " não pode ser nulo.");
+        }
+    }
+
+    public static void validateDescription(String description, int maxLength) {
+        if (description != null && description.length() > maxLength) {
+            throw new IllegalArgumentException("A descrição não pode ter mais de " + maxLength + " caracteres.");
+        }
+    }
+
+    public static void validateTrue(boolean condition, String message) {
+        if (!condition) {
+            throw new IllegalArgumentException(message);
         }
     }
 }

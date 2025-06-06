@@ -74,11 +74,10 @@ public class Reserva {
         return dataCheckIn;
     }
     public void setDataCheckIn(LocalDate dataCheckIn) {
-        if (dataCheckIn == null) {
-            throw new IllegalArgumentException("A data de check-in não pode ser nula.");
-        }
-        if (this.dataCheckOut != null && dataCheckIn.isAfter(this.dataCheckOut)) {
-            throw new IllegalArgumentException("A data de check-in não pode ser posterior à data de check-out.");
+        Validator.validateNotNull(dataCheckIn, "Data de check-in");
+        //Validator.validateNotFutureDate(dataCheckIn);
+        if (this.dataCheckOut != null) {
+            Validator.validateDateRange(dataCheckIn, this.dataCheckOut);
         }
         this.dataCheckIn = dataCheckIn;
         this.valorTotal = calcularValorTotal();
@@ -113,6 +112,13 @@ public class Reserva {
 
     public BigDecimal getValorTotal() {
         return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        if (valorTotal != null) {
+            Validator.validatePositiveValue(valorTotal);
+        }
+        this.valorTotal = valorTotal;
     }
 
     public BigDecimal calcularValorTotal() {

@@ -18,10 +18,6 @@ public class PagamentoService {
     }
 
     public boolean addPagamento(Pagamento pagamento) {
-        if (pagamento.getValor() == null || pagamento.getValor().compareTo(BigDecimal.ZERO) <= 0) { //
-            throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
-        }
-
         try {
             return pagamentoDAO.insert(pagamento);
         } catch (SQLException e) {
@@ -79,6 +75,18 @@ public class PagamentoService {
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();
+        }
+    }
+    
+    public BigDecimal calcularTotalPagoParaReserva(int reservaId) {
+        try {
+            List<Pagamento> pagamentos = pagamentoDAO.findByReservaId(reservaId);
+            return pagamentos.stream()
+                .map(Pagamento::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
         }
     }
 }

@@ -1,12 +1,17 @@
 package com.hotel.gerenciador.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Formatter {
+    private static final DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.of("pt", "BR"));
+    
     public static String formatDate(LocalDate date) {
         if (date == null) return "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -20,7 +25,7 @@ public class Formatter {
     }
 
     public static String formatCurrency(double value) {
-        DecimalFormat formatter = new DecimalFormat("R$ #,##0.00");
+        DecimalFormat formatter = new DecimalFormat("R$ #,##0.00;R$ -#,##0.00", symbols);
         return formatter.format(value);
     }
 
@@ -28,7 +33,7 @@ public class Formatter {
         if (value == null) {
             return "R$ 0,00"; 
         }
-        DecimalFormat formatter = new DecimalFormat("R$ #,##0.00");
+        DecimalFormat formatter = new DecimalFormat("R$ #,##0.00;R$ -#,##0.00", symbols);
         return formatter.format(value);
     }
 
@@ -40,7 +45,8 @@ public class Formatter {
                 pattern.append("0");
             }
         }
-        DecimalFormat formatter = new DecimalFormat(pattern.toString());
+        DecimalFormat formatter = new DecimalFormat(pattern.toString(), symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
         return formatter.format(value);
     }
     
@@ -55,7 +61,8 @@ public class Formatter {
                 pattern.append("0");
             }
         }
-        DecimalFormat formatter = new DecimalFormat(pattern.toString());
+        DecimalFormat formatter = new DecimalFormat(pattern.toString(), symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
         return formatter.format(value);
     }
 

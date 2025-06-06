@@ -265,12 +265,20 @@ public class ReservaDAO extends BaseDAO<Reserva> {
         }
 
         if (dataDe != null) {
-            sqlBuilder.append(" AND r.DataCheckIn >= ?");
+            if (status == StatusReserva.HOSPEDADO) {
+                sqlBuilder.append(" AND DATE(r.DataCheckOut) = ?");
+            } else {
+                sqlBuilder.append(" AND DATE(r.DataCheckIn) = ?");
+            }
             params.add(Date.valueOf(dataDe));
         }
 
         if (dataAte != null) {
-            sqlBuilder.append(" AND r.DataCheckIn <= ?");
+            if (status == StatusReserva.HOSPEDADO) {
+                sqlBuilder.append(" AND DATE(r.DataCheckOut) = ?");
+            } else {
+                sqlBuilder.append(" AND DATE(r.DataCheckIn) = ?");
+            }
             params.add(Date.valueOf(dataAte));
         }
 

@@ -39,9 +39,7 @@ public class Servico {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("Nome do serviço não pode ser nulo ou vazio.");
-        }
+        Validator.validateNotEmpty(nome, "Nome do serviço");
         this.nome = nome;
     }
 
@@ -49,10 +47,8 @@ public class Servico {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao != null && descricao.length() > 255) {
-            throw new IllegalArgumentException("Descrição do serviço não pode ter mais de 255 caracteres.");
-        }
-        this.descricao = (descricao == null) ? "" : descricao.trim();
+        Validator.validateDescription(descricao, 255);
+        this.descricao = descricao == null ? "" : descricao.trim();
     }
 
     public BigDecimal getPreco() {

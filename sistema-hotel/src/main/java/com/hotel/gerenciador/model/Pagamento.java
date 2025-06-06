@@ -68,6 +68,7 @@ public class Pagamento {
         return metodo;
     }
     public void setMetodo(MetodoPagamento metodo) {
+        Validator.validateEnum(metodo, "Método de pagamento");
         this.metodo = metodo;
     }
 
@@ -75,6 +76,7 @@ public class Pagamento {
         return status;
     }
     public void setStatus(StatusPagamento status) {
+        Validator.validateEnum(status, "Status do pagamento");
         this.status = status;
     }
 
@@ -82,6 +84,7 @@ public class Pagamento {
         return reservaId;
     }
     public void setReservaId(int reservaId) {
+        Validator.validatePositiveId(reservaId, "ID da reserva");
         this.reservaId = reservaId;
     }
 

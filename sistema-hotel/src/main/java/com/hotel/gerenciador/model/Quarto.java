@@ -43,9 +43,7 @@ public class Quarto {
         return numeroQuarto;
     }
     public void setNumeroQuarto(int numeroQuarto) {
-        if (numeroQuarto <= 0) {
-            throw new IllegalArgumentException("O número do quarto deve ser positivo.");
-        }
+        Validator.validatePositiveId(numeroQuarto, "Número do quarto");
         this.numeroQuarto = numeroQuarto;
     }
 
@@ -53,9 +51,7 @@ public class Quarto {
         return tipo;
     }
     public void setTipo(TipoQuarto tipo) {
-        if (tipo == null) {
-            throw new IllegalArgumentException("O tipo do quarto não pode ser nulo.");
-        }
+        Validator.validateEnum(tipo, "Tipo do quarto");
         this.tipo = tipo;
     }
 
@@ -71,9 +67,7 @@ public class Quarto {
         return status;
     }
     public void setStatus(StatusQuarto status) {
-        if (status == null) {
-            throw new IllegalArgumentException("O status do quarto não pode ser nulo.");
-        }
+        Validator.validateEnum(status, "Status do quarto");
         this.status = status;
     }
 
