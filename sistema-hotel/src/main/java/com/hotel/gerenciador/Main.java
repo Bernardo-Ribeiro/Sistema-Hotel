@@ -13,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            URL url = getClass().getResource("/view/Dashboard.fxml");
+            URL url = getClass().getResource("/view/MainLayout.fxml");
             System.out.println("FXML URL: " + url);
             
             if (url == null) {

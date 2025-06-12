@@ -2,8 +2,10 @@ package com.hotel.gerenciador.controller;
 
 import com.hotel.gerenciador.model.Manutencao;
 import com.hotel.gerenciador.model.Quarto;
+import com.hotel.gerenciador.model.Funcionario;
 import com.hotel.gerenciador.service.ManutencaoService;
 import com.hotel.gerenciador.service.QuartoService;
+import com.hotel.gerenciador.service.FuncionarioService;
 import com.hotel.gerenciador.util.Formatter;
 import com.hotel.gerenciador.util.StatusManutencao;
 import com.hotel.gerenciador.util.StatusQuarto;
@@ -35,12 +37,12 @@ public class GerenciamentoManutencaoController {
 
     @FXML private TableView<Manutencao> tblManutencoes;
     @FXML private TableColumn<Manutencao, Integer> colIdManutencao;
-    @FXML private TableColumn<Manutencao, Integer> colIdQuarto;
+    @FXML private TableColumn<Manutencao, String> colIdQuarto;
     @FXML private TableColumn<Manutencao, String> colDescricao;
     @FXML private TableColumn<Manutencao, String> colDataInicio;
     @FXML private TableColumn<Manutencao, String> colDataFim;
     @FXML private TableColumn<Manutencao, String> colStatus;
-    @FXML private TableColumn<Manutencao, Integer> colIdFuncionario;
+    @FXML private TableColumn<Manutencao, String> colIdFuncionario;
 
     @FXML private Button btnNovoChamado;
     @FXML private Button btnMarcarEmAndamento;
@@ -49,11 +51,13 @@ public class GerenciamentoManutencaoController {
 
     private ManutencaoService manutencaoService;
     private QuartoService quartoService;
+    private FuncionarioService funcionarioService;
     private ObservableList<Manutencao> listaManutencoesObservavel;
 
     public GerenciamentoManutencaoController() {
         this.manutencaoService = new ManutencaoService();
         this.quartoService = new QuartoService();
+        this.funcionarioService = new FuncionarioService();
         this.listaManutencoesObservavel = FXCollections.observableArrayList();
     }
 
@@ -71,12 +75,18 @@ public class GerenciamentoManutencaoController {
 
     private void configurarTabelaManutencoes() {
         colIdManutencao.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colIdQuarto.setCellValueFactory(new PropertyValueFactory<>("idQuarto"));
+        colIdQuarto.setCellValueFactory(cellData -> {
+            Quarto quarto = quartoService.findQuartoPorId(cellData.getValue().getIdQuarto());
+            return new SimpleStringProperty(quarto != null ? String.valueOf(quarto.getNumeroQuarto()) : "N/A");
+        });
         colDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colDataInicio.setCellValueFactory(cellData -> new SimpleStringProperty(Formatter.formatDate(cellData.getValue().getDataInicio())));
         colDataFim.setCellValueFactory(cellData -> new SimpleStringProperty(Formatter.formatDate(cellData.getValue().getDataFim())));
         colStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
-        colIdFuncionario.setCellValueFactory(new PropertyValueFactory<>("idFuncionario"));
+        colIdFuncionario.setCellValueFactory(cellData -> {
+            Funcionario funcionario = funcionarioService.findFuncionarioPorId(cellData.getValue().getIdFuncionario());
+            return new SimpleStringProperty(funcionario != null ? funcionario.getNome() : "N/A");
+        });
 
         tblManutencoes.setItems(listaManutencoesObservavel);
     }

@@ -5,8 +5,6 @@ import com.hotel.gerenciador.service.PagamentoService;
 import com.hotel.gerenciador.service.ConsumoService;
 import com.hotel.gerenciador.service.ConsumoServicosService;
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.List;
 
 public class CalculadoraFinanceira {
     private final PagamentoService pagamentoService;

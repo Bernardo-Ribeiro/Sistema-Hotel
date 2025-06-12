@@ -235,7 +235,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findAtivas() throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
+        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'CONCLUIDA')"; 
         
         try (Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -264,21 +264,15 @@ public class ReservaDAO extends BaseDAO<Reserva> {
             params.add(status.name());
         }
 
-        if (dataDe != null) {
-            if (status == StatusReserva.HOSPEDADO) {
-                sqlBuilder.append(" AND DATE(r.DataCheckOut) = ?");
-            } else {
-                sqlBuilder.append(" AND DATE(r.DataCheckIn) = ?");
-            }
+        if (dataDe != null && dataAte != null) {
+            sqlBuilder.append(" AND r.DataCheckIn <= ? AND r.DataCheckOut >= ?");
+            params.add(Date.valueOf(dataAte));
             params.add(Date.valueOf(dataDe));
-        }
-
-        if (dataAte != null) {
-            if (status == StatusReserva.HOSPEDADO) {
-                sqlBuilder.append(" AND DATE(r.DataCheckOut) = ?");
-            } else {
-                sqlBuilder.append(" AND DATE(r.DataCheckIn) = ?");
-            }
+        } else if (dataDe != null) {
+            sqlBuilder.append(" AND r.DataCheckOut >= ?");
+            params.add(Date.valueOf(dataDe));
+        } else if (dataAte != null) {
+            sqlBuilder.append(" AND r.DataCheckIn <= ?");
             params.add(Date.valueOf(dataAte));
         }
 

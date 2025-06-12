@@ -1,9 +1,13 @@
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\BaseController.java
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\checkin\CheckInTabController.java
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\checkin\CheckOutTabController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\CheckInController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\DashboardController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\EditarReservaController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\GerenciamentoFuncionariosController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\GerenciamentoHospedesController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\GerenciamentoManutencaoController.java
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\MainLayoutController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\MapaQuartosController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\NovaReservaController.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\controller\NovoChamadoManutencaoController.java
@@ -41,6 +45,7 @@ c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\j
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\service\QuartoService.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\service\ReservaService.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\service\ServicoService.java
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\CalculadoraFinanceira.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\CategoriaProduto.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\Formatter.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\MetodoPagamento.java
@@ -50,4 +55,5 @@ c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\j
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\StatusReserva.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\TipoQuarto.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\util\Validator.java
+c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\viewmodel\ItemCobrancaViewModel.java
 c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\src\main\java\com\hotel\gerenciador\viewmodel\ReservaViewModel.java

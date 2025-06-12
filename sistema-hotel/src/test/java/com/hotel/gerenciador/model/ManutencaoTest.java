@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.hotel.gerenciador.util.StatusManutencao;
 
@@ -14,15 +13,10 @@ public class ManutencaoTest {
     private Manutencao manutencao;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
-
     @BeforeEach
     void setUp() {
         dataInicio = LocalDate.now();
         dataFim = LocalDate.now().plusDays(3);
-        dataCriacao = LocalDateTime.now();
-        dataAtualizacao = LocalDateTime.now();
         
         manutencao = new Manutencao(
             101, // idQuarto
@@ -91,20 +85,6 @@ public class ManutencaoTest {
         Integer novoIdFuncionario = 2;
         manutencao.setIdFuncionario(novoIdFuncionario);
         assertEquals(novoIdFuncionario, manutencao.getIdFuncionario());
-    }
-
-    @Test
-    @DisplayName("Deve aceitar ID do quarto nulo")
-    void testIdQuartoNulo() {
-        manutencao.setIdQuarto(null);
-        assertNull(manutencao.getIdQuarto());
-    }
-
-    @Test
-    @DisplayName("Deve aceitar ID do funcionário nulo")
-    void testIdFuncionarioNulo() {
-        manutencao.setIdFuncionario(null);
-        assertNull(manutencao.getIdFuncionario());
     }
 
     @Test

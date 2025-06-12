@@ -69,7 +69,6 @@ public class ConsumoServicos {
 
     public void setDataConsumo(LocalDate dataConsumo) {
         Validator.validateNotNull(dataConsumo, "Data de consumo");
-        Validator.validateNotFutureDate(dataConsumo);
         this.dataConsumo = dataConsumo;
     }
     

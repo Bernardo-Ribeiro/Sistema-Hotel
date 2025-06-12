@@ -166,6 +166,11 @@ public class CheckInTabController extends BaseController {
                 "Confirme a verificação dos documentos");
 
             Quarto quartoSelecionado = cmbCIQuartoDisponivel.getValue();
+            // Se nenhum quarto foi selecionado (manter atual), usa o quarto original da reserva
+            if (quartoSelecionado == null) {
+                quartoSelecionado = reservaSelecionada.getQuarto();
+            }
+            
             Validator.validateNotNull(quartoSelecionado, "Quarto");
             Validator.validateTrue(quartoSelecionado.getStatus() == StatusQuarto.DISPONIVEL,
                 "O quarto selecionado não está disponível");
