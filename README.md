@@ -75,7 +75,7 @@ Este repositório será atualizado conforme o progresso do projeto. Fique à von
 # Para rodar o sistema, use o comando a baixo:
 %mvn% exec:java -Dexec.mainClass="com.hotel.gerenciador.Main"
 
-* Obs: Tem que ter o maven instalado nas variaveis de ambiente do sistema e executar na pasta raiz que é o diretório: c:\Users\bernardoribeiro\Documents\GitHub\Sistema-Hotel\sistema-hotel\
+* Obs: Tem que ter o maven instalado nas variaveis de ambiente do sistema e executar na pasta raiz que é o diretório: "\Sistema-Hotel\sistema-hotel\"
 
-# Ao fim do projeto será feito um tutorial mais completo de como rodar o script
+### Ao fim do projeto será feito um tutorial mais completo de como rodar o script
 
