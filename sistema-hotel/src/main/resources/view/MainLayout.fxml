@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.MainLayoutController">
+    <!-- TOPO -->
+    <top>
+        <HBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Label text="🏨 Hotel Manager" style="-fx-text-fill: white; -fx-font-size: 18;" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label text="Bem-vindo, Admin" style="-fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <!-- MENU LATERAL -->
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #34495e; -fx-padding: 15;">
+            <Button fx:id="btnDashboard" text="Dashboard" prefWidth="150" onAction="#abrirDashboard" />
+            <Button fx:id="btnMapaQuartos" text="Mapa de Quartos" prefWidth="150" onAction="#abrirMapaQuartos" />
+            <Button fx:id="btnReservas" text="Reservas" prefWidth="150" onAction="#abrirReservas" />
+            <Button fx:id="btnCheckIn" text="Check-in/Check-out" prefWidth="150" onAction="#abrirCheckIn" />
+            <Button fx:id="btnGerenciarHospedes" text="Gerenciar Hóspedes" prefWidth="150" onAction="#abrirGerenciamentoHospedes" />
+            <Button fx:id="btnFuncionarios" text="Funcionários" prefWidth="150" onAction="#abrirFuncionarios" />
+            <Button fx:id="btnManutencao" text="Manutenção" prefWidth="150" onAction="#abrirManutencao" />
+            <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="150" onAction="#abrirRelatorios" />
+            <Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" onAction="#sair" />
+        </VBox>
+    </left>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <center>
+        <StackPane fx:id="contentArea" />
+    </center>
+</BorderPane> 

@@ -28,13 +28,13 @@
     <center>
         <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS" style="-fx-padding: 0 15 15 15;">
             <columns>
-                <TableColumn fx:id="colIdManutencao" text="ID Chamado" prefWidth="80"/>
-                <TableColumn fx:id="colIdQuarto" text="Quarto Nº" prefWidth="80"/>
-                <TableColumn fx:id="colDescricao" text="Descrição" prefWidth="300"/>
-                <TableColumn fx:id="colDataInicio" text="Data Início" prefWidth="120"/>
-                <TableColumn fx:id="colDataFim" text="Data Fim" prefWidth="120"/>
-                <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
-                <TableColumn fx:id="colIdFuncionario" text="ID Funcionário" prefWidth="100"/>
+                <TableColumn fx:id="colIdManutencao" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colIdQuarto" text="Nº Quarto" prefWidth="100"/>
+                <TableColumn fx:id="colDescricao" text="Descrição" prefWidth="200"/>
+                <TableColumn fx:id="colDataInicio" text="Data Início" prefWidth="100"/>
+                <TableColumn fx:id="colDataFim" text="Data Fim" prefWidth="100"/>
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                <TableColumn fx:id="colIdFuncionario" text="Funcionário" prefWidth="150"/>
             </columns>
             <placeholder>
                 <Label text="Nenhum chamado de manutenção encontrado."/>

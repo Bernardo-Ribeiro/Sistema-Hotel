@@ -18,11 +18,6 @@ public class HospedeService {
     }
 
     public boolean addHospede(Hospede hospede) {
-        if (hospede.getCpf() == null || hospede.getCpf().isEmpty()) {
-            throw new IllegalArgumentException("O CPF do hóspede é obrigatório.");
-        }
-
-
         try {
             return hospedeDAO.insert(hospede);
         } catch (SQLException e) {
@@ -32,19 +27,11 @@ public class HospedeService {
     }
 
     public boolean updateHospede(Hospede hospede) {
-        if (hospede.getCpf() == null || hospede.getCpf().isEmpty()) {
-            throw new IllegalArgumentException("O CPF do hóspede é obrigatório.");
-        }
         try {
             Hospede existenteComCpf = hospedeDAO.findByCpf(hospede.getCpf());
             if (existenteComCpf != null && existenteComCpf.getId() != hospede.getId()) {
                 throw new IllegalArgumentException("CPF já cadastrado para outro hóspede.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
             return hospedeDAO.update(hospede);
         } catch (SQLException e) {
             e.printStackTrace();

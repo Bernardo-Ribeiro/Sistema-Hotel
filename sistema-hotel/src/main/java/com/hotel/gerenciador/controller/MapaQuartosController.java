@@ -6,6 +6,7 @@ import com.hotel.gerenciador.service.QuartoService;
 import com.hotel.gerenciador.service.ReservaService;
 import com.hotel.gerenciador.util.Formatter;
 import com.hotel.gerenciador.util.StatusQuarto;
+import com.hotel.gerenciador.util.StatusReserva;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +47,6 @@ public class MapaQuartosController {
             totalAndares = 1;
         }
 
-
         for (int andar = 0; andar < totalAndares; andar++) {
             for (int i = 0; i < quartosPorAndar; i++) {
                 int index = andar * quartosPorAndar + i;
@@ -55,7 +56,7 @@ public class MapaQuartosController {
                 Quarto quarto = quartos.get(index);
 
                 Circle icone = new Circle(20);
-                icone.setFill(getCorPorStatus(quarto.getStatus()));
+                icone.setFill(getCorPorStatus(quarto, reservasAtuais.get(quarto.getId())));
                 icone.setStroke(Color.DIMGRAY);
                 icone.setStrokeWidth(1);
 
@@ -63,27 +64,44 @@ public class MapaQuartosController {
                 numeroQuartoLabel.setTextFill(Color.BLACK);
                 numeroQuartoLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
 
-
                 Reserva reserva = reservasAtuais.get(quarto.getId());
 
                 StringBuilder tooltipBuilder = new StringBuilder("Quarto: " + quarto.getNumeroQuarto());
                 tooltipBuilder.append("\nTipo: ").append(quarto.getTipo());
                 tooltipBuilder.append("\nDiária: ").append(Formatter.formatCurrency(quarto.getPrecoDiaria()));
 
-                if (reserva != null) {
-                    tooltipBuilder.append("\nStatus: OCUPADO");
-                    if (reserva.getHospede() != null) {
-                        tooltipBuilder.append("\nHóspede: ").append(reserva.getHospede().getNome());
-                    }
-                    tooltipBuilder.append("\nReserva Nº: ").append(reserva.getId());
-                    if (reserva.getDataCheckIn() != null) {
-                        tooltipBuilder.append("\nEntrada: ").append(Formatter.formatDate(reserva.getDataCheckIn()));
-                    }
-                    if (reserva.getDataCheckOut() != null) {
-                        tooltipBuilder.append("\nSaída: ").append(Formatter.formatDate(reserva.getDataCheckOut()));
+                if (quarto.getStatus() == StatusQuarto.MANUTENCAO) {
+                    tooltipBuilder.append("\nStatus: EM MANUTENÇÃO");
+                } else if (reserva != null) {
+                    if (reserva.getStatus() == StatusReserva.HOSPEDADO) {
+                        tooltipBuilder.append("\nStatus: OCUPADO");
+                        if (reserva.getHospede() != null) {
+                            tooltipBuilder.append("\nHóspede: ").append(reserva.getHospede().getNome());
+                            tooltipBuilder.append("\nCPF: ").append(reserva.getHospede().getCpf());
+                        }
+                        tooltipBuilder.append("\nReserva Nº: ").append(reserva.getId());
+                        if (reserva.getDataCheckIn() != null) {
+                            tooltipBuilder.append("\nEntrada: ").append(Formatter.formatDate(reserva.getDataCheckIn()));
+                        }
+                        if (reserva.getDataCheckOut() != null) {
+                            tooltipBuilder.append("\nSaída: ").append(Formatter.formatDate(reserva.getDataCheckOut()));
+                        }
+                    } else if (reserva.getStatus() == StatusReserva.CONFIRMADA) {
+                        tooltipBuilder.append("\nStatus: Disponível até ").append(Formatter.formatDate(reserva.getDataCheckIn()));
+                        tooltipBuilder.append("\nPróxima reserva: ").append(reserva.getId());
+                        if (reserva.getHospede() != null) {
+                            tooltipBuilder.append("\nHóspede: ").append(reserva.getHospede().getNome());
+                            tooltipBuilder.append("\nCPF: ").append(reserva.getHospede().getCpf());
+                        }
+                        if (reserva.getDataCheckIn() != null) {
+                            tooltipBuilder.append("\nCheck-in: ").append(Formatter.formatDate(reserva.getDataCheckIn()));
+                        }
+                        if (reserva.getDataCheckOut() != null) {
+                            tooltipBuilder.append("\nCheck-out: ").append(Formatter.formatDate(reserva.getDataCheckOut()));
+                        }
                     }
                 } else {
-                    tooltipBuilder.append("\nStatus: ").append(quarto.getStatus());
+                    tooltipBuilder.append("\nStatus: DISPONÍVEL");
                 }
                 final String tooltipText = tooltipBuilder.toString();
 
@@ -92,30 +110,30 @@ public class MapaQuartosController {
                 
                 stack.setStyle("-fx-padding: 5;"); 
 
-
                 stack.setOnMouseEntered(e -> mostrarTooltip(e, tooltipText, stack));
                 stack.setOnMouseExited(e -> ocultarTooltip());
                 
                 stack.setOnMouseClicked(event -> handleQuartoClicked(quarto, reserva));
-
 
                 gridMapaQuartos.add(stack, i, andar);
             }
         }
     }
 
-    private Color getCorPorStatus(StatusQuarto status) {
-        if (status == null) return Color.GRAY;
-        switch (status) {
-            case DISPONIVEL:
-                return Color.LIGHTGREEN;
-            case OCUPADO:
-                return Color.TOMATO;
-            case MANUTENCAO:
-                return Color.GOLD;
-            default:
-                return Color.GRAY;
+    private Color getCorPorStatus(Quarto quarto, Reserva reserva) {
+        if (quarto.getStatus() == StatusQuarto.MANUTENCAO) {
+            return Color.GOLD;
         }
+        
+        if (reserva != null) {
+            if (reserva.getStatus() == StatusReserva.HOSPEDADO) {
+                return Color.TOMATO;
+            } else if (reserva.getStatus() == StatusReserva.CONFIRMADA) {
+                return Color.LIGHTBLUE;
+            }
+        }
+        
+        return Color.LIGHTGREEN;
     }
 
     private void mostrarTooltip(MouseEvent e, String texto, StackPane NoOrigem) {

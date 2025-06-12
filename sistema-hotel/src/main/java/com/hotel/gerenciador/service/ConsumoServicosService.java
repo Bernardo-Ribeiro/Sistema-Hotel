@@ -3,22 +3,21 @@ package com.hotel.gerenciador.service;
 import com.hotel.gerenciador.dao.ConsumoServicosDAO;
 import com.hotel.gerenciador.model.ConsumoServicos;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ConsumoServicosService {
 
     private final ConsumoServicosDAO consumoServicosDAO;
+    private final ServicoService servicoService;
 
     public ConsumoServicosService() {
         this.consumoServicosDAO = new ConsumoServicosDAO();
+        this.servicoService = new ServicoService();
     }
 
     public boolean addConsumo(ConsumoServicos consumo) {
-        if (consumo.getQuantidade() <= 0) {
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
-        }
-    
         try {
             consumoServicosDAO.insert(consumo);
             return true;
@@ -29,10 +28,6 @@ public class ConsumoServicosService {
     }    
 
     public boolean upConsumo(ConsumoServicos consumo) {
-        if (consumo.getQuantidade() <= 0) {
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
-        }
-
         try {
             return consumoServicosDAO.update(consumo);
         } catch (SQLException e) {
@@ -74,6 +69,17 @@ public class ConsumoServicosService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    public BigDecimal calcularTotalConsumos(int reservaId) {
+        try {
+            List<ConsumoServicos> consumos = consumoServicosDAO.findByReservaId(reservaId);
+            return consumos.stream()
+                .<BigDecimal>map(c -> BigDecimal.valueOf(c.getQuantidade() * servicoService.findServicoPorId(c.getServicoId()).getPreco().doubleValue()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
         }
     }
 }

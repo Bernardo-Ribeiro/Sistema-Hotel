@@ -44,6 +44,7 @@ public class Hospede {
         return nome;
     }
     public void setNome(String nome) {
+        Validator.validateNotEmpty(nome, "Nome do hóspede");
         this.nome = nome;
     }
 
@@ -83,6 +84,7 @@ public class Hospede {
         return dataNascimento;
     }
     public void setDataNascimento(LocalDate dataNascimento) {
+        Validator.validateNotNull(dataNascimento, "Data de nascimento");
         Validator.validateNotFutureDate(dataNascimento);
         this.dataNascimento = dataNascimento;
     }

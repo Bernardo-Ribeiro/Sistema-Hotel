@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServicoService {
-
+    private static final BigDecimal PRECO_MINIMO = new BigDecimal("20.00");
     private final ServicoDAO servicoDAO;
 
     public ServicoService() {
@@ -17,7 +17,7 @@ public class ServicoService {
     }
 
     public boolean addServico(Servico servico) {
-        if (servico.getPreco() == null || servico.getPreco().compareTo(new BigDecimal("20.00")) <= 0) {
+        if (servico.getPreco().compareTo(PRECO_MINIMO) <= 0) {
             throw new IllegalArgumentException("O preço do serviço deve ser superior a 20 reais.");
         }
 
@@ -30,10 +30,6 @@ public class ServicoService {
     }
 
     public boolean upServico(Servico servico) {
-        if (servico.getPreco() == null || servico.getPreco().compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O preço do serviço não pode ser negativo.");
-        }
-
         try {
             return servicoDAO.update(servico);
         } catch (SQLException e) {
