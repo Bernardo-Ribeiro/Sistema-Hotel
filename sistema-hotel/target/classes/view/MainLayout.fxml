@@ -4,19 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.MainLayoutController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.MainLayoutController" stylesheets="@/view/estilo.css">
     <!-- TOPO -->
     <top>
-        <HBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
-            <Label text="🏨 Hotel Manager" style="-fx-text-fill: white; -fx-font-size: 18;" />
+        <HBox spacing="10">
+            <Label text="Hotel Pai é Careca" style="-fx-font-size: 18;" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Label text="Bem-vindo, Admin" style="-fx-text-fill: white;" />
+            <Label text="Bem-vindo, Admin" />
         </HBox>
     </top>
 
     <!-- MENU LATERAL -->
     <left>
-        <VBox spacing="10" style="-fx-background-color: #34495e; -fx-padding: 15;">
+        <VBox spacing="10">
             <Button fx:id="btnDashboard" text="Dashboard" prefWidth="150" onAction="#abrirDashboard" />
             <Button fx:id="btnMapaQuartos" text="Mapa de Quartos" prefWidth="150" onAction="#abrirMapaQuartos" />
             <Button fx:id="btnReservas" text="Reservas" prefWidth="150" onAction="#abrirReservas" />
@@ -24,8 +24,7 @@
             <Button fx:id="btnGerenciarHospedes" text="Gerenciar Hóspedes" prefWidth="150" onAction="#abrirGerenciamentoHospedes" />
             <Button fx:id="btnFuncionarios" text="Funcionários" prefWidth="150" onAction="#abrirFuncionarios" />
             <Button fx:id="btnManutencao" text="Manutenção" prefWidth="150" onAction="#abrirManutencao" />
-            <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="150" onAction="#abrirRelatorios" />
-            <Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" onAction="#sair" />
+            <Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c;" onAction="#sair" />
         </VBox>
     </left>
 

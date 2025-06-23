@@ -11,22 +11,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoManutencaoController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoManutencaoController" stylesheets="@/view/estilo.css">
     <top>
-        <VBox spacing="10" style="-fx-padding: 15;">
-            <Label text="🛠️ Gerenciamento de Manutenção" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <VBox spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets left="24.0" top="16.0" right="16.0" bottom="16.0"/>
+            </padding>
+            <Label text="Gerenciamento de Manutenção" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Label text="Filtrar por Status:"/>
                 <ComboBox fx:id="cmbFiltroStatus" prefWidth="150.0" promptText="Todos Status"/>
                 <Label text="Buscar por Quarto Nº:"/>
                 <TextField fx:id="txtFiltroQuarto" prefWidth="100.0" promptText="Nº Quarto"/>
                 <Button fx:id="btnAplicarFiltros" text="🔍 Aplicar Filtros" onAction="#handleAplicarFiltros"/>
-                <Button fx:id="btnLimparFiltros" text="🧹 Limpar Filtros" onAction="#handleLimparFiltros"/>
+                <Button fx:id="btnLimparFiltros" text="Limpar Filtros" onAction="#handleLimparFiltros"/>
             </HBox>
         </VBox>
     </top>
     <center>
-        <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS" style="-fx-padding: 0 15 15 15;">
+        <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colIdManutencao" text="ID" prefWidth="50"/>
                 <TableColumn fx:id="colIdQuarto" text="Nº Quarto" prefWidth="100"/>
@@ -42,7 +45,7 @@
         </TableView>
     </center>
     <bottom>
-        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 15;">
+        <HBox spacing="10" alignment="CENTER_RIGHT">
             <Button fx:id="btnNovoChamado" text="➕ Novo Chamado" onAction="#handleNovoChamado" style="-fx-base: #27ae60;"/>
             <Button fx:id="btnMarcarEmAndamento" text="▶️ Marcar em Andamento" onAction="#handleMarcarEmAndamento" style="-fx-base: #f39c12;"/>
             <Button fx:id="btnConcluirChamado" text="✔️ Concluir Chamado" onAction="#handleConcluirChamado" style="-fx-base: #3498db;"/>

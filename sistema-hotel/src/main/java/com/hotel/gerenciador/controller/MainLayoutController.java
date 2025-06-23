@@ -52,11 +52,6 @@ public class MainLayoutController {
     }
 
     @FXML
-    private void abrirRelatorios() {
-        loadView("/view/Relatorios.fxml");
-    }
-
-    @FXML
     private void sair() {
         System.exit(0);
     }

@@ -1,0 +1,156 @@
+/*
+ * Estilo Global para o Sistema Hotel - Nord Theme (Versão Clara)
+ *
+ * Lógica da Paleta:
+ * - Fundos: Cores da paleta "Snow Storm" (#ECEFF4, #E5E9F0, #D8DEE9)
+ * - Textos: Cores da paleta "Polar Night" (#2E3440, #3B4252, #4C566A)
+ * - Destaques: Cores das paletas "Frost" e "Aurora"
+ */
+
+ .root {
+    -fx-font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    -fx-background-color: #ECEFF4; /* nord6 - Fundo principal claro */
+    -fx-font-smoothing-type: lcd;
+}
+
+/* --- TIPOGRAFIA --- */
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #434C5E; /* nord2 - Texto geral */
+}
+
+.label.titulo, .label.titulo-principal {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2E3440; /* nord0 - Texto de alto contraste para títulos */
+}
+
+/* --- BOTÕES --- */
+
+.button {
+    -fx-background-color: #5E81AC; /* nord10 - Um azul mais sóbrio do Frost */
+    -fx-text-fill: #ECEFF4; /* nord6 - Texto claro no botão */
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 4;
+    -fx-padding: 8 15 8 15;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-transition: -fx-background-color 0.2s ease-in-out;
+}
+
+.button:hover {
+    -fx-background-color: #4C566A; /* nord3 - Um tom mais escuro e acinzentado para hover */
+}
+
+/* Botão de sair/destrutivo */
+.button#btnSair {
+    -fx-background-color: #BF616A; /* nord11 */
+}
+
+.button#btnSair:hover {
+    -fx-background-color: #b55660; /* Versão escurecida do nord11 */
+}
+
+
+/* --- TABELAS --- */
+
+.table-view {
+    -fx-background-color: #FFFFFF; /* Branco puro para a área de dados */
+    -fx-border-width: 1;
+    -fx-border-color: #D8DEE9; /* nord4 */
+    -fx-border-radius: 4;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #4C566A; /* nord3 */
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-transform: uppercase;
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 10px 8px;
+    -fx-text-fill: #3B4252; /* nord1 */
+}
+
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: #E5E9F0; /* nord5 */
+    -fx-transition: -fx-background-color 0.2s;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #ECEFF4; /* nord6 */
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+/* Linha selecionada na tabela */
+.table-row-cell:filled:selected, .table-row-cell:filled:selected:hover {
+    -fx-background-color: #e2e8f0; /* Um tom customizado, muito claro e frio */
+}
+
+.table-row-cell:filled:selected .table-cell,
+.table-row-cell:filled:selected .table-cell .text {
+    -fx-text-fill: #2E3440; /* nord0 - Garante máxima legibilidade na seleção */
+}
+
+
+/* --- INPUTS E FORMULÁRIOS --- */
+
+.combo-box, .text-field, .date-picker {
+    -fx-background-color: #FFFFFF; /* Branco puro */
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: #D8DEE9; /* nord4 */
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+    -fx-padding: 6 10 6 10;
+    -fx-prompt-text-fill: #4C566A; /* nord3 */
+    -fx-text-fill: #2E3440; /* nord0 */
+    -fx-transition: -fx-border-color 0.2s ease-in-out;
+}
+
+/* Destaque ao focar no campo */
+.combo-box:focused, .text-field:focused, .date-picker:focused {
+    -fx-border-color: #5E81AC; /* nord10 */
+    -fx-effect: none;
+}
+
+/* --- CARDS E PAINÉIS --- */
+
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 4;
+    -fx-padding: 16;
+    -fx-border-width: 1;
+    -fx-border-color: #E5E9F0; /* nord5 - Borda sutil para separar do fundo */
+}
+
+.hbox, .vbox {
+    -fx-spacing: 12;
+}
+
+/* --- GRÁFICOS --- */
+
+.pie-chart, .bar-chart, .line-chart {
+    -fx-background-color: transparent;
+}
+
+.pie-chart .chart-title, .bar-chart .chart-title, .line-chart .chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4C566A; /* nord3 */
+}

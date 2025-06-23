@@ -15,9 +15,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.ReservasController" style="-fx-background-color: white; -fx-padding: 20;">
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.ReservasController" stylesheets="@/view/estilo.css">
+    <padding>
+        <Insets left="24.0" top="16.0" right="16.0" bottom="16.0"/>
+    </padding>
 
-    <Label text="📋 Gerenciar Reservas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label text="Gerenciar Reservas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
     <GridPane hgap="10" vgap="10" style="-fx-padding: 0 0 10 0;">
         <columnConstraints>
@@ -43,7 +46,7 @@
         <TextField fx:id="txtFiltroBusca" promptText="Nome, Quarto, ID Reserva..." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
         
         <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1">
-            <Button fx:id="btnAplicarFiltros" text="🔍 Filtrar" onAction="#aplicarFiltros" style="-fx-background-color: #007bff; -fx-text-fill: white;" prefWidth="90"/>
+            <Button fx:id="btnAplicarFiltros" text="🔍 Filtrar" onAction="#aplicarFiltros" style="-fx-background-color: #007bff;" prefWidth="90"/>
             <Button fx:id="btnLimparFiltros" text="🧹 Limpar" onAction="#limparFiltros" prefWidth="90"/>
         </HBox>
     </GridPane>
@@ -61,8 +64,8 @@
     </TableView>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="➕ Nova Reserva" onAction="#novaReserva" style="-fx-background-color: #28a745; -fx-text-fill: white;"/>
+        <Button text="➕ Nova Reserva" onAction="#novaReserva" style="-fx-background-color: #28a745;"/>
         <Button text="✏️ Editar" onAction="#editarReserva" />
-        <Button text="❌ Cancelar" onAction="#cancelarReserva" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+        <Button text="❌ Cancelar" onAction="#cancelarReserva" style="-fx-background-color: #e74c3c;" />
     </HBox>
 </VBox>

@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: com.hotel.gerenciador.model.ConsumoServicosTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.068 s <<< FAILURE! -- in com.hotel.gerenciador.model.ConsumoServicosTest
+com.hotel.gerenciador.model.ConsumoServicosTest.testDataConsumoNula -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.IllegalArgumentException: Data de consumo não pode ser nulo.
+	at com.hotel.gerenciador.util.Validator.validateNotNull(Validator.java:193)
+	at com.hotel.gerenciador.model.ConsumoServicos.setDataConsumo(ConsumoServicos.java:71)
+	at com.hotel.gerenciador.model.ConsumoServicosTest.testDataConsumoNula(ConsumoServicosTest.java:96)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+

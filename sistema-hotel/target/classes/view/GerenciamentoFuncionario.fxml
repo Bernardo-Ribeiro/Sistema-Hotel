@@ -4,9 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10.0" style="-fx-background-color: #f0f2f5; -fx-padding: 15;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoFuncionariosController">
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoFuncionariosController">
+    <padding>
+        <Insets left="24.0" top="16.0" right="16.0" bottom="16.0"/>
+    </padding>
     <children>
-        <Label text="💼 Gerenciamento de Funcionários" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Label text="Gerenciamento de Funcionários" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
 
         <GridPane hgap="10" vgap="8">
             <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -67,7 +70,4 @@
             </columnResizePolicy>
         </TableView>
     </children>
-    <padding>
-        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-    </padding>
 </VBox>
