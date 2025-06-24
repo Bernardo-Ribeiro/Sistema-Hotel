@@ -11,42 +11,50 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoManutencaoController">
+<BorderPane stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.GerenciamentoManutencaoController">
     <top>
-        <VBox spacing="10" style="-fx-padding: 15;">
-            <Label text="🛠️ Gerenciamento de Manutenção" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Filtrar por Status:"/>
-                <ComboBox fx:id="cmbFiltroStatus" prefWidth="150.0" promptText="Todos Status"/>
-                <Label text="Buscar por Quarto Nº:"/>
-                <TextField fx:id="txtFiltroQuarto" prefWidth="100.0" promptText="Nº Quarto"/>
-                <Button fx:id="btnAplicarFiltros" text="🔍 Aplicar Filtros" onAction="#handleAplicarFiltros"/>
-                <Button fx:id="btnLimparFiltros" text="🧹 Limpar Filtros" onAction="#handleLimparFiltros"/>
+        <VBox spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets bottom="16.0" left="24.0" right="16.0" top="16.0" />
+            </padding>
+            <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Gerenciamento de Manutenção" />
+            <HBox alignment="CENTER_LEFT" spacing="24">
+                <Label text="Filtrar por Status:" />
+                <ComboBox fx:id="cmbFiltroStatus" prefWidth="150.0" promptText="Todos Status" />
+                <Label text="Buscar por Quarto Nº:" />
+                <TextField fx:id="txtFiltroQuarto" prefWidth="100.0" promptText="Nº Quarto" />
+                <Button fx:id="btnAplicarFiltros" onAction="#handleAplicarFiltros" text="🔍 Aplicar Filtros" styleClass="confirmar"/>
+                <Button fx:id="btnLimparFiltros" onAction="#handleLimparFiltros" text="Limpar Filtros" styleClass="deletar"/>
             </HBox>
         </VBox>
     </top>
     <center>
-        <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS" style="-fx-padding: 0 15 15 15;">
-            <columns>
-                <TableColumn fx:id="colIdManutencao" text="ID" prefWidth="50"/>
-                <TableColumn fx:id="colIdQuarto" text="Nº Quarto" prefWidth="100"/>
-                <TableColumn fx:id="colDescricao" text="Descrição" prefWidth="200"/>
-                <TableColumn fx:id="colDataInicio" text="Data Início" prefWidth="100"/>
-                <TableColumn fx:id="colDataFim" text="Data Fim" prefWidth="100"/>
-                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
-                <TableColumn fx:id="colIdFuncionario" text="Funcionário" prefWidth="150"/>
-            </columns>
-            <placeholder>
-                <Label text="Nenhum chamado de manutenção encontrado."/>
-            </placeholder>
-        </TableView>
+        <VBox spacing="0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets bottom="0.0" left="24.0" right="16.0" top="0.0" />
+            </padding>
+            <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colIdManutencao" prefWidth="50" text="ID" />
+                    <TableColumn fx:id="colIdQuarto" prefWidth="100" text="Nº Quarto" />
+                    <TableColumn fx:id="colDescricao" prefWidth="200" text="Descrição" />
+                    <TableColumn fx:id="colDataInicio" prefWidth="100" text="Data Início" />
+                    <TableColumn fx:id="colDataFim" prefWidth="100" text="Data Fim" />
+                    <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
+                    <TableColumn fx:id="colIdFuncionario" prefWidth="150" text="Funcionário" />
+                </columns>
+                <placeholder>
+                    <Label text="Nenhum chamado de manutenção encontrado." />
+                </placeholder>
+            </TableView>
+        </VBox>
     </center>
     <bottom>
-        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 15;">
-            <Button fx:id="btnNovoChamado" text="➕ Novo Chamado" onAction="#handleNovoChamado" style="-fx-base: #27ae60;"/>
-            <Button fx:id="btnMarcarEmAndamento" text="▶️ Marcar em Andamento" onAction="#handleMarcarEmAndamento" style="-fx-base: #f39c12;"/>
-            <Button fx:id="btnConcluirChamado" text="✔️ Concluir Chamado" onAction="#handleConcluirChamado" style="-fx-base: #3498db;"/>
-            <Button fx:id="btnExcluirChamado" text="❌ Excluir Chamado" onAction="#handleExcluirChamado" style="-fx-base: #e74c3c;" />
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button fx:id="btnNovoChamado" onAction="#handleNovoChamado" text="➕ Novo Chamado"/>
+            <Button fx:id="btnMarcarEmAndamento" onAction="#handleMarcarEmAndamento" text="▶ Marcar em Andamento" styleClass="editar"/>
+            <Button fx:id="btnConcluirChamado" onAction="#handleConcluirChamado" text="✔ Concluir Chamado" styleClass="salvar"/>
+            <Button fx:id="btnExcluirChamado" onAction="#handleExcluirChamado" text="❌ Excluir Chamado" styleClass="deletar"/>
         </HBox>
     </bottom>
 </BorderPane>

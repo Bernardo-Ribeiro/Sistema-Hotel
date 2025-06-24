@@ -8,22 +8,24 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.ReservasController" style="-fx-background-color: white; -fx-padding: 20;">
+<VBox spacing="10" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.ReservasController">
+    <padding>
+        <Insets bottom="16.0" left="24.0" right="16.0" top="16.0" />
+    </padding>
 
-    <Label text="📋 Gerenciar Reservas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gerenciar Reservas" />
 
-    <GridPane hgap="10" vgap="10" style="-fx-padding: 0 0 10 0;">
+    <GridPane hgap="10" style="-fx-padding: 0 0 10 0;" vgap="10">
         <columnConstraints>
-            <ColumnConstraints halignment="LEFT" prefWidth="80.0" /> <ColumnConstraints hgrow="SOMETIMES" prefWidth="150.0" />
-            <ColumnConstraints halignment="LEFT" prefWidth="80.0" /> <ColumnConstraints hgrow="SOMETIMES" prefWidth="150.0" />
-            <ColumnConstraints halignment="LEFT" prefWidth="80.0" /> <ColumnConstraints hgrow="SOMETIMES" prefWidth="180.0" />
+            <ColumnConstraints halignment="LEFT" prefWidth="80.0" /> <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="124.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="LEFT" maxWidth="106.0" minWidth="85.0" prefWidth="101.0" /> <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="125.0" prefWidth="137.0" />
+            <ColumnConstraints halignment="LEFT" maxWidth="110.0" minWidth="86.0" prefWidth="110.0" /> <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="163.0" prefWidth="163.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints />
@@ -33,36 +35,36 @@
         <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <ComboBox fx:id="cmbFiltroStatus" prefWidth="150.0" promptText="Todos" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label text="Check-in De:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-        <DatePicker fx:id="dateFiltroCheckInDe" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+        <Label prefHeight="18.0" prefWidth="92.0" text="Check-in De:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <DatePicker fx:id="dateFiltroCheckInDe" maxHeight="49.0" prefWidth="150.0" stylesheets="@estilo.css" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
         <Label text="Check-in Até:" GridPane.columnIndex="4" GridPane.rowIndex="0" />
         <DatePicker fx:id="dateFiltroCheckInAte" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
         
         <Label text="Buscar:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="txtFiltroBusca" promptText="Nome, Quarto, ID Reserva..." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+        <TextField fx:id="txtFiltroBusca" promptText="Nome, Quarto, ID Reserva..." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
         
-        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1">
-            <Button fx:id="btnAplicarFiltros" text="🔍 Filtrar" onAction="#aplicarFiltros" style="-fx-background-color: #007bff; -fx-text-fill: white;" prefWidth="90"/>
-            <Button fx:id="btnLimparFiltros" text="🧹 Limpar" onAction="#limparFiltros" prefWidth="90"/>
+        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <Button fx:id="btnAplicarFiltros" onAction="#aplicarFiltros" prefWidth="90.0" text="🔍 Filtrar" styleClass="confirmar"/>
+            <Button fx:id="btnLimparFiltros" onAction="#limparFiltros" text="❌ Limpar" styleClass="deletar"/>
         </HBox>
     </GridPane>
 
-    <TableView fx:id="tabelaReservas" prefHeight="300.0" VBox.vgrow="ALWAYS">
+    <TableView fx:id="tabelaReservas" prefHeight="300.0" stylesheets="@/view/estilo.css" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="50.0" />
-            <TableColumn fx:id="colCliente" text="Hóspede" prefWidth="150.0" />
-            <TableColumn fx:id="colQuarto" text="Quarto" prefWidth="80.0" />
-            <TableColumn fx:id="colDataEntrada" text="Entrada" prefWidth="100.0" />
-            <TableColumn fx:id="colDataSaida" text="Saída" prefWidth="100.0" />
-            <TableColumn fx:id="colStatus" text="Status" prefWidth="100.0" />
-            <TableColumn fx:id="colValorTotal" text="Valor Total" prefWidth="120.0" />
+            <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+            <TableColumn fx:id="colCliente" prefWidth="150.0" text="Hóspede" />
+            <TableColumn fx:id="colQuarto" prefWidth="80.0" text="Quarto" />
+            <TableColumn fx:id="colDataEntrada" prefWidth="100.0" text="Entrada" />
+            <TableColumn fx:id="colDataSaida" prefWidth="100.0" text="Saída" />
+            <TableColumn fx:id="colStatus" prefWidth="100.0" text="Status" />
+            <TableColumn fx:id="colValorTotal" prefWidth="120.0" text="Valor Total" />
         </columns>
     </TableView>
 
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="➕ Nova Reserva" onAction="#novaReserva" style="-fx-background-color: #28a745; -fx-text-fill: white;"/>
-        <Button text="✏️ Editar" onAction="#editarReserva" />
-        <Button text="❌ Cancelar" onAction="#cancelarReserva" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Button onAction="#novaReserva" text="➕ Nova Reserva" styleClass="confirmar"/>
+        <Button onAction="#editarReserva" text="✏ Editar" styleClass="editar"/>
+        <Button onAction="#cancelarReserva" text="❌ Cancelar" styleClass="deletar"/>
     </HBox>
 </VBox>

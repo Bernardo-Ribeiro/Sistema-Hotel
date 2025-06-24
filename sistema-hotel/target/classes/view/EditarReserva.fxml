@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootEditarReservaPane" spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.EditarReservaController">
+<VBox fx:id="rootEditarReservaPane" spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.EditarReservaController" stylesheets="@/view/estilo.css">
    <children>
-      <Label text="✏️ Editar Reserva" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333;">
+      <Label text="Editar Reserva" style="-fx-font-size: 20px; -fx-font-weight: bold;">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>
@@ -52,8 +52,8 @@
       </GridPane>
       <HBox alignment="CENTER_RIGHT" spacing="10.0">
          <children>
-            <Button fx:id="btnSalvarAlteracoes" mnemonicParsing="false" onAction="#handleSalvarAlteracoes" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="💾 Salvar Alterações" />
-            <Button fx:id="btnCancelarEdicao" mnemonicParsing="false" onAction="#handleCancelarEdicao" style="-fx-background-color: #6c757d; -fx-text-fill: white;" text="❌ Cancelar" />
+            <Button fx:id="btnSalvarAlteracoes" mnemonicParsing="false" onAction="#handleSalvarAlteracoes" style="-fx-background-color: #28a745; -fx-font-weight: bold;" text="💾 Salvar Alterações" />
+            <Button fx:id="btnCancelarEdicao" mnemonicParsing="false" onAction="#handleCancelarEdicao" style="-fx-background-color: #6c757d;" text="❌ Cancelar" />
          </children>
          <VBox.margin>
             <Insets top="20.0" />

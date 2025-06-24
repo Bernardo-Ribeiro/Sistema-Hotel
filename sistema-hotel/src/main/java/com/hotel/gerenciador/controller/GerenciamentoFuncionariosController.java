@@ -420,9 +420,7 @@ public class GerenciamentoFuncionariosController extends BaseController {
                         System.out.println("Valor: " + valor);
                         System.out.println("Data Pagamento: " + dataPagamento);
                         System.out.println("Mês Referência: " + mesReferencia);
-                        
-                        // boolean sucesso = new PagamentoService().registrarPagamentoSalario(funcionarioId, valor, dataPagamento, mesReferencia);
-                        // For now, just simulate success
+
                         boolean sucesso = true; 
                         
                         if (sucesso) {

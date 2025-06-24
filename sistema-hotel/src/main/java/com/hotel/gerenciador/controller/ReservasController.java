@@ -39,8 +39,6 @@ public class ReservasController {
     @FXML private DatePicker dateFiltroCheckInDe;
     @FXML private DatePicker dateFiltroCheckInAte;
     @FXML private TextField txtFiltroBusca;
-    // @FXML private Button btnAplicarFiltros;
-    // @FXML private Button btnLimparFiltros;
 
     private ReservaService reservaService = new ReservaService();
 

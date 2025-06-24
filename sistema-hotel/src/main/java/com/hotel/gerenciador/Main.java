@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 
@@ -12,6 +13,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-Bold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-Medium.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-SemiBold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-Italic.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-LightItalic.ttf"), 12);
+
         try {
             URL url = getClass().getResource("/view/MainLayout.fxml");
             System.out.println("FXML URL: " + url);

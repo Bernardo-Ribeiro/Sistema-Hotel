@@ -1,36 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.MainLayoutController">
+<BorderPane stylesheets="@estilo.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.hotel.gerenciador.controller.MainLayoutController">
     <!-- TOPO -->
     <top>
-        <HBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
-            <Label text="🏨 Hotel Manager" style="-fx-text-fill: white; -fx-font-size: 18;" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label text="Bem-vindo, Admin" style="-fx-text-fill: white;" />
+        <HBox spacing="50" stylesheets="@estilo.css">
+            <Pane stylesheets="@estilo.css" HBox.hgrow="ALWAYS">
+            <children>
+                  <Label contentDisplay="TOP" graphicTextGap="0.0" style="-fx-font-size: 48;" stylesheets="@estilo.css" text="Hotel Pai é Careca">
+                  <font>
+                     <Font name="Montserrat Bold" size="24.0" />
+                  </font>
+               </Label>
+            </children></Pane>
+            <Label stylesheets="@estilo.css" text="Bem-vindo, Admin">
+            <HBox.margin>
+               <Insets right="8.0" />
+            </HBox.margin></Label>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="16.0" top="8.0" />
+         </BorderPane.margin>
         </HBox>
     </top>
 
     <!-- MENU LATERAL -->
     <left>
-        <VBox spacing="10" style="-fx-background-color: #34495e; -fx-padding: 15;">
-            <Button fx:id="btnDashboard" text="Dashboard" prefWidth="150" onAction="#abrirDashboard" />
-            <Button fx:id="btnMapaQuartos" text="Mapa de Quartos" prefWidth="150" onAction="#abrirMapaQuartos" />
-            <Button fx:id="btnReservas" text="Reservas" prefWidth="150" onAction="#abrirReservas" />
-            <Button fx:id="btnCheckIn" text="Check-in/Check-out" prefWidth="150" onAction="#abrirCheckIn" />
-            <Button fx:id="btnGerenciarHospedes" text="Gerenciar Hóspedes" prefWidth="150" onAction="#abrirGerenciamentoHospedes" />
-            <Button fx:id="btnFuncionarios" text="Funcionários" prefWidth="150" onAction="#abrirFuncionarios" />
-            <Button fx:id="btnManutencao" text="Manutenção" prefWidth="150" onAction="#abrirManutencao" />
-            <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="150" onAction="#abrirRelatorios" />
-            <Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" onAction="#sair" />
+        <VBox spacing="16.0" styleClass="sidebar-menu" stylesheets="@estilo.css">
+            <Button fx:id="btnDashboard" cancelButton="true" onAction="#abrirDashboard" prefWidth="150.0" stylesheets="@estilo.css" text="Dashboard" />
+            <Button fx:id="btnMapaQuartos" onAction="#abrirMapaQuartos" prefWidth="150" text="Mapa de Quartos" />
+            <Button fx:id="btnReservas" onAction="#abrirReservas" prefWidth="150" text="Reservas" />
+            <Button fx:id="btnCheckIn" onAction="#abrirCheckIn" prefWidth="150" text="Check-in/Check-out" />
+            <Button fx:id="btnGerenciarHospedes" onAction="#abrirGerenciamentoHospedes" prefWidth="150" text="Gerenciar Hóspedes" />
+            <Button fx:id="btnFuncionarios" onAction="#abrirFuncionarios" prefWidth="150" text="Funcionários" />
+            <Button fx:id="btnManutencao" onAction="#abrirManutencao" prefWidth="150" text="Manutenção" />
+            <Button fx:id="btnSair" onAction="#sair" prefWidth="150" style="-fx-background-color: #e74c3c;" text="Sair" />
         </VBox>
     </left>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <center>
-        <StackPane fx:id="contentArea" />
+        <StackPane fx:id="contentArea" stylesheets="@estilo.css" />
     </center>
-</BorderPane> 
+</BorderPane>

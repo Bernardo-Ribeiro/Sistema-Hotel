@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -55,14 +54,14 @@ public class MapaQuartosController {
                 }
                 Quarto quarto = quartos.get(index);
 
-                Circle icone = new Circle(20);
+                Circle icone = new Circle(30);
                 icone.setFill(getCorPorStatus(quarto, reservasAtuais.get(quarto.getId())));
                 icone.setStroke(Color.DIMGRAY);
                 icone.setStrokeWidth(1);
 
                 Label numeroQuartoLabel = new Label(String.valueOf(quarto.getNumeroQuarto()));
                 numeroQuartoLabel.setTextFill(Color.BLACK);
-                numeroQuartoLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+                numeroQuartoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
                 Reserva reserva = reservasAtuais.get(quarto.getId());
 
@@ -151,6 +150,9 @@ public class MapaQuartosController {
     }
 
     private void handleQuartoClicked(Quarto quarto, Reserva reserva) {
+        // TODO: Implementar a lógica para abrir a tela de detalhes da reserva
+        // Infelizmente não consegui implementar a lógica para abrir a tela de detalhes da reserva
+        // Por isso, estou usando o System.out.println para imprimir as informações
         System.out.println("Quarto clicado: " + quarto.getNumeroQuarto());
         if (reserva != null) {
             System.out.println("Reserva associada: " + reserva.getId());
