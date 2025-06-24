@@ -79,6 +79,5 @@ Este repositório será atualizado conforme o progresso do projeto. Fique à von
    ```
    mvn exec:java
    ```
-
+   
 > **Observação:** Um tutorial mais completo de instalação e execução será disponibilizado ao final do projeto.
-
