@@ -46,9 +46,9 @@
 
         <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0 5 0;">
             <Button fx:id="btnNovoFuncionario" text="✨ Novo / Limpar" onAction="#handleNovoFuncionario"/>
-            <Button fx:id="btnSalvarFuncionario" text="💾 Salvar Funcionário" onAction="#handleSalvarFuncionario" style="-fx-base: #27ae60;"/>
-            <Button fx:id="btnDemitirFuncionario" text="🚪 Demitir Selecionado" onAction="#handleDemitirFuncionario" style="-fx-base: #e74c3c;" />
-            <Button fx:id="btnRegistrarPagamento" text="💰 Registrar Pagamento" onAction="#handleRegistrarPagamento" style="-fx-base: #3498db;"/>
+            <Button fx:id="btnSalvarFuncionario" text="💾 Salvar Funcionário" onAction="#handleSalvarFuncionario" styleClass="criar"/>
+            <Button fx:id="btnDemitirFuncionario" text="🚪 Demitir Selecionado" onAction="#handleDemitirFuncionario" styleClass="deletar"/>
+            <Button fx:id="btnRegistrarPagamento" text="💰 Registrar Pagamento" onAction="#handleRegistrarPagamento" styleClass="editar"/>
         </HBox>
 
         <TextField fx:id="txtBuscaFuncionario" promptText="Buscar por nome, CPF ou cargo..." />

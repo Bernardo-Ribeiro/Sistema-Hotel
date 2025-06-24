@@ -49,10 +49,6 @@ public class EditarReservaController {
     @FXML
     private Label lblValorTotalCalculado;
 
-    // @FXML private Button btnSalvarAlteracoes; // Se o fx:id do botão salvar for este
-    // @FXML private Button btnCancelarEdicao;  // Se o fx:id do botão cancelar for este
-
-
     private HospedeService hospedeService;
     private QuartoService quartoService;
     private ReservaService reservaService;
@@ -126,8 +122,7 @@ public class EditarReservaController {
                 cmbQuarto.setDisable(true);
                 datePickerCheckIn.setDisable(true);
                 datePickerCheckOut.setDisable(true);
-                cmbStatusReserva.setDisable(true); 
-                // btnSalvarAlteracoes.setDisable(true); // Se o botão de salvar tiver fx:id
+                cmbStatusReserva.setDisable(true);
             }
 
         } else {

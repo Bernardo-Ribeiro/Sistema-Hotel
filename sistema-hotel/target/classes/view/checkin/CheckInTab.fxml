@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hotel.gerenciador.controller.checkin.CheckInTabController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@../estilo.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.checkin.CheckInTabController">
     <top>
         <Label fx:id="lblChegadasData" style="-fx-font-size: 16px; -fx-padding: 5;" text="Chegadas para: DD/MM/YYYY" BorderPane.alignment="CENTER_LEFT" />
     </top>
@@ -25,54 +35,69 @@
         </TableView>
     </center>
     <right>
-        <VBox fx:id="paneDetalhesCheckIn" spacing="8.0" style="-fx-padding: 10; -fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;" prefWidth="320.0" visible="false" managed="false">
+        <VBox fx:id="paneDetalhesCheckIn" managed="false" spacing="8.0" style="-fx-padding: 10; -fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;" stylesheets="@../estilo.css" visible="false">
             <BorderPane.margin>
                 <Insets left="10.0" />
             </BorderPane.margin>
             <children>
-                <Label text="Detalhes para Check-in" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Detalhes para Check-in" />
                 <GridPane hgap="5.0" vgap="5.0">
-                    <Label text="Hóspede:" GridPane.halignment="RIGHT" /> <Label fx:id="lblCINomeHospede" GridPane.columnIndex="1" style="-fx-font-weight: bold;"/>
-                    <Label text="CPF:" GridPane.rowIndex="1" GridPane.halignment="RIGHT" /> <Label fx:id="lblCICPF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Label text="Telefone:" GridPane.rowIndex="2" GridPane.halignment="RIGHT" /> <Label fx:id="lblCITelefone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Label text="Email:" GridPane.rowIndex="3" GridPane.halignment="RIGHT" /> <Label fx:id="lblCIEmail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="Hóspede:" GridPane.halignment="RIGHT" /> <Label fx:id="lblCINomeHospede" style="-fx-font-weight: bold;" GridPane.columnIndex="1" />
+                    <Label text="CPF:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" /> <Label fx:id="lblCICPF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Telefone:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" /> <Label fx:id="lblCITelefone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Email:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" /> <Label fx:id="lblCIEmail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     
-                    <Label text="Quarto Nº:" GridPane.rowIndex="4" GridPane.halignment="RIGHT" /> <Label fx:id="lblCINumQuarto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <Label text="Tipo Quarto:" GridPane.rowIndex="5" GridPane.halignment="RIGHT" /> <Label fx:id="lblCITipoQuarto" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    <Label text="Período:" GridPane.rowIndex="6" GridPane.halignment="RIGHT" /> <Label fx:id="lblCIDatasEstadia" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                    <Label text="Valor Reserva:" GridPane.rowIndex="7" GridPane.halignment="RIGHT" /> <Label fx:id="lblCIValorTotalReserva" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                    <Label text="Status Pagto.:" GridPane.rowIndex="8" GridPane.halignment="RIGHT" /> <Label fx:id="lblCIStatusPagamento" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                    <Label text="Saldo Pendente:" GridPane.rowIndex="9" GridPane.halignment="RIGHT" style="-fx-text-fill: red;" /> <Label fx:id="lblCISaldoPendente" GridPane.columnIndex="1" GridPane.rowIndex="9" style="-fx-text-fill: red; -fx-font-weight: bold;"/>
+                    <Label text="Quarto Nº:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" /> <Label fx:id="lblCINumQuarto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="Tipo Quarto:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" /> <Label fx:id="lblCITipoQuarto" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="Período:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" /> <Label fx:id="lblCIDatasEstadia" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <Label text="Valor Reserva:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" /> <Label fx:id="lblCIValorTotalReserva" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <Label text="Status Pagto.:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" /> <Label fx:id="lblCIStatusPagamento" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                    <Label style="-fx-text-fill: red;" text="Saldo Pendente:" GridPane.halignment="RIGHT" GridPane.rowIndex="9" /> <Label fx:id="lblCISaldoPendente" style="-fx-text-fill: red; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                     
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
                 
-                <Label text="Registrar Pagamento (Opcional):" style="-fx-font-weight: bold;">
+                <Label style="-fx-font-weight: bold;" text="Registrar Pagamento (Opcional):">
                      <VBox.margin><Insets top="8.0" /></VBox.margin>
                 </Label>
-                <HBox spacing="5.0" alignment="CENTER_LEFT">
-                    <Label text="Método:" minWidth="50"/>
-                    <ComboBox fx:id="cmbCIPagamentoMetodo" prefWidth="100.0" promptText="Método"/>
+                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                    <Label minWidth="50" text="Método:" />
+                    <ComboBox fx:id="cmbCIPagamentoMetodo" prefWidth="100.0" promptText="Método" />
                     <Label text="Valor:">
                          <HBox.margin><Insets left="5.0" /></HBox.margin>
                     </Label>
                     <TextField fx:id="txtCIPagamentoValor" prefWidth="80.0" promptText="0,00" />
                 </HBox>
-                <Button fx:id="btnCIRegistrarPagamento" text="Registrar Pagamento" onAction="#handleRegistrarPagamento" maxWidth="Infinity" />
+                <Button fx:id="btnCIRegistrarPagamento" maxWidth="Infinity" onAction="#handleRegistrarPagamento" text="Registrar Pagamento" />
 
-                <Label text="Ajustes Check-in:" style="-fx-font-weight: bold;">
+                <Label style="-fx-font-weight: bold;" text="Ajustes Check-in:">
                     <VBox.margin><Insets top="8.0" /></VBox.margin>
                 </Label>
                 <GridPane hgap="5.0" vgap="5.0"> 
-                    <Label text="Trocar Quarto:" GridPane.rowIndex="0" GridPane.halignment="RIGHT" />
+                    <Label text="Trocar Quarto:" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
                     <ComboBox fx:id="cmbCIQuartoDisponivel" prefWidth="180.0" promptText="Manter atual" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
                 
                 <CheckBox fx:id="chkCIDocumentosConfirmados" text="Documentos do(s) hóspede(s) conferidos">
@@ -81,7 +106,7 @@
                     </VBox.margin>
                 </CheckBox>
                 
-                <Button fx:id="btnConfirmarCheckIn" text="✔️ Confirmar Check-in" onAction="#handleConfirmarCheckIn" maxWidth="Infinity" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;">
+                <Button fx:id="btnConfirmarCheckIn" maxWidth="Infinity" onAction="#handleConfirmarCheckIn" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" text="✔️ Confirmar Check-in">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>
@@ -89,4 +114,4 @@
             </children>
         </VBox>
     </right>
-</BorderPane> 
+</BorderPane>

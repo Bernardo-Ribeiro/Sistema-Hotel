@@ -159,7 +159,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
             PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, termoLike); // Para a busca por Nome
-            stmt.setString(2, cpfBusca);    // Para a busca por CPF exato
+            stmt.setString(2, cpfBusca);  // Para a busca por CPF exato
             
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

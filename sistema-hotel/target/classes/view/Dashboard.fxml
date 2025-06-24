@@ -1,76 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.*?>
-
-<VBox spacing="20" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.DashboardController" stylesheets="@/view/estilo.css">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controller.DashboardController" stylesheets="@estilo.css">
     <padding>
         <Insets left="24.0" top="16.0" right="16.0" bottom="16.0"/>
     </padding>
 
-    <!-- Cards de Resumo -->
-    <HBox spacing="20">
-        <VBox fx:id="cardOcupacao" prefWidth="200">
-            <Label text="Taxa de Ocupação" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <Label fx:id="lblTaxaOcupacao" text="0%" style="-fx-font-size: 24;"/>
-        </VBox>
-        <VBox fx:id="cardReceita" prefWidth="200">
-            <Label text="Receita do Mês" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <Label fx:id="lblReceitaMes" text="R$ 0,00" style="-fx-font-size: 24;"/>
-        </VBox>
-        <VBox fx:id="cardHospedes" prefWidth="200">
-            <Label text="Hóspedes Atuais" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <Label fx:id="lblHospedesAtuais" text="0" style="-fx-font-size: 24;"/>
-        </VBox>
-    </HBox>
+    <top>
+        <HBox spacing="20" alignment="CENTER">
+            <VBox fx:id="cardOcupacao" prefWidth="200">
+                <Label text="Taxa de Ocupação" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <Label fx:id="lblTaxaOcupacao" text="0%" style="-fx-font-size: 24;"/>
+            </VBox>
+            <VBox fx:id="cardReceita" prefWidth="200">
+                <Label text="Receita do Mês" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <Label fx:id="lblReceitaMes" text="R$ 0,00" style="-fx-font-size: 24;"/>
+            </VBox>
+            <VBox fx:id="cardHospedes" prefWidth="200">
+                <Label text="Hóspedes Atuais" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <Label fx:id="lblHospedesAtuais" text="0" style="-fx-font-size: 24;"/>
+            </VBox>
+        </HBox>
+    </top>
 
-    <!-- Gráficos -->
-    <GridPane hgap="20" vgap="20">
-        <!-- Gráfico de Ocupação -->
-        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <Label text="Ocupação por Tipo de Quarto" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <PieChart fx:id="graficoOcupacaoQuartos" prefWidth="400" prefHeight="300"/>
-        </VBox>
+    <center>
+        <GridPane hgap="20" vgap="20" alignment="CENTER">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" VBox.vgrow="ALWAYS">
+                <Label text="Ocupação por Tipo de Quarto" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <PieChart fx:id="graficoOcupacaoQuartos" VBox.vgrow="ALWAYS"/>
+            </VBox>
 
-        <!-- Gráfico de Receita -->
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <Label text="Receita dos Últimos 6 Meses" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <LineChart fx:id="graficoReceita" prefWidth="400" prefHeight="300">
-                <xAxis>
-                    <CategoryAxis label="Mês"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis label="Receita (R$)"/>
-                </yAxis>
-            </LineChart>
-        </VBox>
+            <VBox GridPane.columnIndex="1" styleClass="grafico-receita" GridPane.rowIndex="0" VBox.vgrow="ALWAYS">
+                <Label text="Receita dos Últimos 6 Meses" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <LineChart fx:id="graficoReceita" VBox.vgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Mês"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Receita (R$)"/>
+                    </yAxis>
+                </LineChart>
+            </VBox>
 
-        <!-- Gráfico de Check-ins/Check-outs -->
-        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <Label text="Check-ins e Check-outs" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <BarChart fx:id="graficoCheckInsOuts" prefWidth="400" prefHeight="300">
-                <xAxis>
-                    <CategoryAxis label="Dia"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis label="Quantidade"/>
-                </yAxis>
-            </BarChart>
-        </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" VBox.vgrow="ALWAYS">
+                <Label text="Check-ins e Check-outs" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <BarChart fx:id="graficoCheckInsOuts" VBox.vgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Dia"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Quantidade"/>
+                    </yAxis>
+                </BarChart>
+            </VBox>
 
-        <!-- Gráfico de Consumos -->
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <Label text="Consumos Mais Populares" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-            <BarChart fx:id="graficoConsumos" prefWidth="400" prefHeight="300">
-                <xAxis>
-                    <CategoryAxis label="Item"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis label="Quantidade"/>
-                </yAxis>
-            </BarChart>
-        </VBox>
-    </GridPane>
-</VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" VBox.vgrow="ALWAYS">
+                <Label text="Consumos Mais Populares" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+                <BarChart fx:id="graficoConsumos" VBox.vgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Item"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Quantidade"/>
+                    </yAxis>
+                </BarChart>
+            </VBox>
+        </GridPane>
+    </center>
+</BorderPane>

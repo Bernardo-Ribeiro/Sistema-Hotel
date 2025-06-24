@@ -2,56 +2,48 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.CheckInController">
+<VBox spacing="10.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controller.CheckInController">
     <padding>
-        <Insets left="24.0" top="16.0" right="16.0" bottom="16.0"/>
+        <Insets bottom="16.0" left="24.0" right="16.0" top="16.0" />
     </padding>
     <children>
-        <Label text="Painel de Check-in e Check-out" style="-fx-font-size: 22px; -fx-font-weight: bold;">
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Painel de Check-in e Check-out">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
         </Label>
 
-        <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;">
+        <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 0 0 10 0;">
             <children>
                 <Label text="Data de Referência:" />
-                <DatePicker fx:id="dateFiltroReferencia" prefWidth="150.0" />
+                <DatePicker fx:id="dateFiltroReferencia" prefHeight="36.0" prefWidth="169.0" />
                 <Label text="Buscar:" HBox.hgrow="NEVER">
                     <HBox.margin>
                         <Insets left="20.0" />
                     </HBox.margin>
                 </Label>
                 <TextField fx:id="txtBuscaGeral" promptText="ID Reserva, Hóspede, Quarto..." HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnBuscaGeral" text="🔎" onAction="#handleBuscarGeral" />
+                <Button fx:id="btnBuscaGeral" onAction="#handleBuscarGeral" text="🔎" />
             </children>
         </HBox>
 
-        <TabPane fx:id="tabPanePrincipal" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+        <TabPane fx:id="tabPanePrincipal" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
             <tabs>
-                <Tab fx:id="tabCheckIn" text="Check-in / Chegadas" closable="false">
+                <Tab fx:id="tabCheckIn" closable="false" text="Check-in / Chegadas">
                     <content>
                         <VBox fx:id="checkInContent" />
                     </content>
                 </Tab>
 
-                <Tab fx:id="tabCheckOut" text="Check-out / Hóspedes na Casa" closable="false">
+                <Tab fx:id="tabCheckOut" closable="false" text="Check-out / Hóspedes na Casa">
                     <content>
                         <VBox fx:id="checkOutContent" />
                     </content>

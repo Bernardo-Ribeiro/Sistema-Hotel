@@ -306,10 +306,6 @@ public class GerenciamentoManutencaoController {
 
             if (sucesso) {
                 mostrarAlerta("Sucesso", "Chamado de manutenção excluído.", Alert.AlertType.INFORMATION);
-                // Se o quarto estava como MANUTENCAO por causa DESTE chamado específico e não há outros,
-                // talvez seja necessário verificar e atualizar o status do quarto.
-                // Isso requer uma lógica mais complexa (verificar se há outros chamados ativos para o quarto).
-                // Por simplicidade, não faremos isso automaticamente aqui.
                 carregarManutencoesNaTabela();
             } else {
                 mostrarAlerta("Erro", "Falha ao excluir o chamado de manutenção.", Alert.AlertType.ERROR);

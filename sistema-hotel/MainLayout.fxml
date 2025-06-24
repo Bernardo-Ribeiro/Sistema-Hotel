@@ -1,3 +1,0 @@
-<Label text="Hotel Pai é Careca" style="-fx-font-size: 18;" />
-<Label text="Bem-vindo, Admin" />
-<Button fx:id="btnSair" text="Sair" prefWidth="150" style="-fx-background-color: #e74c3c;" onAction="#sair" /> 

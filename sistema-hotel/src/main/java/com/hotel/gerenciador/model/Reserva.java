@@ -171,7 +171,7 @@ public class Reserva {
                 ", dataCheckIn=" + (dataCheckIn != null ? Formatter.formatDate(dataCheckIn) : "null") +
                 ", dataCheckOut=" + (dataCheckOut != null ? Formatter.formatDate(dataCheckOut) : "null") +
                 ", status=" + status +
-                ", valorTotal=" + Formatter.formatCurrency(valorTotal) + // Formatter.formatCurrency agora aceita BigDecimal
+                ", valorTotal=" + Formatter.formatCurrency(valorTotal) +
                 ", dataCriacao=" + (dataCriacao != null ? Formatter.formatDateTime(dataCriacao) : "null") +
                 ", dataAtualizacao=" + (dataAtualizacao != null ? Formatter.formatDateTime(dataAtualizacao) : "null") +
                 '}';
