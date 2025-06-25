@@ -49,9 +49,6 @@ public class Manutencao {
     }
     public void setDataInicio(LocalDate dataInicio) {
         Validator.validateNotNull(dataInicio, "Data de início");
-        if (this.dataFim != null) {
-            Validator.validateDateRange(dataInicio, this.dataFim);
-        }
         this.dataInicio = dataInicio;
     }
 
@@ -59,11 +56,6 @@ public class Manutencao {
         return dataFim;
     }
     public void setDataFim(LocalDate dataFim) {
-        if (dataFim != null) {
-            if (this.dataInicio != null) {
-                Validator.validateDateRange(this.dataInicio, dataFim);
-            }
-        }
         this.dataFim = dataFim;
     }
 
