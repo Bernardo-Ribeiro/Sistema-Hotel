@@ -255,7 +255,12 @@ public class GerenciamentoManutencaoController {
 
                         if (!outrasManutencoesAtivas) {
                             quarto.setStatus(StatusQuarto.DISPONIVEL);
-                            quartoService.upQuarto(quarto);
+                            boolean atualizado = quartoService.upQuarto(quarto);
+                            if (atualizado) {
+                                mostrarAlerta("Status do Quarto Atualizado", "O quarto Nº " + quarto.getNumeroQuarto() + " agora está DISPONÍVEL.", Alert.AlertType.INFORMATION);
+                            } else {
+                                mostrarAlerta("Erro ao Atualizar Quarto", "Não foi possível atualizar o status do quarto para DISPONÍVEL.", Alert.AlertType.ERROR);
+                            }
                         } else {
                             mostrarAlerta("Aviso", "Quarto Nº " + quarto.getNumeroQuarto() + " ainda possui outras manutenções ativas. Status do quarto não alterado para DISPONÍVEL.", Alert.AlertType.INFORMATION);
                         }
@@ -303,9 +308,28 @@ public class GerenciamentoManutencaoController {
                 return;
             }
 
-
             if (sucesso) {
                 mostrarAlerta("Sucesso", "Chamado de manutenção excluído.", Alert.AlertType.INFORMATION);
+                // Atualizar status do quarto se não houver outras manutenções ativas
+                Quarto quarto = quartoService.findQuartoPorId(selecionada.getIdQuarto());
+                if (quarto != null) {
+                    boolean outrasManutencoesAtivas = false;
+                    List<Manutencao> todasManutencoes = manutencaoService.getAllManutencoes();
+                    if (todasManutencoes != null) {
+                        outrasManutencoesAtivas = todasManutencoes.stream()
+                            .anyMatch(m -> m.getIdQuarto().equals(selecionada.getIdQuarto()) &&
+                                        (m.getStatus() == StatusManutencao.PENDENTE || m.getStatus() == StatusManutencao.EM_ANDAMENTO));
+                    }
+                    if (!outrasManutencoesAtivas) {
+                        quarto.setStatus(StatusQuarto.DISPONIVEL);
+                        boolean atualizado = quartoService.upQuarto(quarto);
+                        if (atualizado) {
+                            mostrarAlerta("Status do Quarto Atualizado", "O quarto Nº " + quarto.getNumeroQuarto() + " agora está DISPONÍVEL.", Alert.AlertType.INFORMATION);
+                        } else {
+                            mostrarAlerta("Erro ao Atualizar Quarto", "Não foi possível atualizar o status do quarto para DISPONÍVEL.", Alert.AlertType.ERROR);
+                        }
+                    }
+                }
                 carregarManutencoesNaTabela();
             } else {
                 mostrarAlerta("Erro", "Falha ao excluir o chamado de manutenção.", Alert.AlertType.ERROR);
