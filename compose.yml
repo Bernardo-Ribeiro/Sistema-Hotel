@@ -6,13 +6,14 @@ services:
     env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"  
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_DATABASE: "sistema_hotel"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
       - "${DB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
 volumes:

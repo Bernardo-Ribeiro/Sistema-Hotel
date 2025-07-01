@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS SistemaHotel;
-USE SistemaHotel;
+CREATE DATABASE IF NOT EXISTS sistema_hotel;
+USE sistema_hotel;
 
 -- Etapa 1: Desativar verificação de chaves estrangeiras
 SET FOREIGN_KEY_CHECKS=0;
