@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS `quartos`;
 DROP TABLE IF EXISTS `produtos`;
 DROP TABLE IF EXISTS `servicos`;
 
--- Etapa 3: Criar a estrutura das tabelas (Estrutura original mantida)
+-- Etapa 3: Criar tabelas
 CREATE TABLE `produtos` (
   `ProdutoID` int NOT NULL AUTO_INCREMENT, `Nome` varchar(100) NOT NULL, `Descricao` varchar(255) DEFAULT NULL, `Preco` decimal(10,2) NOT NULL, `Estoque` int NOT NULL, `Categoria` enum('FRIGOBAR','RESTAURANTE','BEBIDA','OUTROS') NOT NULL, `DataCriacao` datetime DEFAULT CURRENT_TIMESTAMP, `DataAtualizacao` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`ProdutoID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -60,8 +60,7 @@ CREATE TABLE `consumo` (
 -- Etapa 4: Reativar verificação de chaves estrangeiras
 SET FOREIGN_KEY_CHECKS=1;
 
--- Etapa 5: Inserir dados de amostra com IDs dos quartos corrigidos
--- As inserções em produtos, servicos, hospedes e funcionarios permanecem as mesmas.
+-- Etapa 5: Inserir dados de amostra (com IDs ajustados diretamente)
 INSERT INTO `produtos` (`ProdutoID`, `Nome`, `Descricao`, `Preco`, `Estoque`, `Categoria`, `DataCriacao`, `DataAtualizacao`) VALUES
 (1, 'Água Mineral 500ml', 'Água mineral sem gás, garrafa PET.', 5.00, 100, 'FRIGOBAR', '2025-06-02 10:40:00', '2025-06-02 10:40:00'),
 (2, 'Refrigerante Lata 350ml', 'Coca-Cola, Guaraná, etc.', 7.00, 80, 'FRIGOBAR', '2025-06-02 10:40:00', '2025-06-02 10:40:00'),
@@ -117,7 +116,6 @@ INSERT INTO `funcionarios` (`FuncionarioID`, `Nome`, `CPF`, `Telefone`, `Cargo`,
 (10, 'Isabela Castro', '50135608880', '(41) 92222-9999', 'Cozinheira', 'Alameda das Flores, 12', 'isabela.castro@emailhotel.com', 3100.00, '2022-09-05', '2025-06-05 08:10:00', '2025-06-05 08:10:00'),
 (11, 'João Pedro Lima', '58851550700', '(51) 91111-0000', 'Garçom', 'Rua dos Coqueiros, 34', 'joao.lima@emailhotel.com', 2000.00, '2025-02-28', '2025-06-05 08:10:00', '2025-06-05 08:10:00');
 
--- CORREÇÃO: IDs dos quartos reordenados para seguir a ordem do NumeroQuarto.
 INSERT INTO `quartos` (`QuartoID`, `NumeroQuarto`, `Tipo`, `PrecoDiaria`, `Status`, `DataCriacao`, `DataAtualizacao`) VALUES
 (1, 101, 'SOLTEIRO', 150.00, 'OCUPADO', '2025-06-02 10:00:00', '2025-06-12 09:16:00'),
 (2, 102, 'CASAL', 250.00, 'OCUPADO', '2025-06-02 10:00:00', '2025-06-12 10:40:00'),
@@ -160,26 +158,24 @@ INSERT INTO `quartos` (`QuartoID`, `NumeroQuarto`, `Tipo`, `PrecoDiaria`, `Statu
 (39, 409, 'SOLTEIRO', 190.00, 'DISPONIVEL', '2025-06-05 09:00:00', '2025-06-05 09:00:00'),
 (40, 410, 'CASAL', 295.00, 'OCUPADO', '2025-06-05 09:00:00', '2025-06-05 09:00:00');
 
--- CORREÇÃO: QuartoID na tabela de reservas atualizado para corresponder aos novos IDs da tabela de quartos.
 INSERT INTO `reservas` (`ReservaID`, `HospedeID`, `QuartoID`, `DataCheckIn`, `DataCheckOut`, `Status`, `ValorTotal`, `DataCriacao`, `DataAtualizacao`) VALUES
-(1, 1, 1, '2025-06-10', '2025-06-12', 'HOSPEDADO', 300.00, '2025-06-02 11:07:00', '2025-06-12 09:15:00'), -- Quarto 101 -> ID 1 (sem mudança)
-(2, 2, 2, '2025-06-08', '2025-06-11', 'CONCLUIDA', 750.00, '2025-06-02 11:07:00', '2025-06-11 11:07:00'), -- Quarto 102 -> ID 2 (sem mudança)
-(3, 3, 11, '2025-06-01', '2025-06-05', 'CONCLUIDA', 1400.00, '2025-06-01 11:07:00', '2025-06-05 14:00:00'), -- Quarto 201 -> ID 3 mudou para 11
-(4, 4, 21, '2025-06-01', '2025-06-03', 'CONCLUIDA', 520.00, '2025-06-01 11:07:00', '2025-06-03 11:07:00'), -- Quarto 301 -> ID 5 mudou para 21
-(5, 5, 1, '2025-06-05', '2025-06-07', 'CONCLUIDA', 300.00, '2025-06-05 11:07:00', '2025-06-07 11:07:00'), -- Quarto 101 -> ID 1 (sem mudança)
-(6, 6, 2, '2025-06-15', '2025-06-18', 'CONFIRMADA', 750.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 102 -> ID 2 (sem mudança)
-(7, 7, 3, '2025-06-15', '2025-06-17', 'CONFIRMADA', 320.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 103 -> ID 6 mudou para 3
-(8, 8, 13, '2025-06-20', '2025-06-25', 'PENDENTE', 1850.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 203 -> ID 7 mudou para 13
-(9, 9, 22, '2025-07-01', '2025-07-05', 'CONFIRMADA', 2080.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 302 -> ID 8 mudou para 22
-(10, 10, 23, '2025-07-10', '2025-07-12', 'PENDENTE', 540.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 303 -> ID 9 mudou para 23
-(11, 12, 4, '2025-06-12', '2025-06-15', 'HOSPEDADO', 465.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 104 -> ID 11 mudou para 4
-(12, 13, 5, '2025-06-12', '2025-06-16', 'HOSPEDADO', 1020.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 105 -> ID 12 mudou para 5
-(13, 14, 14, '2025-06-11', '2025-06-14', 'HOSPEDADO', 1530.00, '2025-06-11 10:00:00', '2025-06-11 10:00:00'), -- Quarto 204 -> ID 18 mudou para 14
-(14, 15, 25, '2025-06-10', '2025-06-13', 'HOSPEDADO', 1560.00, '2025-06-10 10:00:00', '2025-06-10 10:00:00'), -- Quarto 305 -> ID 26 mudou para 25
-(15, 16, 36, '2025-06-12', '2025-06-17', 'HOSPEDADO', 1450.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'), -- Quarto 406 -> ID 36 (sem mudança)
-(16, 12, 40, '2025-06-13', '2025-06-16', 'HOSPEDADO', 885.00, '2025-06-13 10:00:00', '2025-06-13 10:00:00'); -- Quarto 410 -> ID 40 (sem mudança)
+(1, 1, 1, '2025-06-10', '2025-06-12', 'HOSPEDADO', 300.00, '2025-06-02 11:07:00', '2025-06-12 09:15:00'),
+(2, 2, 2, '2025-06-08', '2025-06-11', 'CONCLUIDA', 750.00, '2025-06-02 11:07:00', '2025-06-11 11:07:00'),
+(3, 3, 11, '2025-06-01', '2025-06-05', 'CONCLUIDA', 1400.00, '2025-06-01 11:07:00', '2025-06-05 14:00:00'),
+(4, 4, 21, '2025-06-01', '2025-06-03', 'CONCLUIDA', 520.00, '2025-06-01 11:07:00', '2025-06-03 11:07:00'),
+(5, 5, 1, '2025-06-05', '2025-06-07', 'CONCLUIDA', 300.00, '2025-06-05 11:07:00', '2025-06-07 11:07:00'),
+(6, 6, 2, '2025-06-15', '2025-06-18', 'CONFIRMADA', 750.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(7, 7, 3, '2025-06-15', '2025-06-17', 'CONFIRMADA', 320.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(8, 8, 13, '2025-06-20', '2025-06-25', 'PENDENTE', 1850.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(9, 9, 22, '2025-07-01', '2025-07-05', 'CONFIRMADA', 2080.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(10, 10, 23, '2025-07-10', '2025-07-12', 'PENDENTE', 540.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(11, 12, 4, '2025-06-12', '2025-06-15', 'HOSPEDADO', 465.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(12, 13, 5, '2025-06-12', '2025-06-16', 'HOSPEDADO', 1020.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(13, 14, 14, '2025-06-11', '2025-06-14', 'HOSPEDADO', 1530.00, '2025-06-11 10:00:00', '2025-06-11 10:00:00'),
+(14, 15, 25, '2025-06-10', '2025-06-13', 'HOSPEDADO', 1560.00, '2025-06-10 10:00:00', '2025-06-10 10:00:00'),
+(15, 16, 36, '2025-06-12', '2025-06-17', 'HOSPEDADO', 1450.00, '2025-06-12 10:00:00', '2025-06-12 10:00:00'),
+(16, 12, 40, '2025-06-13', '2025-06-16', 'HOSPEDADO', 885.00, '2025-06-13 10:00:00', '2025-06-13 10:00:00');
 
--- CORREÇÃO: QuartoID na tabela de pagamentos não precisa de alteração, pois a relação é com ReservaID.
 INSERT INTO `pagamentos` (`PagamentoID`, `ReservaID`, `ValorPago`, `DataPagamento`, `MetodoPagamento`, `StatusPagamento`, `DataCriacao`, `DataAtualizacao`) VALUES
 (1, 1, 300.00, '2025-06-10', 'CARTAO_CREDITO', 'PAGO', '2025-06-10 10:40:00', '2025-06-10 10:40:00'),
 (2, 2, 750.00, '2025-06-08', 'PIX', 'PAGO', '2025-06-08 10:40:00', '2025-06-08 10:40:00'),
@@ -188,13 +184,11 @@ INSERT INTO `pagamentos` (`PagamentoID`, `ReservaID`, `ValorPago`, `DataPagament
 (5, 5, 150.00, '2025-06-05', 'TRANSFERENCIA', 'PENDENTE', '2025-06-05 10:40:00', '2025-06-05 10:40:00'),
 (6, 6, 300.00, '2025-06-12', 'PIX', 'PENDENTE', '2025-06-12 10:00:00', '2025-06-12 10:00:00');
 
--- CORREÇÃO: QuartoID na tabela de manutenção atualizado para corresponder aos novos IDs.
 INSERT INTO `manutencao` (`ManutencaoID`, `QuartoID`, `DataInicio`, `DataFim`, `Descricao`, `Status`, `FuncionarioID`, `DataCriacao`, `DataAtualizacao`) VALUES
-(1, 12, '2025-06-01', '2025-06-03', 'Reparo no ar condicionado.', 'CONCLUIDA', 1, '2025-06-01 10:40:00', '2025-06-03 10:40:00'), -- Quarto 202 -> ID 4 mudou para 12
-(2, 2, '2025-06-05', '2025-06-07', 'Vazamento na pia do banheiro.', 'CONCLUIDA', 3, '2025-06-05 10:40:00', '2025-06-07 10:40:00'), -- Quarto 102 -> ID 2 (sem mudança)
-(3, 11, '2025-06-10', NULL, 'Pintura geral do quarto.', 'PENDENTE', 2, '2025-06-10 10:00:00', '2025-06-10 10:00:00'); -- Quarto 201 -> ID 3 mudou para 11
+(1, 12, '2025-06-01', '2025-06-03', 'Reparo no ar condicionado.', 'CONCLUIDA', 1, '2025-06-01 10:40:00', '2025-06-03 10:40:00'),
+(2, 2, '2025-06-05', '2025-06-07', 'Vazamento na pia do banheiro.', 'CONCLUIDA', 3, '2025-06-05 10:40:00', '2025-06-07 10:40:00'),
+(3, 11, '2025-06-10', NULL, 'Pintura geral do quarto.', 'PENDENTE', 2, '2025-06-10 10:00:00', '2025-06-10 10:00:00');
 
--- CORREÇÃO: QuartoID nas tabelas de consumo não precisa de alteração, pois a relação é com ReservaID.
 INSERT INTO `consumo` (`ConsumoID`, `ReservaID`, `ProdutoID`, `Quantidade`, `Valor`, `DataConsumo`, `DataCriacao`, `DataAtualizacao`) VALUES
 (1, 1, 1, 2, 5.00, '2025-06-11', '2025-06-11 10:00:00', '2025-06-11 10:00:00'),
 (2, 2, 2, 1, 7.00, '2025-06-09', '2025-06-09 10:00:00', '2025-06-09 10:00:00'),
