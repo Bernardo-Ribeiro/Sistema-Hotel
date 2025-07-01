@@ -16,7 +16,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
 
     @Override
     protected String getTableName() {
-        return "Produtos";
+        return "produtos";
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
     }
 
     public boolean insert(Produto produto) throws SQLException {
-        String sql = "INSERT INTO Produtos (Nome, Descricao, Preco, Estoque, Categoria, DataCriacao, DataAtualizacao) " +
+        String sql = "INSERT INTO produtos (Nome, Descricao, Preco, Estoque, Categoria, DataCriacao, DataAtualizacao) " +
                      "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
         
         try (Connection conn = getConnection();
@@ -75,7 +75,7 @@ public class ProdutoDAO extends BaseDAO<Produto> {
     }
 
     public boolean update(Produto produto) throws SQLException {
-        String sql = "UPDATE Produtos SET Nome = ?, Descricao = ?, Preco = ?, Estoque = ?, Categoria = ?, DataAtualizacao = CURRENT_TIMESTAMP " +
+        String sql = "UPDATE produtos SET Nome = ?, Descricao = ?, Preco = ?, Estoque = ?, Categoria = ?, DataAtualizacao = CURRENT_TIMESTAMP " +
                      "WHERE ProdutoID = ?";
         
         try (Connection conn = getConnection();

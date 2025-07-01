@@ -22,7 +22,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
 
     @Override
     protected String getTableName() {
-        return "Reservas";
+        return "reservas";
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public boolean insert(Reserva reserva) throws SQLException {
-        String sql = "INSERT INTO Reservas (HospedeID, QuartoID, DataCheckIn, DataCheckOut, Status, ValorTotal) " +
+        String sql = "INSERT INTO reservas (HospedeID, QuartoID, DataCheckIn, DataCheckOut, Status, ValorTotal) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
@@ -110,7 +110,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public boolean update(Reserva reserva) throws SQLException {
-        String sql = "UPDATE Reservas SET HospedeID = ?, QuartoID = ?, DataCheckIn = ?, DataCheckOut = ?, Status = ?, ValorTotal = ? " +
+        String sql = "UPDATE reservas SET HospedeID = ?, QuartoID = ?, DataCheckIn = ?, DataCheckOut = ?, Status = ?, ValorTotal = ? " +
                      "WHERE ReservaID = ?";
 
         try (Connection conn = getConnection();
@@ -132,7 +132,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findByStatus(StatusReserva status) throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE Status = ?";
+        String sql = "SELECT * FROM reservas WHERE Status = ?";
     
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -150,7 +150,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findByQuartoAndPeriodo(int quartoId, LocalDate checkIn, LocalDate checkOut) throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND " +
+        String sql = "SELECT * FROM reservas WHERE QuartoID = ? AND " +
                      "Status NOT IN ('CANCELADA') AND NOT Status = 'PENDENTE' AND (" +
                      "  (DataCheckIn <= ? AND DataCheckOut >= ?) OR " +
                      "  (DataCheckIn BETWEEN ? AND ?) OR " +
@@ -179,7 +179,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findByHospede(int hospedeId) throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE HospedeID = ? ORDER BY DataCheckIn DESC";
+        String sql = "SELECT * FROM reservas WHERE HospedeID = ? ORDER BY DataCheckIn DESC";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -197,7 +197,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findAtivasByQuarto(int quartoId) throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE QuartoID = ? AND Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
+        String sql = "SELECT * FROM reservas WHERE QuartoID = ? AND Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -215,7 +215,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findByTipo(String tipoQuarto) throws SQLException {
-        String sql = "SELECT r.* FROM Reservas r " +
+        String sql = "SELECT r.* FROM reservas r " +
                     "JOIN Quartos q ON r.QuartoID = q.QuartoID " +
                     "WHERE q.Tipo = ? AND r.Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
         
@@ -235,7 +235,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
 
     public List<Reserva> findAtivas() throws SQLException {
-        String sql = "SELECT * FROM Reservas WHERE Status NOT IN ('CANCELADA', 'CONCLUIDA')"; 
+        String sql = "SELECT * FROM reservas WHERE Status NOT IN ('CANCELADA', 'CONCLUIDA')";
         
         try (Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -253,7 +253,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
         List<Reserva> listaReservas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sqlBuilder = new StringBuilder(
-            "SELECT DISTINCT r.* FROM Reservas r " +
+            "SELECT DISTINCT r.* FROM reservas r " +
             "LEFT JOIN Hospedes h ON r.HospedeID = h.HospedeID " +
             "LEFT JOIN Quartos q ON r.QuartoID = q.QuartoID " +
             "WHERE 1=1"
@@ -304,7 +304,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
     }
     public List<Reserva> findByQuartoAndPeriodo(int quartoId, LocalDate checkIn, LocalDate checkOut, int reservaIdParaIgnorar) throws SQLException {
         StringBuilder sqlBuilder = new StringBuilder(
-            "SELECT * FROM Reservas WHERE QuartoID = ? " +
+            "SELECT * FROM reservas WHERE QuartoID = ? " +
             "AND Status NOT IN ('CANCELADA') " + 
             "AND DataCheckIn < ? AND DataCheckOut > ? " 
         );

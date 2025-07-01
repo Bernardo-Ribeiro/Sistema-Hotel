@@ -1,5 +1,7 @@
 package com.hotel.gerenciador.daos;
 
+import com.hotel.gerenciador.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

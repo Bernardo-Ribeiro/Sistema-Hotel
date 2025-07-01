@@ -19,7 +19,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
 
     @Override
     protected String getTableName() {
-        return "Quartos";
+        return "quartos";
     }
 
     @Override
@@ -51,7 +51,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     }
 
     public boolean insert(Quarto quarto) throws SQLException {
-        String sql = "INSERT INTO Quartos (NumeroQuarto, Tipo, PrecoDiaria, Status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO quartos (NumeroQuarto, Tipo, PrecoDiaria, Status) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -76,7 +76,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     }
 
     public boolean update(Quarto quarto) throws SQLException {
-        String sql = "UPDATE Quartos SET NumeroQuarto = ?, Tipo = ?, PrecoDiaria = ?, Status = ? WHERE QuartoID = ?";
+        String sql = "UPDATE quartos SET NumeroQuarto = ?, Tipo = ?, PrecoDiaria = ?, Status = ? WHERE QuartoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

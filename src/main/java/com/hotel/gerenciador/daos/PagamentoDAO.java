@@ -21,7 +21,7 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
 
     @Override
     protected String getTableName() {
-        return "Pagamentos";
+        return "pagamentos";
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
     }
 
     public boolean insert(Pagamento pagamento) throws SQLException {
-        String sql = "INSERT INTO Pagamentos (ReservaID, ValorPago, DataPagamento, MetodoPagamento, StatusPagamento) " +
+        String sql = "INSERT INTO pagamentos (ReservaID, ValorPago, DataPagamento, MetodoPagamento, StatusPagamento) " +
                      "VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = getConnection();
@@ -81,7 +81,7 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
     }
 
     public boolean update(Pagamento pagamento) throws SQLException {
-        String sql = "UPDATE Pagamentos SET ReservaID = ?, ValorPago = ?, DataPagamento = ?, MetodoPagamento = ?, StatusPagamento = ? " +
+        String sql = "UPDATE pagamentos SET ReservaID = ?, ValorPago = ?, DataPagamento = ?, MetodoPagamento = ?, StatusPagamento = ? " +
                      "WHERE PagamentoID = ?";
         
         try (Connection conn = getConnection();
@@ -99,7 +99,7 @@ public class PagamentoDAO extends BaseDAO<Pagamento> {
     }
 
     public List<Pagamento> findByStatus(StatusPagamento status) throws SQLException {
-        String sql = "SELECT * FROM Pagamentos WHERE StatusPagamento = ?";
+        String sql = "SELECT * FROM pagamentos WHERE StatusPagamento = ?";
         List<Pagamento> pagamentos = new ArrayList<>();
         
         try (Connection conn = getConnection();

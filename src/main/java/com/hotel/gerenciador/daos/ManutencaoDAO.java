@@ -11,7 +11,7 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
 
     @Override
     protected String getTableName() {
-        return "Manutencao";
+        return "manutencao";
     }
     protected String getIdColumnName() {
         return "ManutencaoID";
@@ -34,7 +34,7 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
     }
 
     public boolean insert(Manutencao manutencao) throws SQLException {
-        String sql = "INSERT INTO Manutencao (QuartoID, DataInicio, DataFim, Descricao, Status, FuncionarioID) " +
+        String sql = "INSERT INTO manutencao (QuartoID, DataInicio, DataFim, Descricao, Status, FuncionarioID) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
@@ -61,7 +61,7 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
     }
 
     public boolean update(Manutencao manutencao) throws SQLException {
-        String sql = "UPDATE Manutencao SET QuartoID = ?, DataInicio = ?, DataFim = ?, Descricao = ?, " +
+        String sql = "UPDATE manutencao SET QuartoID = ?, DataInicio = ?, DataFim = ?, Descricao = ?, " +
                      "Status = ?, FuncionarioID = ? WHERE ManutencaoID = ?";
 
         try (Connection conn = getConnection();
@@ -79,7 +79,7 @@ public class ManutencaoDAO extends BaseDAO<Manutencao> {
         }
     }
     public List<Manutencao> findByStatus(StatusManutencao status) throws SQLException {
-        String sql = "SELECT * FROM Manutencao WHERE Status = ?";
+        String sql = "SELECT * FROM manutencao WHERE Status = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

@@ -12,7 +12,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
 
     @Override
     protected String getTableName() {
-        return "Hospedes";
+        return "hospedes";
     }
     @Override
     protected String getIdColumnName() {
@@ -35,7 +35,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public boolean insert(Hospede hospede) throws SQLException {
-        String sql = "INSERT INTO Hospedes (Nome, CPF, Telefone, Email, Endereco, DataNascimento) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hospedes (Nome, CPF, Telefone, Email, Endereco, DataNascimento) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -62,7 +62,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public boolean update(Hospede hospede) throws SQLException {
-        String sql = "UPDATE Hospedes SET Nome = ?, CPF = ?, Telefone = ?, Email = ?, Endereco = ?, DataNascimento = ? WHERE HospedeID = ?";
+        String sql = "UPDATE hospedes SET Nome = ?, CPF = ?, Telefone = ?, Email = ?, Endereco = ?, DataNascimento = ? WHERE HospedeID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -80,7 +80,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public List<Hospede> findByName(String nome) throws SQLException {
-        String sql = "SELECT * FROM Hospedes WHERE Nome LIKE ?";
+        String sql = "SELECT * FROM hospedes WHERE Nome LIKE ?";
         List<Hospede> hospedes = new ArrayList<>();
 
         try (Connection conn = getConnection();
@@ -98,7 +98,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public Hospede findByCpf(String cpf) throws SQLException {
-        String sql = "SELECT * FROM Hospedes WHERE CPF = ?";
+        String sql = "SELECT * FROM hospedes WHERE CPF = ?";
         Hospede hospede = null;
 
         try (Connection conn = getConnection();
@@ -116,8 +116,8 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public List<Hospede> findWithActiveReservas() throws SQLException {
-        String sql = "SELECT DISTINCT h.* FROM Hospedes h " +
-                    "JOIN Reservas r ON h.HospedeID = r.HospedeID " +
+        String sql = "SELECT DISTINCT h.* FROM hospedes h " +
+                    "JOIN reservas r ON h.HospedeID = r.HospedeID " +
                     "WHERE r.Status NOT IN ('CANCELADA', 'CONCLUIDA')";
         
         List<Hospede> hospedes = new ArrayList<>();
@@ -134,7 +134,7 @@ public class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     public boolean isCpfInUse(String cpf, int excludeId) throws SQLException {
-        String sql = "SELECT 1 FROM Hospedes WHERE CPF = ? AND HospedeID != ?";
+        String sql = "SELECT 1 FROM hospedes WHERE CPF = ? AND HospedeID != ?";
         
         try (Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {

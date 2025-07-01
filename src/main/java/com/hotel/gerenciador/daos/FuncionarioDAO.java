@@ -10,7 +10,7 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
 
     @Override
     protected String getTableName() {
-        return "Funcionarios";
+        return "funcionarios";
     }
     protected String getIdColumnName() {
         return "FuncionarioID";
@@ -38,7 +38,7 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
     }
 
     public boolean insert(Funcionario funcionario) throws SQLException {
-        String sql = "INSERT INTO Funcionarios (Nome, Cargo, Salario, Telefone, CPF, Email, Endereco, DataAdmissao) " +
+        String sql = "INSERT INTO funcionarios (Nome, Cargo, Salario, Telefone, CPF, Email, Endereco, DataAdmissao) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
@@ -67,7 +67,7 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
     }
 
     public boolean update(Funcionario funcionario) throws SQLException {
-        String sql = "UPDATE Funcionarios SET Nome = ?, Cargo = ?, Salario = ?, Telefone = ?, CPF = ?, Email = ?, Endereco = ?, DataAdmissao = ? " +
+        String sql = "UPDATE funcionarios SET Nome = ?, Cargo = ?, Salario = ?, Telefone = ?, CPF = ?, Email = ?, Endereco = ?, DataAdmissao = ? " +
                      "WHERE FuncionarioID = ?";
 
         try (Connection conn = getConnection();
@@ -88,7 +88,7 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
     }
 
     public Funcionario findByCpf(String cpf) throws SQLException {
-        String sql = "SELECT * FROM Funcionario WHERE CPF = ?";
+        String sql = "SELECT * FROM funcionarios WHERE CPF = ?";
         Funcionario funcionario = null;
 
         try (Connection conn = getConnection();
@@ -105,7 +105,7 @@ public class FuncionarioDAO extends BaseDAO<Funcionario> {
         return funcionario;
     }
     public List<Funcionario> findByName(String nome) throws SQLException {
-        String sql = "SELECT * FROM Funcionarios WHERE Nome LIKE ?";
+        String sql = "SELECT * FROM funcionarios WHERE Nome LIKE ?";
         List<Funcionario> funcionarios = new ArrayList<>();
 
         try (Connection conn = getConnection();

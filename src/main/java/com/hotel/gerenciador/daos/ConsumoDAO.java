@@ -12,7 +12,7 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
 
     @Override
     protected String getTableName() {
-        return "Consumo";
+        return "consumo";
     }
     protected String getIdColumnName() {
         return "ConsumoID";
@@ -33,7 +33,7 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
     }
 
     public boolean insert(Consumo consumo) throws SQLException {
-        String sql = "INSERT INTO Consumo (ReservaID, ProdutoID, Quantidade, Valor, DataConsumo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO consumo (ReservaID, ProdutoID, Quantidade, Valor, DataConsumo) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -60,7 +60,7 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
     }
 
     public boolean update(Consumo consumo) throws SQLException {
-        String sql = "UPDATE Consumo SET ReservaID = ?, ProdutoID = ?, Quantidade = ?, Valor = ?, DataConsumo = ? WHERE ConsumoID = ?";
+        String sql = "UPDATE consumo SET ReservaID = ?, ProdutoID = ?, Quantidade = ?, Valor = ?, DataConsumo = ? WHERE ConsumoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -76,7 +76,7 @@ public class ConsumoDAO extends BaseDAO<Consumo> {
         }
     }
     public List<Consumo> findByReservaId(int reservaId) throws SQLException {
-        String sql = "SELECT * FROM Consumo WHERE ReservaID = ?";
+        String sql = "SELECT * FROM consumo WHERE ReservaID = ?";
         List<Consumo> lista = new ArrayList<>();
 
         try (Connection conn = getConnection();

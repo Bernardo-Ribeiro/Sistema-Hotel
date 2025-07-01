@@ -15,7 +15,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
 
     @Override
     protected String getTableName() {
-        return "Servicos";
+        return "servicos";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     public boolean insert(Servico servico) throws SQLException {
-        String sql = "INSERT INTO Servicos (Nome, Descricao, Preco, Disponivel) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO servicos (Nome, Descricao, Preco, Disponivel) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -72,7 +72,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     public boolean update(Servico servico) throws SQLException {
-        String sql = "UPDATE Servicos SET Nome = ?, Descricao = ?, Preco = ?, Disponivel = ? WHERE ServicoID = ?";
+        String sql = "UPDATE servicos SET Nome = ?, Descricao = ?, Preco = ?, Disponivel = ? WHERE ServicoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -88,7 +88,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     public boolean delete(int servicoId) throws SQLException {
-        String sql = "DELETE FROM Servicos WHERE ServicoID = ?";
+        String sql = "DELETE FROM servicos WHERE ServicoID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -99,7 +99,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     public Servico findById(int id) throws SQLException {
-        String sql = "SELECT * FROM Servicos WHERE ServicoID = ?";
+        String sql = "SELECT * FROM servicos WHERE ServicoID = ?";
         
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
