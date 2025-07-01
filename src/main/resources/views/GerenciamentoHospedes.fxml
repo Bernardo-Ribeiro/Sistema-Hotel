@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controllers.GerenciamentoHospedesController">
+    <padding>
+        <Insets bottom="16.0" left="24.0" right="16.0" top="16.0" />
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Gerenciamento de Hóspedes" />
+        
+        <GridPane hgap="10" vgap="8">
+            <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="txtNomeHospede" prefWidth="300" promptText="Nome completo" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            
+            <Label text="CPF:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="txtCpfHospede" promptText="000.000.000-00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label text="Telefone:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="txtTelefoneHospede" promptText="(00) 00000-0000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="txtEmailHospede" prefWidth="300" promptText="email@example.com" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            
+            <Label text="Data Nasc.:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dpDataNascimentoHospede" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            
+            <Label text="Logradouro:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="txtLogradouroHospede" promptText="Ex: Rua das Flores 123" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+            <Label text="Bairro:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="txtBairroHospede" promptText="Ex: Centro" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            
+            <Label text="Localidade/UF:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="txtLocalidadeUfHospede" promptText="Ex: São Paulo/SP" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            
+            <Label text="CEP:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextField fx:id="txtCepHospede" promptText="00000-000" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="80" /> <ColumnConstraints hgrow="ALWAYS" />
+                <ColumnConstraints halignment="RIGHT" minWidth="100" /> <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button fx:id="btnNovoHospede" onAction="#handleNovoHospede" text="✨ Novo / Limpar" />
+            <Button fx:id="btnSalvarHospede" onAction="#handleSalvarHospede" text="💾 Salvar Hóspede" styleClass="criar"/>
+            <Button fx:id="btnExcluirHospede" onAction="#handleExcluirHospede" text="🗑 Excluir Selecionado" styleClass="deletar" />
+        </HBox>
+        
+        <TextField fx:id="txtBuscaHospede" promptText="Buscar por nome ou CPF..." />
+        <Button fx:id="btnBuscarHospedes" maxWidth="Infinity" onAction="#handleBuscarHospedes" text="🔎 Buscar Hóspedes" />
+
+        <TableView fx:id="tblHospedes" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colHospedeId" prefWidth="50" text="ID" />
+                <TableColumn fx:id="colNomeHospede" prefWidth="200" text="Nome" />
+                <TableColumn fx:id="colCpfHospede" prefWidth="120" text="CPF" />
+                <TableColumn fx:id="colTelefoneHospede" prefWidth="120" text="Telefone" />
+                <TableColumn fx:id="colEmailHospede" prefWidth="200" text="Email" />
+            </columns>
+            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+        </TableView>
+    </children>
+</VBox>

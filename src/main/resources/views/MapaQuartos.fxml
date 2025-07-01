@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.gerenciador.controllers.MapaQuartosController"
+            prefWidth="600" prefHeight="400">
+
+    <GridPane fx:id="gridMapaQuartos"
+              layoutX="20" layoutY="20"
+              hgap="20" vgap="20"
+              AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10"
+              AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+    </GridPane>
+
+</AnchorPane>

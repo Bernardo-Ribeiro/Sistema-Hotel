@@ -20,7 +20,7 @@ public class Main extends Application {
         Font.loadFont(getClass().getResourceAsStream("/fonts/Montserrat-LightItalic.ttf"), 12);
 
         try {
-            URL url = getClass().getResource("/view/MainLayout.fxml");
+            URL url = getClass().getResource("/views/MainLayout.fxml");
             System.out.println("FXML URL: " + url);
             
             if (url == null) {
