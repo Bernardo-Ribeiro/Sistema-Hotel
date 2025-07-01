@@ -4,6 +4,8 @@ import com.hotel.gerenciador.model.Funcionario;
 import com.hotel.gerenciador.service.FuncionarioService;
 import com.hotel.gerenciador.util.Formatter;
 import com.hotel.gerenciador.util.Validator;
+import com.hotel.gerenciador.model.Pagamento;
+import com.hotel.gerenciador.service.PagamentoService;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.text.NumberFormat;
-import java.text.ParseException; 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -51,18 +53,20 @@ public class GerenciamentoFuncionariosController extends BaseController {
     @FXML private TableColumn<Funcionario, String> colEmailFuncionario;
 
     private FuncionarioService funcionarioService;
+    private PagamentoService pagamentoService;
     private ObservableList<Funcionario> listaFuncionariosObservavel;
     private Funcionario funcionarioSelecionadoParaEdicao = null;
 
     private boolean isFormattingCpf = false;
     private boolean isFormattingTelefone = false;
     private boolean isFormattingSalario = false;
-    
+
     private static final Pattern NON_NUMERIC = Pattern.compile("[^0-9]");
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
 
     public GerenciamentoFuncionariosController() {
         this.funcionarioService = new FuncionarioService();
+        this.pagamentoService = new PagamentoService();
         this.listaFuncionariosObservavel = FXCollections.observableArrayList();
     }
 
@@ -79,19 +83,15 @@ public class GerenciamentoFuncionariosController extends BaseController {
         colFuncionarioId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNomeFuncionario.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCargoFuncionario.setCellValueFactory(new PropertyValueFactory<>("cargo"));
-        
+
         colSalarioFuncionario.setCellValueFactory(cellData -> {
             double salario = cellData.getValue().getSalario();
             return new SimpleStringProperty(Formatter.formatCurrency(salario));
         });
-        colCpfFuncionario.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(Formatter.formatCpf(cellData.getValue().getCpf())));
-        colTelefoneFuncionario.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(Formatter.formatPhone(cellData.getValue().getTelefone())));
-        colDataAdmissaoFuncionario.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(Formatter.formatDate(cellData.getValue().getDataAdmissao())));
+        colCpfFuncionario.setCellValueFactory(cellData -> new SimpleStringProperty(Formatter.formatCpf(cellData.getValue().getCpf())));
+        colTelefoneFuncionario.setCellValueFactory(cellData -> new SimpleStringProperty(Formatter.formatPhone(cellData.getValue().getTelefone())));
+        colDataAdmissaoFuncionario.setCellValueFactory(cellData -> new SimpleStringProperty(Formatter.formatDate(cellData.getValue().getDataAdmissao())));
         colEmailFuncionario.setCellValueFactory(new PropertyValueFactory<>("email"));
-        
         tblFuncionarios.setItems(listaFuncionariosObservavel);
     }
 
@@ -111,36 +111,27 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 }
             });
     }
-    
+
     private void configurarFormatadoresDeTexto() {
         txtCpfFuncionario.textProperty().addListener((observable, oldValue, newValue) -> {
             if (isFormattingCpf) return;
             isFormattingCpf = true;
 
             String digitsOnly = newValue.replaceAll("\\D", "");
-            String formattedCpf = digitsOnly; 
+            String formattedCpf = digitsOnly;
 
             if (digitsOnly.length() > 11) {
                 digitsOnly = digitsOnly.substring(0, 11);
             }
 
             if (digitsOnly.length() > 9) {
-                formattedCpf = String.format("%s.%s.%s-%s",
-                    digitsOnly.substring(0, 3),
-                    digitsOnly.substring(3, 6),
-                    digitsOnly.substring(6, 9),
-                    digitsOnly.substring(9));
+                formattedCpf = String.format("%s.%s.%s-%s", digitsOnly.substring(0, 3), digitsOnly.substring(3, 6), digitsOnly.substring(6, 9), digitsOnly.substring(9));
             } else if (digitsOnly.length() > 6) {
-                formattedCpf = String.format("%s.%s.%s",
-                    digitsOnly.substring(0, 3),
-                    digitsOnly.substring(3, 6),
-                    digitsOnly.substring(6));
+                formattedCpf = String.format("%s.%s.%s", digitsOnly.substring(0, 3), digitsOnly.substring(3, 6), digitsOnly.substring(6));
             } else if (digitsOnly.length() > 3) {
-                formattedCpf = String.format("%s.%s",
-                    digitsOnly.substring(0, 3),
-                    digitsOnly.substring(3));
+                formattedCpf = String.format("%s.%s", digitsOnly.substring(0, 3), digitsOnly.substring(3));
             }
-            
+
             final String finalFormattedCpf = formattedCpf;
             Platform.runLater(() -> {
                 txtCpfFuncionario.setText(finalFormattedCpf);
@@ -160,29 +151,18 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 digitsOnly = digitsOnly.substring(0, 11);
             }
 
-            if (digitsOnly.length() == 11) { // (XX) XXXXX-XXXX
-                formattedPhone = String.format("(%s) %s-%s", 
-                    digitsOnly.substring(0, 2), 
-                    digitsOnly.substring(2, 7), 
-                    digitsOnly.substring(7, 11));
-            } else if (digitsOnly.length() > 6 && digitsOnly.length() <= 10 && newValue.matches("^\\(\\d{2}\\)\\s\\d{4,5}$")) {
-                 formattedPhone = newValue;
-            } else if (digitsOnly.length() == 10) { // (XX) XXXX-XXXX
-                formattedPhone = String.format("(%s) %s-%s", 
-                    digitsOnly.substring(0, 2), 
-                    digitsOnly.substring(2, 6), 
-                    digitsOnly.substring(6, 10));
-            } else if (digitsOnly.length() > 7) { 
-                formattedPhone = String.format("(%s) %s-%s",
-                    digitsOnly.substring(0, 2),
-                    digitsOnly.substring(2, (digitsOnly.length() == 11 || digitsOnly.length() >= 7 ? 7 : 6)),
-                    digitsOnly.substring((digitsOnly.length() == 11 || digitsOnly.length() >= 7 ? 7 : 6)));
+            if (digitsOnly.length() == 11) {
+                formattedPhone = String.format("(%s) %s-%s", digitsOnly.substring(0, 2), digitsOnly.substring(2, 7), digitsOnly.substring(7, 11));
+            } else if (digitsOnly.length() == 10) {
+                formattedPhone = String.format("(%s) %s-%s", digitsOnly.substring(0, 2), digitsOnly.substring(2, 6), digitsOnly.substring(6, 10));
+            } else if (digitsOnly.length() > 7) {
+                formattedPhone = String.format("(%s) %s-%s", digitsOnly.substring(0, 2), digitsOnly.substring(2, 7), digitsOnly.substring(7));
             } else if (digitsOnly.length() > 2) {
-                 formattedPhone = String.format("(%s) %s", digitsOnly.substring(0, 2), digitsOnly.substring(2));
+                formattedPhone = String.format("(%s) %s", digitsOnly.substring(0, 2), digitsOnly.substring(2));
             } else if (digitsOnly.length() > 0) {
-                 formattedPhone = "(" + digitsOnly;
+                formattedPhone = "(" + digitsOnly;
             }
-            
+
             final String finalFormattedPhone = formattedPhone;
             Platform.runLater(() -> {
                 txtTelefoneFuncionario.setText(finalFormattedPhone);
@@ -190,7 +170,7 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 isFormattingTelefone = false;
             });
         });
-        
+
         txtSalarioFuncionario.textProperty().addListener((observable, oldValue, newValue) -> {
             if (isFormattingSalario) return;
             isFormattingSalario = true;
@@ -204,14 +184,14 @@ public class GerenciamentoFuncionariosController extends BaseController {
                     formattedText = currencyFormat.format(value);
                 } catch (NumberFormatException e) {
                     try {
-                         Number parsedNum = currencyFormat.parse(newValue);
-                         formattedText = currencyFormat.format(parsedNum.doubleValue());
+                        Number parsedNum = currencyFormat.parse(newValue);
+                        formattedText = currencyFormat.format(parsedNum.doubleValue());
                     } catch (ParseException pe) {
-                       formattedText = "";
+                        formattedText = "";
                     }
                 }
             }
-            
+
             final String finalText = formattedText;
             Platform.runLater(() -> {
                 txtSalarioFuncionario.setText(finalText);
@@ -229,10 +209,10 @@ public class GerenciamentoFuncionariosController extends BaseController {
         }
         tblFuncionarios.setPlaceholder(new Label("Nenhum funcionário cadastrado."));
     }
-    
+
     private void preencherFormularioComFuncionario(Funcionario funcionario) {
         txtNomeFuncionario.setText(funcionario.getNome());
-        txtCpfFuncionario.setText(Formatter.formatCpf(funcionario.getCpf())); 
+        txtCpfFuncionario.setText(Formatter.formatCpf(funcionario.getCpf()));
         txtTelefoneFuncionario.setText(Formatter.formatPhone(funcionario.getTelefone()));
         txtEmailFuncionario.setText(funcionario.getEmail());
         txtCargoFuncionario.setText(funcionario.getCargo());
@@ -253,20 +233,19 @@ public class GerenciamentoFuncionariosController extends BaseController {
             String endereco = txtEnderecoFuncionario.getText();
             LocalDate dataAdmissao = dpDataAdmissaoFuncionario.getValue();
 
-            // Validações usando o Validator
             Validator.validateNotEmpty(nome, "Nome do funcionário");
             Validator.validateNotEmpty(cargo, "Cargo do funcionário");
-            
+
             String cpfLimpo = NON_NUMERIC.matcher(cpfInput).replaceAll("");
             Validator.validateCpf(cpfLimpo);
-            
+
             String telefoneLimpo = NON_NUMERIC.matcher(telefoneInput).replaceAll("");
             Validator.validateTelefone(telefoneLimpo);
-            
+
             if (email != null && !email.trim().isEmpty()) {
                 Validator.validateEmail(email);
             }
-            
+
             double salario = 0.0;
             if (salarioInput != null && !salarioInput.isEmpty()) {
                 try {
@@ -277,32 +256,30 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 }
             }
             Validator.validatePositiveValue(salario);
-            
+
             if (endereco != null && !endereco.trim().isEmpty()) {
                 Validator.validateEndereco(endereco);
             } else {
                 throw new IllegalArgumentException("Endereço é obrigatório.");
             }
-            
+
             if (dataAdmissao != null) {
                 Validator.validateNotFutureDate(dataAdmissao);
             } else {
                 throw new IllegalArgumentException("Data de admissão é obrigatória.");
             }
-            
-            // Criar ou atualizar funcionário
-            Funcionario funcionario = funcionarioSelecionadoParaEdicao != null ? 
-                funcionarioSelecionadoParaEdicao : new Funcionario();
-            
+
+            Funcionario funcionario = funcionarioSelecionadoParaEdicao != null ? funcionarioSelecionadoParaEdicao : new Funcionario();
+
             funcionario.setNome(nome.trim());
             funcionario.setCargo(cargo.trim());
             funcionario.setSalario(salario);
-            funcionario.setTelefone(telefoneLimpo); 
-            funcionario.setCpf(cpfLimpo); 
+            funcionario.setTelefone(telefoneLimpo);
+            funcionario.setCpf(cpfLimpo);
             funcionario.setEmail(email != null ? email.trim() : null);
             funcionario.setEndereco(endereco.trim());
             funcionario.setDataAdmissao(dataAdmissao);
-            
+
             if (funcionarioSelecionadoParaEdicao == null) {
                 funcionarioService.addFuncionario(funcionario);
                 mostrarAlerta("Sucesso", "Funcionário cadastrado com sucesso!");
@@ -310,10 +287,10 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 funcionarioService.upFuncionario(funcionario);
                 mostrarAlerta("Sucesso", "Funcionário atualizado com sucesso!");
             }
-            
+
             limparFormulario();
             carregarFuncionariosNaTabela();
-            
+
         } catch (IllegalArgumentException e) {
             mostrarAlerta("Erro de Validação", e.getMessage());
         } catch (Exception e) {
@@ -334,7 +311,7 @@ public class GerenciamentoFuncionariosController extends BaseController {
             return;
         }
 
-        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION, 
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION,
             "Tem certeza que deseja demitir o funcionário " + funcionarioSelecionadoParaEdicao.getNome() + "?\nEsta ação não pode ser desfeita.",
             ButtonType.YES, ButtonType.NO);
         confirmacao.setTitle("Confirmação de Demissão");
@@ -351,7 +328,7 @@ public class GerenciamentoFuncionariosController extends BaseController {
             }
         }
     }
-    
+
     @FXML
     private void handleBuscarFuncionarios() {
         String termoBusca = txtBuscaFuncionario.getText().trim();
@@ -368,16 +345,16 @@ public class GerenciamentoFuncionariosController extends BaseController {
                 }
             }
         }
-        
+
         listaFuncionariosObservavel.clear();
         if (funcionariosFiltrados != null && !funcionariosFiltrados.isEmpty()) {
             listaFuncionariosObservavel.addAll(funcionariosFiltrados);
         }
-         if (listaFuncionariosObservavel.isEmpty()) {
+        if (listaFuncionariosObservavel.isEmpty()) {
             tblFuncionarios.setPlaceholder(new Label("Nenhum funcionário encontrado para: '" + termoBusca + "'"));
         } else {
-             tblFuncionarios.setPlaceholder(new Label("Nenhum funcionário cadastrado."));
-         }
+            tblFuncionarios.setPlaceholder(new Label("Nenhum funcionário cadastrado."));
+        }
     }
 
     @FXML
@@ -395,8 +372,9 @@ public class GerenciamentoFuncionariosController extends BaseController {
 
         if (valorResult.isPresent() && !valorResult.get().isEmpty()) {
             try {
-                Number parsedNumber = currencyFormat.parse(valorResult.get());
-                double valor = parsedNumber.doubleValue();
+                String inputValor = valorResult.get();
+                String cleanedInput = inputValor.replace("R$", "").replace(" ", "").replace(".", "").replace(",", ".");
+                double valor = Double.parseDouble(cleanedInput);
 
                 DatePickerDialog dialogData = new DatePickerDialog(LocalDate.now());
                 dialogData.setTitle("Data do Pagamento");
@@ -414,28 +392,22 @@ public class GerenciamentoFuncionariosController extends BaseController {
 
                     if (mesRefResult.isPresent() && !mesRefResult.get().isEmpty()) {
                         String mesReferencia = mesRefResult.get();
-                        
-                        System.out.println("Pagamento a ser registrado (placeholder):");
-                        System.out.println("Funcionário ID: " + funcionarioSelecionadoParaEdicao.getId());
-                        System.out.println("Valor: " + valor);
-                        System.out.println("Data Pagamento: " + dataPagamento);
-                        System.out.println("Mês Referência: " + mesReferencia);
+                        boolean sucesso = true;
 
-                        boolean sucesso = true; 
-                        
                         if (sucesso) {
-                             mostrarAlerta("Pagamento", "Registro de pagamento (simulado) processado.");
+                            mostrarAlerta("Pagamento", "Registro de pagamento (simulado) processado.");
                         } else {
-                             mostrarAlerta("Pagamento", "Falha ao processar registro de pagamento (simulado).");
+                            mostrarAlerta("Pagamento", "Falha ao processar registro de pagamento (simulado).");
                         }
                     }
                 }
-            } catch (ParseException e) {
-                mostrarAlerta("Erro de Entrada", "Valor do pagamento inválido. Use o formato R$ 1.234,56.");
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Erro de Entrada", "Valor do pagamento inválido. Por favor, insira apenas números e use vírgula para centavos (ex: 1234,56).");
+            } catch (Exception e) {
+                mostrarAlerta("Erro", "Ocorreu um erro inesperado ao registrar o pagamento: " + e.getMessage());
             }
         }
     }
-
 
     private void limparFormulario() {
         txtNomeFuncionario.clear();
@@ -446,13 +418,12 @@ public class GerenciamentoFuncionariosController extends BaseController {
         txtSalarioFuncionario.clear();
         txtEnderecoFuncionario.clear();
         dpDataAdmissaoFuncionario.setValue(null);
-        
+
         funcionarioSelecionadoParaEdicao = null;
-        tblFuncionarios.getSelectionModel().clearSelection(); 
-        
+        tblFuncionarios.getSelectionModel().clearSelection();
+
         if (btnDemitirFuncionario != null) btnDemitirFuncionario.setDisable(true);
         if (btnRegistrarPagamento != null) btnRegistrarPagamento.setDisable(true);
-
     }
 
     private static class DatePickerDialog extends Dialog<LocalDate> {
