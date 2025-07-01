@@ -14,3 +14,7 @@ HELP.md
 ### VSCODE ###
 .vscode/*
 .vscode/
+
+### Environment Variables ###
+.env
+*.env
