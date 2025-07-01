@@ -216,7 +216,7 @@ public class ReservaDAO extends BaseDAO<Reserva> {
 
     public List<Reserva> findByTipo(String tipoQuarto) throws SQLException {
         String sql = "SELECT r.* FROM reservas r " +
-                    "JOIN Quartos q ON r.QuartoID = q.QuartoID " +
+                    "JOIN quartos q ON r.QuartoID = q.QuartoID " +
                     "WHERE q.Tipo = ? AND r.Status NOT IN ('CANCELADA', 'HOSPEDADO', 'CONCLUIDA')"; 
         
         try (Connection conn = getConnection();
@@ -254,8 +254,8 @@ public class ReservaDAO extends BaseDAO<Reserva> {
         List<Object> params = new ArrayList<>();
         StringBuilder sqlBuilder = new StringBuilder(
             "SELECT DISTINCT r.* FROM reservas r " +
-            "LEFT JOIN Hospedes h ON r.HospedeID = h.HospedeID " +
-            "LEFT JOIN Quartos q ON r.QuartoID = q.QuartoID " +
+            "LEFT JOIN hospedes h ON r.HospedeID = h.HospedeID " +
+            "LEFT JOIN quartos q ON r.QuartoID = q.QuartoID " +
             "WHERE 1=1"
         );
 
