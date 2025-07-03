@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hotel.gerenciador.controllers.GerenciamentoManutencaoController">
+    <top>
+        <VBox spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets bottom="16.0" left="24.0" right="16.0" top="16.0" />
+            </padding>
+            <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Gerenciamento de Manutenção" />
+            <HBox alignment="CENTER_LEFT" spacing="24">
+                <Label text="Filtrar por Status:" />
+                <ComboBox fx:id="cmbFiltroStatus" prefWidth="150.0" promptText="Todos Status" />
+                <Label text="Buscar por Quarto Nº:" />
+                <TextField fx:id="txtFiltroQuarto" prefWidth="100.0" promptText="Nº Quarto" />
+                <Button fx:id="btnAplicarFiltros" onAction="#handleAplicarFiltros" text="🔍 Aplicar Filtros" styleClass="confirmar"/>
+                <Button fx:id="btnLimparFiltros" onAction="#handleLimparFiltros" text="Limpar Filtros" styleClass="deletar"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets bottom="0.0" left="24.0" right="16.0" top="0.0" />
+            </padding>
+            <TableView fx:id="tblManutencoes" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colIdManutencao" prefWidth="50" text="ID" />
+                    <TableColumn fx:id="colIdQuarto" prefWidth="100" text="Nº Quarto" />
+                    <TableColumn fx:id="colDescricao" prefWidth="200" text="Descrição" />
+                    <TableColumn fx:id="colDataInicio" prefWidth="100" text="Data Início" />
+                    <TableColumn fx:id="colDataFim" prefWidth="100" text="Data Fim" />
+                    <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
+                    <TableColumn fx:id="colIdFuncionario" prefWidth="150" text="Funcionário" />
+                </columns>
+                <placeholder>
+                    <Label text="Nenhum chamado de manutenção encontrado." />
+                </placeholder>
+            </TableView>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button fx:id="btnNovoChamado" onAction="#handleNovoChamado" text="➕ Novo Chamado"/>
+            <Button fx:id="btnMarcarEmAndamento" onAction="#handleMarcarEmAndamento" text="▶ Marcar em Andamento" styleClass="editar"/>
+            <Button fx:id="btnConcluirChamado" onAction="#handleConcluirChamado" text="✔ Concluir Chamado" styleClass="salvar"/>
+            <Button fx:id="btnExcluirChamado" onAction="#handleExcluirChamado" text="❌ Excluir Chamado" styleClass="deletar"/>
+        </HBox>
+    </bottom>
+</BorderPane>
