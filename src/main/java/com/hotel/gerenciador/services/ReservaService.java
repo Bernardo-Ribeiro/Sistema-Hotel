@@ -120,12 +120,7 @@ public class ReservaService {
             Map<Integer, Reserva> mapa = new HashMap<>();
             
             for (Reserva r : reservasAtivas) {
-                if (r.getQuarto() != null) {
-                    System.out.println("Adicionando ao mapa: Quarto ID=" + r.getQuarto().getId() + 
-                    ", Número=" + r.getQuarto().getNumeroQuarto() + 
-                    ", Reserva ID=" + r.getId() + 
-                    ", Hóspede=" + (r.getHospede() != null ? r.getHospede().getNome() : "null"));
-                    
+                if (r.getQuarto() != null) {                    
                     mapa.put(r.getQuarto().getId(), r);
                 } else {
                     System.out.println("Reserva ID=" + r.getId() + " sem quarto associado - ignorada");

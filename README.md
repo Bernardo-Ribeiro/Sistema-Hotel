@@ -1,4 +1,5 @@
 # Sistema de Gerenciamento de Hotel
+![Imagem da Dashboard Principal](image.png)
 
 ## Introdução  
 Software para automatizar operações diárias de hotéis, incluindo:  

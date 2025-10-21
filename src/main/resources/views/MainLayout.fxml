@@ -16,7 +16,7 @@
         <HBox spacing="50" stylesheets="@../styles.css">
             <Pane stylesheets="@../styles.css" HBox.hgrow="ALWAYS">
             <children>
-                  <Label contentDisplay="TOP" graphicTextGap="0.0" style="-fx-font-size: 48;" stylesheets="@../styles.css" text="Hotel Pai é Careca">
+                  <Label contentDisplay="TOP" graphicTextGap="0.0" style="-fx-font-size: 48;" stylesheets="@../styles.css" text="Hotel">
                   <font>
                      <Font name="Montserrat Bold" size="24.0" />
                   </font>

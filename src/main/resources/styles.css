@@ -444,3 +444,62 @@
 .grafico-receita .default-color0.chart-bar { -fx-bar-fill: #A3BE8C; }
 .grafico-receita .default-color0.chart-series-line { -fx-stroke: #A3BE8C; }
 .grafico-receita .chart-line-symbol { -fx-background-color: #A3BE8C, white; }
+
+/* Add these to enhance the stylesheet */
+
+/* Improved focus indicators for accessibility */
+.button:focused, .text-field:focused, .combo-box:focused {
+    -fx-effect: dropshadow(gaussian, #5E81AC66, 8, 0.3, 0, 0);
+}
+
+/* Loading states */
+.button.loading {
+    -fx-background-color: #D8DEE9 !important;
+    -fx-cursor: wait;
+}
+
+/* Success/error states for form validation */
+.text-field.error {
+    -fx-border-color: #BF616A;
+    -fx-effect: dropshadow(gaussian, #BF616A33, 4, 0.2, 0, 0);
+}
+
+.text-field.success {
+    -fx-border-color: #A3BE8C;
+}
+
+/* Card variations */
+.card.elevated {
+    -fx-effect: dropshadow(gaussian, #2E344033, 8, 0.2, 0, 2);
+}
+
+.card.interactive:hover {
+    -fx-effect: dropshadow(gaussian, #2E344044, 12, 0.3, 0, 4);
+    -fx-cursor: hand;
+}
+
+/* Progress indicators */
+.progress-bar .track {
+    -fx-background-color: #D8DEE9;
+    -fx-background-radius: 4;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #5E81AC;
+    -fx-background-radius: 4;
+}
+
+/* Scrollbar styling */
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #E5E9F0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #5E81AC;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #4C566A;
+}

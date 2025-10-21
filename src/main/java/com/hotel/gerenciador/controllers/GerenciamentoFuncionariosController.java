@@ -1,18 +1,10 @@
 package com.hotel.gerenciador.controllers;
 
-<<<<<<< HEAD:sistema-hotel/src/main/java/com/hotel/gerenciador/controller/GerenciamentoFuncionariosController.java
-import com.hotel.gerenciador.model.Funcionario;
-import com.hotel.gerenciador.service.FuncionarioService;
-import com.hotel.gerenciador.util.Formatter;
-import com.hotel.gerenciador.util.Validator;
-import com.hotel.gerenciador.model.Pagamento;
-import com.hotel.gerenciador.service.PagamentoService;
-=======
 import com.hotel.gerenciador.models.Funcionario;
 import com.hotel.gerenciador.services.FuncionarioService;
 import com.hotel.gerenciador.utils.Formatter;
 import com.hotel.gerenciador.utils.Validator;
->>>>>>> ae57402dd3a26a7e2223ea3ef1062114dbc20b1f:src/main/java/com/hotel/gerenciador/controllers/GerenciamentoFuncionariosController.java
+import com.hotel.gerenciador.services.PagamentoService;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;

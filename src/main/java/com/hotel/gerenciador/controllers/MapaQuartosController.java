@@ -153,17 +153,13 @@ public class MapaQuartosController {
         // TODO: Implementar a lógica para abrir a tela de detalhes da reserva
         // Infelizmente não consegui implementar a lógica para abrir a tela de detalhes da reserva
         // Por isso, estou usando o System.out.println para imprimir as informações
-        System.out.println("Quarto clicado: " + quarto.getNumeroQuarto());
         if (reserva != null) {
-            System.out.println("Reserva associada: " + reserva.getId());
             // Exemplo: Abrir tela de detalhes da reserva
             // loadReservaDetailsView(reserva.getId());
         } else if (quarto.getStatus() == StatusQuarto.DISPONIVEL) {
-            System.out.println("Quarto disponível. Iniciar nova reserva?");
             // Exemplo: Abrir tela para criar nova reserva para este quarto
             // loadNewReservaView(quarto.getId());
         } else if (quarto.getStatus() == StatusQuarto.MANUTENCAO) {
-            System.out.println("Quarto em manutenção.");
             // loadManutencaoDetailsView(quarto.getId());
         }
     }
